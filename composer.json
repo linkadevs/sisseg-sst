@@ -1,0 +1,19 @@
+{
+    "name": "linkadevs/sisseg-sst",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Linkadevs\\SissegSst\\": "sisseg-sst/",
+            "Controller\\": "Controller/",
+            "Model\\": "Model/"
+        },
+        "files": [
+            "Config/configuration.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">= 8.0",
+        "ext-mbstring": "*"
+    }
+}
