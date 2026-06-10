@@ -267,12 +267,12 @@ body {
 
     .btn_login button {
         width: 100%;
-        height: 4.8rem;
+        height: 4.6rem;
         border: none;
         border-radius: 1rem;
         background: #094B6F;
         color: #ffffff;
-        font-size: 1.9rem;
+        font-size: 2rem;
         font-weight: 600;
     }
 
@@ -338,11 +338,12 @@ body {
 
     .btn_login button {
         width: 100%;
+        height: 4rem;
         border: none;
         border-radius: 1rem;
         background: #094B6F;
         color: #ffffff;
-        font-size: 1.6rem;
+        font-size: 1.7rem;
         font-weight: 600;
     }
 
@@ -403,7 +404,7 @@ body {
 
     .circuloazul1 img,
     .circuloazul2 img {
-        width: 24rem;
+        width: 28rem;
     }
 
     .card-login {
@@ -451,24 +452,25 @@ body {
         font-size: 1.8rem;
 
     }
-     .cadastro {
+
+    .cadastro {
         font-size: 1.2rem;
         margin-top: 2rem;
 
     }
 
-        .btn_login {
+    .btn_login {
         margin-top: 1.8rem;
     }
 
     .btn_login button {
         width: 100%;
-        height: 3.7rem;
+        height: 3.3rem;
         border: none;
         border-radius: 1rem;
         background: #094B6F;
         color: #ffffff;
-        font-size: 1.7rem;
+        font-size: 1.5rem;
         font-weight: 600;
     }
 
