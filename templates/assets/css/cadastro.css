@@ -1,0 +1,552 @@
+@import 'global.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: #ffffff;
+}
+
+main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* =========================
+   CÍRCULOS
+========================= */
+
+.circuloazul1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.circuloazul1 img {
+    width: 28rem;
+    height: auto;
+}
+
+.circuloazul2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.circuloazul2 img {
+    width: 28rem;
+    height: auto;
+}
+
+/* =========================
+   VOLTAR
+========================= */
+
+.setavoltarbranca {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    background: transparent;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.setavoltarbranca img {
+    width: 1.7rem;
+    height: auto;
+    cursor: pointer;
+}
+
+.setavoltarbranca span {
+    color: #ffffff;
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+}
+
+/* =========================
+   APRESENTAÇÃO
+========================= */
+
+.apresentacao {
+    width: 40rem;
+    min-height: 24rem;
+    background: #EFF6FF;
+    border: 0.08rem solid #9fc0f3;
+    border-radius: 0.5rem;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.apresentacao::after {
+    content: "";
+    position: absolute;
+    top: -2rem;
+    right: -2.5rem;
+    width: 0.09rem;
+    height: 28rem;
+    background: #d6d6d6;
+}
+
+.apresentacao h1 {
+    color: #AF2AFA;
+    font-size: 2.2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.apresentacao p {
+    color: #094C71;
+    font-size: 1.5rem;
+    line-height: 1.8rem;
+}
+
+/* =========================
+   CARD CADASTRO
+========================= */
+
+.card-cadastro {
+    width: 100%;
+    max-width: 34rem;
+    background: #ffffff;
+    border: 0.08rem solid #d8d8d8;
+    border-radius: 0.4rem;
+    padding: 2rem;
+    box-shadow: 0 0.15rem 0.8rem rgba(0, 0, 0, 0.08);
+}
+
+.card-cadastro h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #303030;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #094C71;
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.input_nome,
+.input_cpf,
+.input_senha,
+.input_confirmar_senha,
+.input_cargo,
+.input_setor {
+    margin-bottom: 2rem;
+}
+
+.input_nome label,
+.input_cpf label,
+.input_senha label,
+.input_confirmar_senha label,
+.input_cargo label,
+.input_setor label {
+    font-size: 1.4rem;
+    color: #094C71;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    display: block;
+}
+
+.input_nome input,
+.input_cpf input,
+.input_senha input,
+.input_confirmar_senha input,
+.input_cargo input,
+.input_setor input {
+    width: 100%;
+    height: 3rem;
+    border: none;
+    border-radius: 0.9rem;
+    background: #f1f1f15c;
+    padding: 0 1rem;
+    font-size: 1.1rem;
+}
+
+.input_nome input:focus,
+.input_cpf input:focus,
+.input_senha input:focus,
+.input_confirmar_senha input:focus,
+.input_cargo input:focus,
+.input_setor input:focus {
+    outline: 0.08rem solid #03080b;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+
+.btn_cadastro {
+    margin-top: 1.5rem;
+}
+
+.btn_cadastro button {
+    width: 100%;
+    height: 3rem;
+    border: none;
+    border-radius: 0.9rem;
+    background: #094B6F;
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn_cadastro button:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+.login {
+    text-align: center;
+    margin-top: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.link-login {
+    color: #2f80d0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.link-login:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   1200px
+========================= */
+
+@media (max-width:1290px) {
+
+    .apresentacao {
+        display: none;
+    }
+
+    .container {
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .card-cadastro {
+        width: 100%;
+        max-width: 44rem;
+        padding: 3rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 2.5rem;
+    }
+
+    .subtitulo {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1.3rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 3.6rem;
+        font-size: 1.1rem;
+    }
+
+    .btn_cadastro button {
+        height: 3.8rem;
+        font-size: 1.3rem;
+    }
+
+    .login {
+        font-size: 1.2rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 26rem;
+    }
+}
+
+/* =========================
+   1025px
+========================= */
+
+@media (max-width:1025px) {
+
+    .card-cadastro {
+        max-width: 38rem;
+        padding: 2.5rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo {
+        font-size: 1.4rem;
+        margin-top: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 3rem;
+        font-size: 0.95rem;
+    }
+
+    .btn_cadastro button {
+        height: 3.2rem;
+        font-size: 1.2rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 22rem;
+    }
+}
+
+/* =========================
+   768px
+========================= */
+
+@media (max-width:768px) {
+
+    .container {
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .card-cadastro {
+        max-width: 34rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 16rem;
+    }
+
+    .setavoltarbranca span {
+        font-size: 1.4rem;
+    }
+
+    .subtitulo{
+        font-size: 1.1rem;
+    }
+}
+
+/* =========================
+   600px
+========================= */
+
+@media (max-width:600px) {
+
+    .container {
+        padding: 1rem;
+    }
+
+    .card-cadastro {
+        width: 100%;
+        max-width: 26rem;
+        padding: 2rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 2rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 3.1rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 11rem;
+    }
+}
+
+
+/* =========================
+   480px
+========================= */
+
+@media (max-width:480px) {
+
+    .container {
+        padding: 1rem;
+    }
+
+    .card-cadastro {
+        width: 100%;
+        max-width: 25rem;
+        padding: 1.8rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 1.9rem;
+    }
+
+    .subtitulo {
+        font-size: 0.9rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 3rem;
+        font-size: 0.9rem;
+    }
+
+    .btn_cadastro button {
+        height: 3rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 14rem;
+    }
+}
+
+/* =========================
+   400px
+========================= */
+
+@media (max-width:400px) {
+
+    .card-cadastro {
+        max-width: 21rem;
+        padding: 1.6rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 1.8rem;
+    }
+
+    .subtitulo {
+        font-size: 0.85rem;
+    }
+
+    .login {
+        font-size: 0.8rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 13rem;
+    }
+
+     .btn_cadastro button {
+        height: 2.8rem;
+    }
+}
+
+/* =========================
+   330px
+========================= */
+
+@media (max-width:330px) {
+
+    .card-cadastro {
+        max-width: 18.5rem;
+        padding: 1.2rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 1.5rem;
+    }
+
+    .subtitulo {
+        font-size: 0.75rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 2.8rem;
+    }
+
+    .btn_cadastro button {
+        height: 2.6rem;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 10rem;
+    }
+}
