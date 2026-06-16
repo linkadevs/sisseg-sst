@@ -1,0 +1,105 @@
+@import 'global.css';
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    gap: 3rem;
+}
+
+.container {
+    background: linear-gradient(90deg, #155cfa, #0c4de3, #00a547);
+    width: 100%;
+    padding: 6rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2rem;
+    gap: 2rem;
+}
+
+.linha1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.linha2,
+.linha3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.bloco1 {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.bloco1-foto {
+    background-color: #ffffff;
+    padding: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+}
+
+.bloco1-foto img {
+    height: 5.5rem;
+    width: auto;
+}
+
+.bloco1-texto {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    font-size: 1.8rem;
+}
+
+.texto-titulo {
+    color: #ffffff;
+}
+
+.texto-subtitulo {
+    color: #d5e3fd;
+}
+
+.bloco2,
+.bloco3,
+.bloco4,
+.bloco5,
+.bloco6 {
+    background-color: rgba(255, 255, 255, 0.16);
+    border: 0.5px solid rgba(197, 197, 197, 0.734);
+    border-radius: 1rem;
+    gap: 1rem;
+}
+
+.bloco2,
+.bloco3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.bloco4,
+.bloco5,
+.bloco6 {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 19rem 2rem 2rem;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    color: #d5e3fd;
+}
+
+.subtitulo {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
