@@ -10,7 +10,6 @@
 </head>
 
 <body>
-
     <button class="setavoltarpreta" type="button" onclick="window.location.href='paginainicial.php'">
         <figure>
             <img src="../templates/assets/img/seta_esquerda.png" alt="Seta Voltar">
@@ -36,7 +35,7 @@
             <form>
                 <div class="input_nome">
                     <label for="nome">Responsável pela Inspeção</label>
-                    <input type="text" id="nome" placeholder="Nome do Técnico/Mestre de Obras">
+                    <input type="text" id="nome" placeholder="Nome do Técnico/Mestre de Obras" required>
                 </div>
 
                 <div class="input_turno">
@@ -50,7 +49,7 @@
                         <option value="matutino">Matutino (06h - 14h)</option>
                         <option value="vespertino">Vespertino (14h - 22h)</option>
                         <option value="noturno">Noturno (22h - 06h)</option>
-                    </select>
+                    </select required>
                 </div>
 
             </form>
