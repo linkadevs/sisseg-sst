@@ -334,7 +334,7 @@
                     Assinar Registro
                 </h3>
 
-                <p>
+                <p class="desenhe_aqui">
                     Desenhe sua assinatura abaixo
                 </p>
 
@@ -396,10 +396,8 @@
 
 <div class="btn_finalizar">
 
-    <button
-        class="btn_finalizar_checklist"
-        type="submit"
-    >
+    <button class="btn_finalizar_checklist" 
+    type="button"  onclick="window.location.href='checklistresultado.php'" >
 
         <img
             class="icone_finalizar"

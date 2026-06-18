@@ -1,47 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const modal =
-        document.getElementById("modalAssinatura");
-
-    const abrirAssinatura =
-        document.getElementById("abrirAssinatura");
-
-    const fecharModalX =
-        document.getElementById("fecharModalX");
-
-    const fecharModalCancelar =
-        document.getElementById("fecharModalCancelar");
-
-    const btnSalvar =
-        document.getElementById("btnSalvarAssinatura");
-
-    const textoAssinatura =
-        document.getElementById("textoAssinatura");
-
-    const assinaturaBase64 =
-        document.getElementById("assinaturaBase64");
-
-    const canvas =
-        document.getElementById("canvasAssinatura");
-
-    const btnLimpar =
-        document.getElementById("btnLimparCanvas");
-
-
+    const modal = document.getElementById("modalAssinatura");
+    const abrirAssinatura = document.getElementById("abrirAssinatura");
+    const fecharModalX = document.getElementById("fecharModalX");
+    const fecharModalCancelar = document.getElementById("fecharModalCancelar");
+    const btnSalvar = document.getElementById("btnSalvarAssinatura");
+    const textoAssinatura = document.getElementById("textoAssinatura");
+    const assinaturaBase64 = document.getElementById("assinaturaBase64");
+    const canvas = document.getElementById("canvasAssinatura");
+    const btnLimpar = document.getElementById("btnLimparCanvas");
 
     if (
         !modal ||
         !abrirAssinatura ||
         !canvas
     ) {
-        console.log(
-            "Elementos da assinatura não encontrados."
-        );
+        console.log("Elementos da assinatura não encontrados.");
         return;
     }
 
-    const ctx =
-    canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
+
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -52,14 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function ajustarCanvas() {
 
-        const rect =
-            canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
-        canvas.width =
-            rect.width;
-
-        canvas.height =
-            rect.height;
+        canvas.width = rect.width;
+        canvas.height = rect.height;
     }
 
     ajustarCanvas();
@@ -69,27 +44,39 @@ document.addEventListener("DOMContentLoaded", () => {
         ajustarCanvas
     );
 
-    abrirAssinatura.addEventListener(
-        "click",
-        () => {
+    abrirAssinatura.addEventListener("click", () => {
 
-            modal.classList.add("ativo");
+        if (assinaturaBase64.value.trim() !== "") {
 
-            setTimeout(() => {
+            const refazer = confirm(
+                "A assinatura já foi realizada. Tem certeza que deseja refazer?"
+            );
 
-                const rect =
-                    canvas.getBoundingClientRect();
+            if (!refazer) {
+                return;
+            }
 
-                canvas.width =
-                    rect.width;
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
 
-                canvas.height =
-                    rect.height;
+            assinaturaBase64.value = "";
 
-            }, 100);
+            assinou = false;
 
+            btnSalvar.classList.remove("ativo");
+
+            textoAssinatura.innerHTML =
+                "Assinatura digital — toque para assinar";
+
+            abrirAssinatura.classList.remove("assinado");
         }
-    );
+
+        modal.classList.add("ativo");
+    });
 
     fecharModalX.addEventListener(
         "click",
@@ -101,24 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
         () => modal.classList.remove("ativo")
     );
 
-    btnLimpar.addEventListener(
-        "click",
-        () => {
+    btnLimpar.addEventListener("click", () => {
 
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
-            assinou = false;
+        assinou = false;
 
-            btnSalvar.classList.remove(
-                "ativo"
-            );
-        }
-    );
+        btnSalvar.classList.remove("ativo");
+    });
 
     function iniciar(e) {
 
@@ -137,9 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!desenhando) return;
 
         ctx.lineWidth = 2;
-
         ctx.lineCap = "round";
-
         ctx.strokeStyle = "#0F172A";
 
         ctx.lineTo(
@@ -159,36 +139,18 @@ document.addEventListener("DOMContentLoaded", () => {
         desenhando = false;
     }
 
-    canvas.addEventListener(
-        "mousedown",
-        iniciar
-    );
-
-    canvas.addEventListener(
-        "mousemove",
-        desenhar
-    );
-
-    canvas.addEventListener(
-        "mouseup",
-        parar
-    );
-
-    canvas.addEventListener(
-        "mouseleave",
-        parar
-    );
-
+    canvas.addEventListener("mousedown", iniciar);
+    canvas.addEventListener("mousemove", desenhar);
+    canvas.addEventListener("mouseup", parar);
+    canvas.addEventListener("mouseleave", parar);
 
     function iniciarTouch(e) {
 
         e.preventDefault();
 
-        const rect =
-            canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
-        const touch =
-            e.touches[0];
+        const touch = e.touches[0];
 
         desenhando = true;
 
@@ -206,16 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         e.preventDefault();
 
-        const rect =
-            canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
-        const touch =
-            e.touches[0];
+        const touch = e.touches[0];
 
         ctx.lineWidth = 2;
-
         ctx.lineCap = "round";
-
         ctx.strokeStyle = "#0F172A";
 
         ctx.lineTo(
@@ -230,74 +188,56 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSalvar.classList.add("ativo");
     }
 
-    canvas.addEventListener(
-        "touchstart",
-        iniciarTouch
-    );
+    canvas.addEventListener("touchstart", iniciarTouch);
+    canvas.addEventListener("touchmove", desenharTouch);
+    canvas.addEventListener("touchend", parar);
 
-    canvas.addEventListener(
-        "touchmove",
-        desenharTouch
-    );
+    btnSalvar.addEventListener("click", () => {
 
-    canvas.addEventListener(
-        "touchend",
-        parar
-    );
+        if (!assinou) {
 
-
-
-
-    btnSalvar.addEventListener(
-        "click",
-        () => {
-
-            if (!assinou) {
-
-                alert(
-                    "Faça a assinatura primeiro."
-                );
-
-                return;
-            }
-
-            assinaturaBase64.value =
-                canvas.toDataURL();
-
-            textoAssinatura.innerHTML =
-                "✓ Assinado digitalmente";
-
-            abrirAssinatura.classList.add(
-                "assinado"
-            );
-
-            modal.classList.remove(
-                "ativo"
-            );
-        }
-    );
-
-    document
-.querySelectorAll('.item_check input')
-.forEach(checkbox => {
-
-    checkbox.addEventListener('change', () => {
-
-        const item =
-        checkbox.closest('.item_check');
-
-        if(checkbox.checked){
-
-            item.classList.add('marcado');
-
-        }else{
-
-            item.classList.remove('marcado');
-
+            alert("Faça a assinatura primeiro.");
+            return;
         }
 
+        assinaturaBase64.value =
+            canvas.toDataURL("image/png");
+
+        textoAssinatura.innerHTML =
+            "✓ Assinado digitalmente";
+
+        abrirAssinatura.classList.add("assinado");
+
+        modal.classList.remove("ativo");
+
+        setTimeout(() => {
+
+            alert("A assinatura foi salva.");
+
+        }, 100);
     });
 
-});
+    document
+        .querySelectorAll(".item_check input")
+        .forEach(checkbox => {
+
+            checkbox.addEventListener("change", () => {
+
+                const item =
+                    checkbox.closest(".item_check");
+
+                if (checkbox.checked) {
+
+                    item.classList.add("marcado");
+
+                } else {
+
+                    item.classList.remove("marcado");
+                }
+
+            });
+
+        });
+
 });
 
