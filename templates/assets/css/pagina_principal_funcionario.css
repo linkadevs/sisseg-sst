@@ -5,7 +5,8 @@ body {
     flex-direction: column;
     justify-content: center;
     padding: 3rem;
-    gap: 3rem;
+    gap: 4rem;
+    background-color: #f7fbff;
 }
 
 .container {
@@ -72,7 +73,7 @@ body {
 .bloco4,
 .bloco5,
 .bloco6 {
-    background-color: rgba(255, 255, 255, 0.16);
+    background-color: rgba(255, 255, 255, 0.121);
     border: 0.5px solid rgba(197, 197, 197, 0.734);
     border-radius: 1rem;
     gap: 1rem;
@@ -102,4 +103,127 @@ body {
 .subtitulo {
     font-size: 1.5rem;
     color: #ffffff;
+}
+
+.informacoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.informacoes img {
+    height: 2.5rem;
+    width: auto;
+}
+
+.card-treinamento,
+.card-acidentes,
+.card-epis,
+.card-incidentes {
+    background-color: #ffffff;
+    border-radius: 1.4rem;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-top: 1px solid rgba(62, 62, 62, 0.104);
+    border-right: 1px solid rgba(62, 62, 62, 0.104);
+    border-bottom: 1px solid rgba(62, 62, 62, 0.104);
+}
+
+.card-treinamento {
+    border-left: 4px solid #02c952;
+}
+
+.card-acidentes {
+    border-left: 4px solid #2b7fff;
+}
+
+
+.card-epis {
+    border-left: 4px solid #ad46ff;
+}
+
+.card-incidentes {
+    border-left: 4px solid #ff6900;
+}
+
+.card-superior {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    width: 28rem;
+}
+
+.card-titulo {
+    font-size: 1.8rem;
+    color: #717182;
+}
+
+.card-subtitulo {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+.card-infor {
+    font-size: 1.6rem;
+}
+
+.card-inferior {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.barra-progresso {
+    width: 100%;
+    height: 1rem;
+    background-color: #cdccd0;
+    border-radius: 5rem;
+}
+
+.barra-preenchida {
+    width: 22%;
+    height: 100%;
+    background-color: black;
+    border-radius: 5rem;
+}
+
+.card-treinamento-msg {
+    font-size: 1.5rem;
+    color: #4A5565;
+}
+
+.card-acidentes-msg {
+    font-size: 1.5rem;
+    color: #00A63E;
+}
+
+.card-epis-msg {
+    font-size: 1.5rem;
+    color: #4A5565;
+}
+
+.card-incidentes-msg {
+    font-size: 1.5rem;
+    color: #F54900;
+}
+
+.alertas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    background-color: #ffffff;
+    border:1px solid rgba(62, 62, 62, 0.104);
+    border-radius: 1.4rem;
+    gap: 3rem;
+}
+
+.alert
+h2{
+    font-size: 1.8rem;
+    font-weight: 400;
+
 }
