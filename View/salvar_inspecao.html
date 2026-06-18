@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../templates/assets/css/selecao_funcao_colaborador.css">
+        <link rel="stylesheet" href="../templates/assets/css/salvar_inspecao.css">
         <!-- <link rel="shortcut icon" href="../templates/assets/img/favicon.ico" type="image/x-icon"> -->
         <title>Inspeção de EPI</title>
     </head>
@@ -18,15 +18,72 @@
         </header>
         <main>
             <div class="containerSuperior">
-                <div class="sTitle">
-                    <figure>
-                        <img src="../templates/assets/img/double_check.png" alt="Two overlapping blue check marks forming a verification logo; one darker blue tick overlaps a lighter blue tick, both angled upward. Small square icon with transparent background. No visible text. Conveys confidence and reliability.">
-                    </figure>
-                    <h2>Inspeção de EPI – Diário</h2>
-                </div>
-                <h4>Selecione a função do colaborador para iniciar a inspeção</h4>
+                <h2>Inspeção de EPI – Diário</h2>
+                <h4><strong>João</strong> | Pedreiro | Setor 3</h4>
             </div>
-            <div class="grid">
+            <form>
+                <div class="container">
+                    <h3>EPIs Obrigatórios da Função</h3>
+                    <div class="input">
+                        <input type="checkbox" name="Capacete com jugular" id="Capacete com jugular">
+                        <label for="Capacete com jugular">Capacete com jugular <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Óculos anti-impacto" id="Óculos anti-impacto">
+                        <label for="Óculos anti-impacto">Óculos anti-impacto <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Luvas de vaqueta/raspa" id="Luvas de vaqueta/raspa">
+                        <label for="Luvas de vaqueta/raspa">Luvas de vaqueta/raspa <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Luvas nitrílicas (cimento)" id="Luvas nitrílicas (cimento)">
+                        <label for="Luvas nitrílicas (cimento)">Luvas nitrílicas (cimento) <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Botina com biqueira" id="Botina com biqueira">
+                        <label for="Botina com biqueira">Botina com biqueira <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Máscara PFF2" id="Máscara PFF2">
+                        <label for="Máscara PFF2">Máscara PFF2 <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Protetor auricular" id="Protetor auricular">
+                        <label for="Protetor auricular">Protetor auricular <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+
+                    <div class="input">
+                        <input type="checkbox" name="Cinturão (altura)" id="Cinturão (altura)">
+                        <label for="Cinturão (altura)">Cinturão (altura) <span>*</span></label>
+                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                    </div>
+                </div>
+                <div class="container">
+                    <h3>Condição dos EPIs</h3>
+                    <h4>Marque as condições encontradas (pode marcar mais de uma)</h4>
+                    <div class="item">
+                        
+                    </div>
+                </div>
+                <div class="container">
+
+                </div>
+            </form>
+            <!-- <div class="grid">
                 <div class="card">
                     <h3>Pedreiro</h3>
                     <h5>7 EPIs obrigatórios</h5>
@@ -147,7 +204,7 @@
                     </ul>
                     <p>+5 mais...</p>
                 </div>
-            </div>
+            </div> -->
         </main>
     </body>
 </html>

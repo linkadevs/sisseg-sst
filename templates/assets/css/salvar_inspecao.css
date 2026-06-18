@@ -1,0 +1,62 @@
+@import 'global.css';
+
+body {
+    background-color: #E9E9E9;
+}
+
+/* Header */
+
+header {
+    padding: 2rem 8rem;
+}
+
+.voltarBtn {
+    display: flex;
+    gap: 2rem;
+    background-color: transparent;
+    border-style: none;
+    font-weight: 700;
+    align-items: center;
+    padding: 1rem;
+    border-radius: .7rem;
+    transition: 200ms;
+}
+
+.voltarBtn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transition: 200ms;
+}
+
+.voltarBtn figure img {
+    width: 2rem;
+}
+
+/* Conteúdo superior */
+
+main {
+    padding: 0 8rem 3rem 8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.containerSuperior {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 .4rem .4rem rgba(0, 0, 0, 0.05);
+    gap: 1rem;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+h4 {
+    color: #484848;
+    font-weight: 500;
+    font-size: 1.4rem;
+}
