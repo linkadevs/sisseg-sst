@@ -136,6 +136,31 @@ form {
     color: #0F172A;
 }
 
+/* =========================
+   MENSAGENS DE ERRO
+========================= */
+
+.mensagem_erro {
+    display: none;
+    width: 100%;
+
+    margin-top: .6rem;
+    padding-left: .15rem;
+
+    color: #DC2626 !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4;
+
+    text-align: left;
+}
+
+.input_erro {
+    border: 2px solid #c3a5a5 !important;
+    background: #FEF2F2 !important;
+}
+
+
 label {
     margin-bottom: 1rem;
     font-size: 1.35rem;
@@ -386,6 +411,11 @@ option {
         transform: scale(.98);
         background: #060128;
     }
+
+     .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .87rem !important;
+    }
 }
 
 /* =========================
@@ -437,6 +467,11 @@ option {
 
     input::placeholder {
         font-size: 1rem;
+    }
+
+    .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .8rem !important;
     }
 
     .checklist_inclui {
@@ -686,6 +721,12 @@ option {
         font-size: .95rem;
     }
 
+    .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .7rem !important;
+        line-height: 1.35;
+    }
+
     .caixinha_azul li {
         font-size: .9rem;
     }
@@ -773,6 +814,10 @@ option {
 
     input::placeholder {
         font-size: .85rem;
+    }
+
+    .mensagem_erro {
+        font-size: .72rem !important;
     }
 
     .checklist_inclui {
@@ -865,6 +910,11 @@ option {
     select {
         min-height: 2.7rem;
         font-size: .85rem;
+    }
+
+    .mensagem_erro {
+        font-size: .7rem !important;
+        line-height: 1.3;
     }
 
     .checklist_inclui {

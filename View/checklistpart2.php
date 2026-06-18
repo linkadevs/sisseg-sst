@@ -46,7 +46,7 @@
 
             <div class="grupo_checklist">
                 <div class="cabecalho_grupo">
-                    <h2>1 - Organização do Canteiro</h2>
+                    <h2>1- Organização do Canteiro</h2>
                     <span class="contador">0/4</span>
                 </div>
 
@@ -164,7 +164,7 @@
             <div class="grupo_checklist">
 
                 <div class="cabecalho_grupo">
-                    <h2>5 - Instalações Elétricas - NR-10</h2>
+                    <h2>5- Instalações Elétricas - NR-10</h2>
                     <span class="contador">0/4</span>
                 </div>
 
@@ -279,145 +279,111 @@
             </div>
 
 
-       <div class="assinatura_container">
+            <div class="assinatura_container">
 
-    <label>Assinatura</label>
+                <label>Assinatura</label>
 
-    <div class="assinatura_box_gatilho">
+                <div class="assinatura_box_gatilho">
 
-        <p>
-            <strong>
-                Assinatura Digital do Responsável
-            </strong>
-        </p>
+                    <p>
+                        <strong>
+                            Assinatura Digital do Responsável
+                        </strong>
+                    </p>
 
-        <div
-            class="campo_toque_assinar"
-            id="abrirAssinatura"
-        >
+                    <div class="campo_toque_assinar" id="abrirAssinatura">
 
-            <img
-                src="../templates/assets/img/caneta.png"
-                alt="Assinar"
-            >
+                        <img src="../templates/assets/img/caneta.png" alt="Assinar">
 
-            <span id="textoAssinatura">
-                Assinatura digital — toque para assinar
-            </span>
+                        <span id="textoAssinatura">
+                            Assinatura digital — toque para assinar
+                        </span>
 
-        </div>
+                    </div>
 
-        <input
-            type="hidden"
-            name="assinatura"
-            id="assinaturaBase64"
-        >
+                    <input type="hidden" name="assinatura" id="assinaturaBase64">
+                    <p id="erroAssinatura" class="mensagem_erro">
+                        A assinatura é obrigatória para finalizar o checklist.
+                    </p>
 
-    </div>
-
-</div>
-
-<!-- MODAL -->
-
-<div
-    class="modal_overlay"
-    id="modalAssinatura"
->
-
-    <div class="modal_conteudo">
-
-        <div class="modal_cabecalho">
-
-            <div>
-
-                <h3>
-                    Assinar Registro
-                </h3>
-
-                <p class="desenhe_aqui">
-                    Desenhe sua assinatura abaixo
-                </p>
+                </div>
 
             </div>
 
-            <button
-                type="button"
-                class="btn_fechar"
-                id="fecharModalX"
-            >
-                ×
-            </button>
+            <!-- MODAL -->
 
-        </div>
+            <div class="modal_overlay" id="modalAssinatura">
 
-        <div class="modal_corpo">
+                <div class="modal_conteudo">
 
-            <canvas
-                id="canvasAssinatura"
-            ></canvas>
+                    <div class="modal_cabecalho">
 
-        </div>
+                        <div>
 
-        <div class="modal_rodape">
+                            <h3>
+                                Assinar Registro
+                            </h3>
 
-            <div class="botoes_acao">
+                            <p class="desenhe_aqui">
+                                Desenhe sua assinatura abaixo
+                            </p>
 
-                <button
-                    type="button"
-                    class="btn_limpar"
-                    id="btnLimparCanvas"
-                >
-                    Limpar
-                </button>
+                        </div>
 
-                <button
-                    type="button"
-                    class="btn_assinar"
-                    id="btnSalvarAssinatura"
-                >
-                    Assinar
+                        <button type="button" class="btn_fechar" id="fecharModalX">
+                            ×
+                        </button>
+
+                    </div>
+
+                    <div class="modal_corpo">
+
+                        <canvas id="canvasAssinatura"></canvas>
+
+                    </div>
+
+                    <div class="modal_rodape">
+
+                        <div class="botoes_acao">
+
+                            <button type="button" class="btn_limpar" id="btnLimparCanvas">
+                                Limpar
+                            </button>
+
+                            <button type="button" class="btn_assinar" id="btnSalvarAssinatura">
+                                Assinar
+                            </button>
+
+                        </div>
+
+                        <button type="button" class="btn_cancelar" id="fecharModalCancelar">
+                            Cancelar
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn_finalizar">
+
+                <button class="btn_finalizar_checklist" type="button" id="btnFinalizarChecklist">
+
+                    <img class="icone_finalizar" src="../templates/assets/img/finalizarChecklist.png" alt="Finalizar">
+
+                    <span>
+                        Finalizar Checklist
+                    </span>
+
                 </button>
 
             </div>
 
-            <button
-                type="button"
-                class="btn_cancelar"
-                id="fecharModalCancelar"
-            >
-                Cancelar
-            </button>
+        </form>
 
-        </div>
+    </main>
 
-    </div>
-
-</div>
-
-<div class="btn_finalizar">
-
-    <button class="btn_finalizar_checklist" 
-    type="button"  onclick="window.location.href='checklistresultado.php'" >
-
-        <img
-            class="icone_finalizar"
-            src="../templates/assets/img/finalizarChecklist.png"
-            alt="Finalizar"
-        >
-
-        <span>
-            Finalizar Checklist
-        </span>
-
-    </button>
-
-</div>
-
-</form>
-
-</main>
-
-<script src="../templates/assets/js/checklistpart2.js"></script>
+    <script src="../templates/assets/js/checklistpart2.js"></script>
 
 </body>
+
 </html>

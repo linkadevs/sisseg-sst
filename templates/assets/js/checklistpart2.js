@@ -13,81 +13,99 @@ document.addEventListener("DOMContentLoaded", () => {
     if (
         !modal ||
         !abrirAssinatura ||
-        !canvas
+        !fecharModalX ||
+        !fecharModalCancelar ||
+        !btnSalvar ||
+        !textoAssinatura ||
+        !assinaturaBase64 ||
+        !canvas ||
+        !btnLimpar
     ) {
-        console.log("Elementos da assinatura não encontrados.");
+        console.error("Elementos da assinatura não encontrados.");
         return;
     }
 
     const ctx = canvas.getContext("2d");
 
-    ctx.lineWidth = 3;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = "#000";
-
     let desenhando = false;
     let assinou = false;
 
-    function ajustarCanvas() {
+    function configurarCanvas() {
 
         const rect = canvas.getBoundingClientRect();
 
         canvas.width = rect.width;
         canvas.height = rect.height;
+
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#000";
     }
 
-    ajustarCanvas();
-
-    window.addEventListener(
-        "resize",
-        ajustarCanvas
-    );
-
+    // =========================
+    // ABRIR ASSINATURA
+    // =========================
     abrirAssinatura.addEventListener("click", () => {
 
+        // Já existe assinatura salva?
         if (assinaturaBase64.value.trim() !== "") {
 
-            const refazer = confirm(
+            const confirmar = confirm(
                 "A assinatura já foi realizada. Tem certeza que deseja refazer?"
             );
 
-            if (!refazer) {
+            if (!confirmar) {
                 return;
             }
 
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
+            // Limpa assinatura antiga
             assinaturaBase64.value = "";
-
-            assinou = false;
-
-            btnSalvar.classList.remove("ativo");
 
             textoAssinatura.innerHTML =
                 "Assinatura digital — toque para assinar";
 
             abrirAssinatura.classList.remove("assinado");
+
+            assinou = false;
+
+            btnSalvar.classList.remove("ativo");
         }
 
         modal.classList.add("ativo");
+
+        setTimeout(() => {
+
+            configurarCanvas();
+
+            if (!assinaturaBase64.value) {
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+            }
+
+        }, 100);
+
     });
 
-    fecharModalX.addEventListener(
-        "click",
-        () => modal.classList.remove("ativo")
-    );
+    // =========================
+    // FECHAR MODAL
+    // =========================
+    fecharModalX.addEventListener("click", () => {
+        modal.classList.remove("ativo");
+    });
 
-    fecharModalCancelar.addEventListener(
-        "click",
-        () => modal.classList.remove("ativo")
-    );
+    fecharModalCancelar.addEventListener("click", () => {
+        modal.classList.remove("ativo");
+    });
 
+    // =========================
+    // LIMPAR
+    // =========================
     btnLimpar.addEventListener("click", () => {
 
         ctx.clearRect(
@@ -102,6 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSalvar.classList.remove("ativo");
     });
 
+    // =========================
+    // DESENHO MOUSE
+    // =========================
     function iniciar(e) {
 
         desenhando = true;
@@ -118,10 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!desenhando) return;
 
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "#0F172A";
-
         ctx.lineTo(
             e.offsetX,
             e.offsetY
@@ -131,11 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         assinou = true;
 
+        // ATIVA VISUALMENTE O BOTÃO
         btnSalvar.classList.add("ativo");
+
+        // GARANTE QUE ELE FIQUE CLICÁVEL
+        btnSalvar.disabled = false;
     }
 
     function parar() {
-
         desenhando = false;
     }
 
@@ -144,12 +164,14 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("mouseup", parar);
     canvas.addEventListener("mouseleave", parar);
 
+    // =========================
+    // DESENHO TOUCH
+    // =========================
     function iniciarTouch(e) {
 
         e.preventDefault();
 
         const rect = canvas.getBoundingClientRect();
-
         const touch = e.touches[0];
 
         desenhando = true;
@@ -169,12 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         const rect = canvas.getBoundingClientRect();
-
         const touch = e.touches[0];
-
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "#0F172A";
 
         ctx.lineTo(
             touch.clientX - rect.left,
@@ -186,40 +203,45 @@ document.addEventListener("DOMContentLoaded", () => {
         assinou = true;
 
         btnSalvar.classList.add("ativo");
+        btnSalvar.disabled = false;
     }
 
     canvas.addEventListener("touchstart", iniciarTouch);
     canvas.addEventListener("touchmove", desenharTouch);
     canvas.addEventListener("touchend", parar);
 
+    // =========================
+    // SALVAR ASSINATURA
+    // =========================
     btnSalvar.addEventListener("click", () => {
 
-        if (!assinou) {
+    if (!assinou) {
+        alert("Faça a assinatura primeiro.");
+        return;
+    }
 
-            alert("Faça a assinatura primeiro.");
-            return;
-        }
+    assinaturaBase64.value = canvas.toDataURL("image/png");
 
-        assinaturaBase64.value =
-            canvas.toDataURL("image/png");
+    textoAssinatura.innerHTML =
+        "✓ Assinado digitalmente";
 
-        textoAssinatura.innerHTML =
-            "✓ Assinado digitalmente";
+    abrirAssinatura.classList.add("assinado");
 
-        abrirAssinatura.classList.add("assinado");
+    // REMOVE ERRO
+    erroAssinatura.style.display = "none";
+    abrirAssinatura.classList.remove("erro_assinatura");
 
-        modal.classList.remove("ativo");
+    modal.classList.remove("ativo");
 
-        setTimeout(() => {
+    alert("A assinatura foi salva.");
+});
 
-            alert("A assinatura foi salva.");
-
-        }, 100);
-    });
-
+    // =========================
+    // CHECKBOXES
+    // =========================
     document
         .querySelectorAll(".item_check input")
-        .forEach(checkbox => {
+        .forEach((checkbox) => {
 
             checkbox.addEventListener("change", () => {
 
@@ -234,10 +256,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     item.classList.remove("marcado");
                 }
-
             });
 
         });
 
-});
 
+    const btnFinalizar = document.getElementById("btnFinalizarChecklist");
+    const erroAssinatura = document.getElementById("erroAssinatura");
+
+    btnFinalizar.addEventListener("click", () => {
+
+        if (assinaturaBase64.value.trim() === "") {
+
+            erroAssinatura.style.display = "block";
+
+            abrirAssinatura.classList.add("erro_assinatura");
+
+            return;
+        }
+
+        erroAssinatura.style.display = "none";
+
+        abrirAssinatura.classList.remove("erro_assinatura");
+
+        // Finaliza checklist
+        window.location.href = "checklistresultado.php";
+    });
+
+});

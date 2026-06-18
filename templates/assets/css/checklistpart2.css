@@ -52,6 +52,18 @@ main {
     margin-right: auto;
 }
 
+.mensagem_erro {
+    display: none;
+    margin-top: .8rem;
+    color: #DC2626 !important;
+    font-size: .85rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+
+
+
 /* ==========================
 BOTÃO VOLTAR
 ========================== */
@@ -398,7 +410,7 @@ MODAL & BOTÕES
 .btn_fechar {
     border: none;
     background: none;
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: #64748B;
     line-height: 1;
 }
@@ -498,6 +510,11 @@ MODAL & BOTÕES
         margin-right: auto;
     }
 
+       .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .82rem !important;
+    }
+
 }
 
 /* ==========================================
@@ -554,6 +571,11 @@ MODAL & BOTÕES
 
     .btn_finalizar_checklist img {
         width: 1.3rem;
+    }
+
+    .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .8rem !important;
     }
 }
 
@@ -640,6 +662,11 @@ MODAL & BOTÕES
     .btn_finalizar {
         width: 94%;
         margin: 0 auto 2.5rem;
+    }
+
+       .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .8rem !important;
     }
 
 }
@@ -865,6 +892,11 @@ MODAL & BOTÕES
         max-width: 47rem;
         margin: 0 auto 2rem;
     }
+
+       .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .7rem !important;
+    }
 }
 
 /* ==========================
@@ -959,6 +991,11 @@ MODAL & BOTÕES
     .btn_limpar,
     .btn_assinar {
         flex: 1;
+    }
+
+      .mensagem_erro {
+        margin-top: .6rem;
+        font-size: .75rem !important;
     }
 
     /* Aplica tamanho robusto idêntico para Limpar, Assinar (.btn_assinar) e Cancelar */

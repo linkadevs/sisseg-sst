@@ -35,7 +35,11 @@
             <form>
                 <div class="input_nome">
                     <label for="nome">Responsável pela Inspeção</label>
-                    <input type="text" id="nome" placeholder="Nome do Técnico/Mestre de Obras" required>
+                    <input type="text" id="nome" placeholder="Nome do Técnico/Mestre de Obras">
+
+                    <p id="erroNome" class="mensagem_erro">
+                        Todos os campos são obrigatórios.
+                    </p>
                 </div>
 
                 <div class="input_turno">
@@ -49,28 +53,32 @@
                         <option value="matutino">Matutino (06h - 14h)</option>
                         <option value="vespertino">Vespertino (14h - 22h)</option>
                         <option value="noturno">Noturno (22h - 06h)</option>
-                    </select required>
+                    </select>
+
+                    <p id="erroTurno" class="mensagem_erro">
+                        Todos os campos são obrigatórios.
+                    </p>
                 </div>
 
             </form>
 
             <div class="caixinha_azul">
                 <p class="checklist_inclui">O checklist inclui:</p>
-            
-            <ul>
-                <li>Organização do Canteiro</li>
-                <li>Áreas de Vivência</li>
-                <li>Condições de Trabalho</li>
-                <li>Máquinas e Equipamentos</li>
-                <li>Instalações Elétricas - NR-10</li>
-                <li>Movimentação de Materiais - NR-11</li>
-                <li>Trabalho em Altura - NR-35</li>
-                <li>Produtos Químicos</li>
-                <li>Prevenção Contra Incêndio - NR-23</li>
-                <li>Documentação</li>
-            </ul>
 
-            <p class="total_itens">Total: 40 itens de verificação</p>
+                <ul>
+                    <li>Organização do Canteiro</li>
+                    <li>Áreas de Vivência</li>
+                    <li>Condições de Trabalho</li>
+                    <li>Máquinas e Equipamentos</li>
+                    <li>Instalações Elétricas - NR-10</li>
+                    <li>Movimentação de Materiais - NR-11</li>
+                    <li>Trabalho em Altura - NR-35</li>
+                    <li>Produtos Químicos</li>
+                    <li>Prevenção Contra Incêndio - NR-23</li>
+                    <li>Documentação</li>
+                </ul>
+
+                <p class="total_itens">Total: 40 itens de verificação</p>
             </div>
 
             <div class="container_importante">
@@ -83,8 +91,8 @@
                     Atividades com risco grave e iminente devem ser paralisadas.</p>
             </div>
 
-            <div class="btn_iniciar">
-                <button type="button" onclick="window.location.href='checklistpart2.php'">
+            <div class="btn_iniciar" >
+                <button type="button"  id="btnIniciarChecklist">
                     Iniciar Checklist
                 </button>
             </div>
