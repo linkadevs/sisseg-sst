@@ -595,3 +595,182 @@ main {
     }
 
 }
+
+
+
+.status_conforme{
+    background:#16A34A;
+    color:#fff;
+    padding:.4rem .8rem;
+    border-radius:.5rem;
+    font-size:.8rem;
+    font-weight:700;
+}
+
+
+/* =========================
+   CONFORME
+========================= */
+
+.container_conforme_wrapper {
+    display: none;
+    width: 100%;
+    margin: 0 auto 1.8rem auto;
+}
+
+.container_conforme {
+    background: #EAF7EE;
+    border: .125rem solid #22C55E;
+    border-radius: 1rem;
+    padding: 1.8rem;
+}
+
+.titulo_conforme {
+    display: flex;
+    gap: 1rem;
+}
+
+.titulo_conforme img {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
+.titulo_conforme h2 {
+    color: #15803D;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: .6rem;
+}
+
+.titulo_conforme p {
+    color: #166534;
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+/* =========================
+   RESPONSIVIDADE CONFORME
+========================= */
+
+@media (max-width:1290px){
+
+    .container_conforme_wrapper{
+        width:100%;
+    }
+
+    .titulo_conforme h2{
+        font-size:1.5rem;
+    }
+
+    .titulo_conforme p{
+        font-size:1.4rem;
+    }
+
+}
+
+@media (max-width:1024px){
+
+    .container_conforme_wrapper{
+        width:100%;
+    }
+
+    .container_conforme{
+        padding:1.5rem;
+    }
+
+    .titulo_conforme h2{
+        font-size:1.42rem;
+    }
+
+    .titulo_conforme p{
+        font-size:1.3rem;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .container_conforme_wrapper{
+        width:94%;
+    }
+
+    .container_conforme{
+        padding:1.3rem;
+    }
+
+    .titulo_conforme h2{
+        font-size:1.2rem;
+    }
+
+    .titulo_conforme p{
+        font-size:1.1rem;
+    }
+
+}
+
+@media (max-width:600px){
+
+    .container_conforme_wrapper{
+        width:96%;
+    }
+
+    .titulo_conforme{
+        align-items:flex-start;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .container_conforme_wrapper{
+        width:100%;
+    }
+
+    .container_conforme{
+        padding:1rem;
+    }
+
+    .titulo_conforme{
+        gap:.8rem;
+    }
+
+    .titulo_conforme img{
+        width:1.6rem;
+        height:1.6rem;
+    }
+
+    .titulo_conforme h2{
+        font-size:1rem;
+    }
+
+    .titulo_conforme p{
+        font-size:.88rem;
+    }
+
+}
+
+@media (max-width:390px){
+
+    .titulo_conforme{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+@media (max-width:330px){
+
+    .container_conforme{
+        padding:.8rem;
+    }
+
+    .titulo_conforme h2{
+        font-size:.95rem;
+    }
+
+    .titulo_conforme p{
+        font-size:.82rem;
+    }
+
+}

@@ -15,11 +15,6 @@
 
         <div class="resultado_topo">
 
-            <div class="icone_resultado">
-
-                <img id="iconeResultado" src="../templates/assets/img/xvermelho.png" alt="Resultado">
-            </div>
-
             <div class="dados_resultado">
                 <div class="titulo_resultado">
 
@@ -122,6 +117,28 @@
             </div>
 
         </div>
+
+        <div class="container_conforme_wrapper" id="containerConforme">
+            <div class="container_conforme">
+                <div class="titulo_conforme">
+
+                    <img src="../templates/assets/img/conforme_verde.png" alt="Conforme">
+
+                    <div>
+                        <h2>
+                             100% Conforme
+                        </h2>
+
+                        <p>
+                            Todos os itens de segurança estão adequados.
+                            Parabéns pela manutenção das condições de trabalho!
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         <!-- ESTATÍSTICAS -->

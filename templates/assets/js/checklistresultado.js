@@ -1,104 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const dados =
-        JSON.parse(
-            localStorage.getItem("resultadoChecklist")
+    const statusResultado =
+        document.getElementById("statusResultado");
+
+    const totalNaoConformesElement =
+        document.getElementById("totalNaoConformes");
+
+    const containerNaoConforme =
+        document.getElementById("containerNaoConforme");
+
+    const containerConforme =
+        document.getElementById("containerConforme");
+
+    let totalNaoConformes = 0;
+
+    if (totalNaoConformesElement) {
+        totalNaoConformes =
+            parseInt(
+                totalNaoConformesElement.textContent
+            ) || 0;
+    }
+
+    // inicia escondido
+    containerConforme.style.display = "none";
+
+    if (totalNaoConformes === 0) {
+
+        statusResultado.textContent = "CONFORME";
+
+        statusResultado.classList.remove(
+            "status_nao_conforme"
         );
 
-    if (!dados) return;
-
-    document.getElementById("nomeResultado").textContent =
-        dados.responsavel;
-
-    document.getElementById("turnoResultado").textContent =
-        dados.turno;
-
-    document.getElementById("dataResultado").textContent =
-        dados.data;
-
-    const listaNaoConformes =
-        document.getElementById("listaNaoConformes");
-
-    const estatisticasContainer =
-        document.getElementById("estatisticasContainer");
-
-    let totalItens = 0;
-    let itensConformes = 0;
-    let naoConformes = 0;
-
-    dados.grupos.forEach(grupo => {
-
-        let marcados = 0;
-
-        grupo.itens.forEach(item => {
-
-            totalItens++;
-
-            if (item.conforme) {
-
-                marcados++;
-                itensConformes++;
-
-            } else {
-
-                naoConformes++;
-
-                listaNaoConformes.innerHTML += `
-                    <div class="item_nao_conforme">
-                        <strong>${grupo.categoria}</strong>
-                        <p>${item.descricao}</p>
-                    </div>
-                `;
-            }
-
-        });
-
-        const percentualGrupo =
-            Math.round(
-                (marcados / grupo.itens.length) * 100
-            );
-
-        estatisticasContainer.innerHTML += `
-            <div class="card_estatistica">
-
-                <h3>${grupo.categoria}</h3>
-
-                <div class="dados_card">
-
-                    <span>
-                        ${marcados}/${grupo.itens.length} itens
-                    </span>
-
-                    <strong>
-                        ${percentualGrupo}%
-                    </strong>
-
-                </div>
-
-                <div class="barra">
-                    <div
-                        class="progresso"
-                        style="width:${percentualGrupo}%">
-                    </div>
-                </div>
-
-            </div>
-        `;
-    });
-
-    const progressoGeral =
-        Math.round(
-            (itensConformes / totalItens) * 100
+        statusResultado.classList.add(
+            "status_conforme"
         );
 
-    document.getElementById(
-        "progressoResultado"
-    ).textContent =
-        `${progressoGeral}%`;
+        containerNaoConforme.style.display =
+            "none";
 
-    document.getElementById(
-        "tituloNaoConformes"
-    ).textContent =
-        `Itens Não Conformes (${naoConformes})`;
+        containerConforme.style.display =
+            "block";
+
+    } else {
+
+        statusResultado.textContent =
+            "NÃO CONFORME";
+
+        statusResultado.classList.remove(
+            "status_conforme"
+        );
+
+        statusResultado.classList.add(
+            "status_nao_conforme"
+        );
+
+        containerNaoConforme.style.display =
+            "block";
+
+        containerConforme.style.display =
+            "none";
+    }
 
 });
