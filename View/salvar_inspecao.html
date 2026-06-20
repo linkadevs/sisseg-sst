@@ -8,6 +8,19 @@
         <title>Inspeção de EPI</title>
     </head>
     <body>
+        <div class="modal">
+            <p class="descricaoModal placeholder">Desenhe aqui a sua assinatura</p>
+            <button class="sair" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+            <p class="tituloModal">Assinar registro</p>
+            <p class="descricaoModal">Desenhe sua assinatura abaixo</p>
+            <canvas id="signature" width="400" height="200"></canvas>
+            <div class="buttons">
+                <button type="button" class="limpar modalButton desativado" id="confirmarAssinatura">Limpar</button>
+                <button type="button" class="assinar modalButton desativado" id="limparCanvas">Assinar</button>
+            </div>
+            <button type="button" class="cancelar modalButton">Cancelar</button>
+        </div>
+        <div class="sombra"></div>
         <header>
             <button class="voltarBtn">
                 <figure>
@@ -23,7 +36,7 @@
             </div>
             <form>
                 <div class="container">
-                    <h3>EPIs Obrigatórios da Função</h3>
+                    <h3 class="margin">EPIs Obrigatórios da Função</h3>
                     <div class="input">
                         <input type="checkbox" name="Capacete com jugular" id="Capacete com jugular">
                         <label for="Capacete com jugular">Capacete com jugular <span>*</span></label>
@@ -74,137 +87,50 @@
                 </div>
                 <div class="container">
                     <h3>Condição dos EPIs</h3>
-                    <h4>Marque as condições encontradas (pode marcar mais de uma)</h4>
+                    <h4 class="condicoes">Marque as condições encontradas (pode marcar mais de uma)</h4>
                     <div class="item">
-                        
+                        <p>Capacete com Jugular</p>
+                        <div class="organizer">
+                            <div class="input2">
+                                <input type="checkbox" name="bom_estado" id="bom_estado">
+                                <label for="Bom estado">Bom estado</label>
+                            </div>
+                            <div class="input2">
+                                <input type="checkbox" name="desgastado" id="desgastado">
+                                <label for="Desgastado">Desgastado</label>
+                            </div>
+                            <div class="input2">
+                                <input type="checkbox" name="vencido" id="vencido">
+                                <label for="Vencido (CA)">Vencido (CA)</label>
+                            </div>
+                            <div class="input2">
+                                <input type="checkbox" name="reposicao" id="reposicao">
+                                <label for="Solicitar reposição">Solicitar reposição</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="container">
-
+                <div class="container assinaturas">
+                    <h3 class="margin">Assinaturas</h3>
+                    <p>Assinatura do colaborador</p>
+                    <button type="button" id="assinarColaborador">
+                        <svg id="iconeCaneta" xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
+                        <svg id="iconeCheck" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-4 h-4"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <p>Assinatura digital - toque para assinar</p>
+                    </button>
+                    <p>Assinatura da supervisão</p>
+                    <button type="button" id="assinarSupervisor">
+                        <svg id="iconeCaneta" xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
+                        <svg id="iconeCheck" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-4 h-4"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <p>Supervisor - toque para assinar</p>
+                    </button>
                 </div>
+                <button class="submit" type="submit">Salvar inspeção</button>
+                <input type="hidden" id="assinaturaColaborador" name="assinatura_colaborador">
+                <input type="hidden" id="assinaturaSupervisor" name="assinatura_supervisor">
+                
             </form>
-            <!-- <div class="grid">
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-                <div class="card">
-                    <h3>Pedreiro</h3>
-                    <h5>7 EPIs obrigatórios</h5>
-                    <ul>
-                        <li>Capacete com jugular</li>
-                        <li>Óculos anti-impacto</li>
-                        <li>Luvas de vaqueta/raspa</li>
-                    </ul>
-                    <p>+5 mais...</p>
-                </div>
-            </div> -->
         </main>
+        <script src="../templates/assets/js/salvar_inspecao.js"></script>
     </body>
 </html>

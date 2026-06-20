@@ -40,7 +40,7 @@ main {
     gap: 2rem;
 }
 
-.containerSuperior {
+.containerSuperior, .container {
     display: flex;
     flex-direction: column;
     background-color: #FFFFFF;
@@ -59,4 +59,286 @@ h4 {
     color: #484848;
     font-weight: 500;
     font-size: 1.4rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.margin {
+    margin-bottom: 4rem;
+}
+
+.input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+    gap: 1rem;
+    border-style: solid;
+    border-width: .1rem;
+    border-color: #E9E9E9;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input input {
+    width: 2rem;
+    height: 2rem;
+}
+
+.input label {
+    font-size: 1.4rem;
+}
+
+.input label span {
+    color: #FF0000;
+}
+
+.input figure img {
+    width: 2.5rem;
+}
+
+.input figure {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2rem;
+}
+
+.condicoes {
+    margin-bottom: 3rem;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: #f1f1f1;
+    border-color: #D6D6D6;
+    border-style: solid;
+    border-width: .1rem;
+    border-radius: 1rem;
+}
+
+.item p {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.item input {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.organizer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 2rem;
+}
+
+.input2 {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.input2 label {
+    font-size: 1.4rem;
+}
+
+.assinaturas p {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+form button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    padding: 2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.assinaturas button {
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-width: .1rem;
+    border-color: #D6D6D6;
+    color: #484848;
+    gap: 1rem;
+    transition: 500ms;
+}
+
+.assinaturas button:hover {
+    transition: 500ms;
+    border-color: #336dc9;
+}
+
+.submit {
+    border-style: none;
+    background-color: #2d953c;
+    color: #FFFFFF;
+    transition: 500ms;
+}
+
+.submit:hover {
+    background-color: #237530;
+    transition: 200ms;
+}
+
+#signature {
+    border: .1rem solid #ccc;
+    border-radius: 1rem;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    padding: 2rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    display: none;
+    flex-direction: column;
+    z-index: 2;
+    border-radius: 1.5rem;
+    gap: 2rem;
+}
+
+.sair {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: fit-content;
+    height: fit-content;
+    border-style: none;
+    background-color: transparent;
+}
+
+.sair svg {
+    display: block;
+}
+
+.sombra {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    opacity: 50%;
+    z-index: 1;
+    display: none;
+}
+
+.tituloModal {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.descricaoModal {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #9a9a9a;
+}
+
+.modalButton {
+    padding: 1rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    width: 100%;
+    transition: 500ms
+}
+
+.modalButton:hover {
+    transition: 500ms;
+    opacity: .7;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.limpar, .cancelar {
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-width: .1rem;
+    border-color: #ccc;
+    border-radius: 1rem;
+}
+
+.limpar:hover, .cancelar:hover {
+    background-color: #0000001b;
+}
+
+.limpar.desativado, .assinar.desativado {
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.limpar.desativado:hover, .assinar.desativado:hover {
+    background: inherit;
+}
+
+.assinar {
+    border-style: none;
+    border-radius: 1rem;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.placeholder {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+#iconeCheck {
+    display: none;
+}
+
+@media screen and (max-width: 860px) {
+    .organizer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    :root {
+        font-size: 55%;
+    }
+
+    main {
+        padding: 0 4rem 3rem 4rem;
+    }
+
+    header {
+        padding: 2rem 4rem;
+    }
+    svg {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
 }
