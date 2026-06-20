@@ -224,16 +224,37 @@ main {
     cursor: pointer;
     font-size: 1.27rem;
     font-weight: 600;
+    transition: 0.25s;
+
 }
 
 .btn_novo_checklist {
     background: #fff;
     border: 1px solid #CBD5E1 !important;
+
 }
+
+.btn_novo_checklist:hover {
+    background: #aeb3be;
+}
+
+.btn_novo_checklist:active {
+    background: #aeb3be;
+}
+
 
 .btn_voltar_paginainicial {
     background: #3B82F6;
     color: #fff;
+    transition: 0.25s;
+}
+
+.btn_voltar_paginainicial:hover {
+    background: #062a65;
+}
+
+.btn_voltar_paginainicial:active {
+    background: #062a65;
 }
 
 /* =========================
@@ -314,6 +335,23 @@ main {
     .opcoes_botoes button {
         height: 4rem;
         font-size: 1.2rem;
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
     }
 
 }
@@ -339,6 +377,23 @@ main {
     .opcoes_botoes button {
         height: 4rem;
         font-size: 1.14rem;
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
     }
 
     .dados_resultado p {
@@ -426,6 +481,27 @@ main {
         font-size: .95rem;
     }
 
+    .opcoes_botoes button {
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
+    }
+
+
 
 }
 
@@ -459,6 +535,23 @@ main {
         cursor: pointer;
         font-size: 1.1rem;
         font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
     }
 
     .btn_novo_checklist {
@@ -506,6 +599,23 @@ main {
         cursor: pointer;
         font-size: 1rem;
         font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
     }
 
     .btn_novo_checklist {
@@ -537,6 +647,28 @@ main {
         gap: .6rem;
     }
 
+
+    .opcoes_botoes button {
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
+    }
+
+
 }
 
 /* =========================
@@ -556,6 +688,27 @@ main {
     .card_estatistica h3 {
         font-size: 1rem;
     }
+
+    .opcoes_botoes button {
+        transition: 0.25s;
+    }
+
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
+    }
+
 
 }
 
@@ -587,9 +740,27 @@ main {
 
     .opcoes_botoes button {
         height: 3.4rem;
+        transition: 0.25s;
     }
 
-    .estatisticas{
+    .btn_novo_checklist:hover {
+        background: #aeb3be;
+    }
+
+    .btn_novo_checklist:active {
+        background: #aeb3be;
+    }
+
+    .btn_voltar_paginainicial:hover {
+        background: #062a65;
+    }
+
+    .btn_voltar_paginainicial:active {
+        background: #062a65;
+    }
+
+
+    .estatisticas {
         display: grid;
         grid-template-columns: 1fr;
     }
@@ -598,13 +769,13 @@ main {
 
 
 
-.status_conforme{
-    background:#16A34A;
-    color:#fff;
-    padding:.4rem .8rem;
-    border-radius:.5rem;
-    font-size:.8rem;
-    font-weight:700;
+.status_conforme {
+    background: #16A34A;
+    color: #fff;
+    padding: .4rem .8rem;
+    border-radius: .5rem;
+    font-size: .8rem;
+    font-weight: 700;
 }
 
 
@@ -653,124 +824,124 @@ main {
    RESPONSIVIDADE CONFORME
 ========================= */
 
-@media (max-width:1290px){
+@media (max-width:1290px) {
 
-    .container_conforme_wrapper{
-        width:100%;
+    .container_conforme_wrapper {
+        width: 100%;
     }
 
-    .titulo_conforme h2{
-        font-size:1.5rem;
+    .titulo_conforme h2 {
+        font-size: 1.5rem;
     }
 
-    .titulo_conforme p{
-        font-size:1.4rem;
-    }
-
-}
-
-@media (max-width:1024px){
-
-    .container_conforme_wrapper{
-        width:100%;
-    }
-
-    .container_conforme{
-        padding:1.5rem;
-    }
-
-    .titulo_conforme h2{
-        font-size:1.42rem;
-    }
-
-    .titulo_conforme p{
-        font-size:1.3rem;
+    .titulo_conforme p {
+        font-size: 1.4rem;
     }
 
 }
 
-@media (max-width:768px){
+@media (max-width:1024px) {
 
-    .container_conforme_wrapper{
-        width:94%;
+    .container_conforme_wrapper {
+        width: 100%;
     }
 
-    .container_conforme{
-        padding:1.3rem;
+    .container_conforme {
+        padding: 1.5rem;
     }
 
-    .titulo_conforme h2{
-        font-size:1.2rem;
+    .titulo_conforme h2 {
+        font-size: 1.42rem;
     }
 
-    .titulo_conforme p{
-        font-size:1.1rem;
-    }
-
-}
-
-@media (max-width:600px){
-
-    .container_conforme_wrapper{
-        width:96%;
-    }
-
-    .titulo_conforme{
-        align-items:flex-start;
+    .titulo_conforme p {
+        font-size: 1.3rem;
     }
 
 }
 
-@media (max-width:480px){
+@media (max-width:768px) {
 
-    .container_conforme_wrapper{
-        width:100%;
+    .container_conforme_wrapper {
+        width: 94%;
     }
 
-    .container_conforme{
-        padding:1rem;
+    .container_conforme {
+        padding: 1.3rem;
     }
 
-    .titulo_conforme{
-        gap:.8rem;
+    .titulo_conforme h2 {
+        font-size: 1.2rem;
     }
 
-    .titulo_conforme img{
-        width:1.6rem;
-        height:1.6rem;
-    }
-
-    .titulo_conforme h2{
-        font-size:1rem;
-    }
-
-    .titulo_conforme p{
-        font-size:.88rem;
+    .titulo_conforme p {
+        font-size: 1.1rem;
     }
 
 }
 
-@media (max-width:390px){
+@media (max-width:600px) {
 
-    .titulo_conforme{
-        flex-direction:column;
-        align-items:flex-start;
+    .container_conforme_wrapper {
+        width: 96%;
+    }
+
+    .titulo_conforme {
+        align-items: flex-start;
     }
 
 }
 
-@media (max-width:330px){
+@media (max-width:480px) {
 
-    .container_conforme{
-        padding:.8rem;
+    .container_conforme_wrapper {
+        width: 100%;
     }
 
-    .titulo_conforme h2{
-        font-size:.95rem;
+    .container_conforme {
+        padding: 1rem;
     }
 
-    .titulo_conforme p{
-        font-size:.82rem;
+    .titulo_conforme {
+        gap: .8rem;
+    }
+
+    .titulo_conforme img {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .titulo_conforme h2 {
+        font-size: 1rem;
+    }
+
+    .titulo_conforme p {
+        font-size: .88rem;
+    }
+
+}
+
+@media (max-width:390px) {
+
+    .titulo_conforme {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+@media (max-width:330px) {
+
+    .container_conforme {
+        padding: .8rem;
+    }
+
+    .titulo_conforme h2 {
+        font-size: .95rem;
+    }
+
+    .titulo_conforme p {
+        font-size: .82rem;
     }
 
 }
