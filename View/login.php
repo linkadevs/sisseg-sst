@@ -16,11 +16,11 @@
     </div>
 
     <button class="setavoltarbranca" type="button" onclick="window.location.href='paginainicial.php'">
-    <figure>
-        <img src="../templates/assets/img/setabranca_voltar.png" alt="Seta Voltar">
-    </figure>
-    <span>Voltar</span>
-</button>
+        <figure>
+            <img src="../templates/assets/img/setabranca_voltar.png" alt="Seta Voltar">
+        </figure>
+        <span>Voltar</span>
+    </button>
 
     <main class="container">
         <div class="card-login">
@@ -31,19 +31,19 @@
             </p>
 
 
-            <form>
+            <form action="paginainicial.php" method="post">
                 <div class="input_cpf">
                     <label for="cpf">CPF</label>
-                    <input type="text" id="cpf" placeholder="Digite o seu CPF">
+                    <input type="text" id="cpf" placeholder="Digite o seu CPF" required>
                 </div>
 
                 <div class="input_senha">
                     <label for="senha">Senha</label>
-                    <input type="password" id="senha" placeholder="Digite a sua senha">
+                    <input type="password" id="senha" placeholder="Digite a sua senha" required>
                 </div>
 
                 <div class="btn_login">
-                    <button type="button" onclick="window.location.href='paginainicial.php'">
+                    <button submit="button">
                         Entrar
                     </button>
                 </div>
