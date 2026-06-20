@@ -1,73 +1,90 @@
+
 @import 'global.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3rem 3rem 0 3rem;
-    gap: 4rem;
+    padding: clamp(0.8rem, 3vw, 3rem) clamp(0.5rem, 3vw, 3rem) 0 clamp(0.5rem, 3vw, 3rem);
+    gap: clamp(2rem, 4vw, 4rem);
     background-color: #f7fbff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ===== CONTAINER PRINCIPAL (gradiente) ===== */
 .container {
     background: linear-gradient(90deg, #155cfa, #0c4de3, #00a547);
     width: 100%;
-    padding: 6rem;
+    padding: clamp(1rem, 5vw, 6rem);
+    border-radius: clamp(1rem, 2vw, 2rem);
     display: flex;
     flex-direction: column;
-    border-radius: 2rem;
-    gap: 2rem;
+    gap: clamp(1rem, 2vw, 2rem);
 }
 
-.linha1 {
-    display: flex;
-    justify-content: space-between;
-}
-
+/* ===== LINHAS ===== */
+.linha1,
 .linha2,
 .linha3 {
     display: flex;
-    justify-content: space-between;
-    align-items: start;
+    flex-wrap: wrap;
+    gap: clamp(0.8rem, 1.5vw, 1.5rem);
+    align-items: center;
 }
 
+.linha1 {
+    justify-content: space-between;
+}
+.linha2 {
+    justify-content: flex-start;
+}
+.linha3 {
+    justify-content: space-between;
+}
+
+/* ===== BLOCO 1 (logo + nome) ===== */
 .bloco1 {
     display: flex;
-    gap: 1.2rem;
+    flex-wrap: wrap;
+    gap: clamp(0.8rem, 1.5vw, 1.2rem);
     align-items: center;
-    justify-content: center;
-
 }
 
 .bloco1-foto {
     background-color: #ffffff;
-    padding: 1.8rem;
+    padding: clamp(0.8rem, 1.5vw, 1.8rem);
+    border-radius: clamp(1rem, 1.5vw, 1.5rem);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 1.5rem;
 }
 
 .bloco1-foto img {
-    height: 5.5rem;
+    height: clamp(3rem, 5vw, 5.5rem);
     width: auto;
 }
 
 .bloco1-texto {
     display: flex;
     flex-direction: column;
-    gap: .9rem;
-    font-size: 1.8rem;
+    gap: clamp(0.4rem, 0.8vw, 0.9rem);
+    font-size: clamp(1rem, 1.8vw, 1.8rem);
 }
 
 .texto-titulo {
     color: #ffffff;
 }
-
 .texto-subtitulo {
     color: #d5e3fd;
 }
 
+/* ===== BLOCO 2, 3, 4, 5, 6 ===== */
 .bloco2,
 .bloco3,
 .bloco4,
@@ -75,45 +92,59 @@ body {
 .bloco6 {
     background-color: rgba(255, 255, 255, 0.121);
     border: 0.5px solid rgba(197, 197, 197, 0.734);
-    border-radius: 1rem;
-    gap: 1rem;
+    border-radius: clamp(0.8rem, 1vw, 1rem);
+    gap: clamp(0.5rem, 0.8vw, 1rem);
+    padding: clamp(0.8rem, 1.5vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto; /* não cresce, apenas encolhe */
+    min-width: 120px;
 }
 
 .bloco2,
 .bloco3 {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    padding: 2rem;
 }
 
+/* Blocos 4,5,6 – com padding direito reduzido progressivamente via clamp */
 .bloco4,
 .bloco5,
 .bloco6 {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 19rem 2rem 2rem;
+    padding-right: clamp(1rem, 10vw, 19rem);
 }
 
 .titulo {
-    font-size: 1.5rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.5rem);
     color: #d5e3fd;
 }
-
 .subtitulo {
-    font-size: 1.5rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.5rem);
     color: #ffffff;
 }
 
-.informacoes {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
+/* ===== PERFIL LINK ===== */
+.perfil-link {
+    margin-top: 0.3rem;
+    font-size: clamp(0.75rem, 1.2vw, 1.2rem);
+    color: #d5e3fd;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border-bottom: 1px solid transparent;
+    transition: 0.2s;
+}
+.perfil-link:hover {
+    border-bottom-color: #ffffff;
+    color: #ffffff;
 }
 
-.informacoes img {
-    height: 2.5rem;
-    width: auto;
+/* ===== CARDS ===== */
+.informacoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1rem, 2vw, 2rem);
+    justify-content: space-between;
 }
 
 .card-treinamento,
@@ -121,55 +152,43 @@ body {
 .card-epis,
 .card-incidentes {
     background-color: #ffffff;
-    border-radius: 1.4rem;
-    padding: 3rem;
+    border-radius: clamp(1rem, 1.5vw, 1.4rem);
+    padding: clamp(1rem, 2.5vw, 3rem);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: clamp(1rem, 1.5vw, 1.5rem);
     border-top: 1px solid rgba(62, 62, 62, 0.104);
     border-right: 1px solid rgba(62, 62, 62, 0.104);
     border-bottom: 1px solid rgba(62, 62, 62, 0.104);
+    flex: 1 1 180px;
+    min-width: 140px;
 }
 
-.card-treinamento {
-    border-left: 4px solid #02c952;
-}
-
-.card-acidentes {
-    border-left: 4px solid #2b7fff;
-}
-
-
-.card-epis {
-    border-left: 4px solid #ad46ff;
-}
-
-.card-incidentes {
-    border-left: 4px solid #ff6900;
-}
+.card-treinamento { border-left: 4px solid #02c952; }
+.card-acidentes  { border-left: 4px solid #2b7fff; }
+.card-epis       { border-left: 4px solid #ad46ff; }
+.card-incidentes { border-left: 4px solid #ff6900; }
 
 .card-superior {
     display: flex;
     flex-direction: column;
-    gap: .9rem;
-    width: 28rem;
+    gap: clamp(0.5rem, 0.8vw, 0.9rem);
+    width: 100%;
+    max-width: 28rem;
 }
 
 .card-titulo {
-    font-size: 1.8rem;
+    font-size: clamp(1.1rem, 1.8vw, 1.8rem);
     color: #717182;
 }
-
 .card-subtitulo {
     display: flex;
     align-items: center;
-    gap: .8rem;
+    gap: clamp(0.5rem, 0.8vw, 0.8rem);
 }
-
 .card-infor {
-    font-size: 1.6rem;
+    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
 }
-
 .card-inferior {
     display: flex;
     flex-direction: column;
@@ -182,207 +201,280 @@ body {
     background-color: #cdccd0;
     border-radius: 5rem;
 }
-
 .barra-preenchida {
     width: 22%;
     height: 100%;
-    background-color: black;
+    background-color: #000;
     border-radius: 5rem;
 }
 
-.card-treinamento-msg {
-    font-size: 1.5rem;
-    color: #4A5565;
+.card-treinamento-msg { font-size: clamp(1rem, 1.5vw, 1.5rem); color: #4A5565; }
+.card-acidentes-msg  { font-size: clamp(1rem, 1.5vw, 1.5rem); color: #00A63E; }
+.card-epis-msg       { font-size: clamp(1rem, 1.5vw, 1.5rem); color: #4A5565; }
+.card-incidentes-msg { font-size: clamp(1rem, 1.5vw, 1.5rem); color: #F54900; }
+
+.informacoes img {
+    height: clamp(1.8rem, 2.5vw, 2.5rem);
+    width: auto;
 }
 
-.card-acidentes-msg {
-    font-size: 1.5rem;
-    color: #00A63E;
-}
-
-.card-epis-msg {
-    font-size: 1.5rem;
-    color: #4A5565;
-}
-
-.card-incidentes-msg {
-    font-size: 1.5rem;
-    color: #F54900;
-}
-
-.alertas{
+/* ===== ALERTAS ===== */
+.alertas {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 3rem;
+    gap: clamp(1.5rem, 3vw, 3rem);
     background-color: #ffffff;
-    border:1px solid rgba(62, 62, 62, 0.104);
-    border-radius: 1.4rem;
-    gap: 3rem;
+    border: 1px solid rgba(62, 62, 62, 0.104);
+    border-radius: clamp(1rem, 1.5vw, 1.4rem);
+    padding: clamp(1rem, 3vw, 3rem);
 }
 
-h1,h2{
-    font-size: 1.8rem;
+h1, h2 {
+    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
     font-weight: 400;
 }
 
-.alertas img{
-    height: 2rem;
+.alertas img {
+    height: clamp(1.5rem, 2vw, 2rem);
     width: auto;
 }
 
 .notificacao,
-.notificacao-aviso{
+.notificacao-aviso {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: clamp(0.8rem, 1.5vw, 1rem);
     background-color: #f9fafb;
-    padding: 1.4rem;
+    padding: clamp(0.8rem, 1.4vw, 1.4rem);
     border-radius: 1rem;
-    transition: 0.3s ease all;
+    transition: 0.3s ease;
+    cursor: pointer;
 }
-
 .notificacao:hover,
-.notificacao-aviso:hover{
+.notificacao-aviso:hover {
     background-color: #e1e2e3c9;
 }
-.notificacao-infor{
+
+.notificacao-infor {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    font-size: 1.5rem;
+    gap: clamp(0.8rem, 1.5vw, 1.5rem);
+    font-size: clamp(0.95rem, 1.5vw, 1.5rem);
     color: #364153;
+    flex: 1;
 }
 
-.notificacao-atencao{
-    padding: .7rem;
+.notificacao-atencao {
     background-color: #d4183d;
-    color: white;
+    color: #fff;
+    padding: clamp(0.4rem, 0.7vw, 0.7rem) clamp(0.8rem, 1.2vw, 1.2rem);
     border-radius: 1rem;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: clamp(0.8rem, 1.3vw, 1.3rem);
 }
-
-.notificacao-informacao{
-    padding: .7rem;
-    background-color: #000000;
-    color: white;
+.notificacao-informacao {
+    background-color: #000;
+    color: #fff;
+    padding: clamp(0.4rem, 0.7vw, 0.7rem) clamp(0.8rem, 1.2vw, 1.2rem);
     border-radius: 1rem;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: clamp(0.8rem, 1.3vw, 1.3rem);
 }
 
-.modulos-do-sistema{
+/* ===== MÓDULOS ===== */
+.modulos-do-sistema {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: clamp(1.5rem, 3vw, 3rem);
 }
-
-.modulos-do-sistema img{
-    width: 3rem;
+.modulos-do-sistema img {
+    width: clamp(2rem, 3vw, 3rem);
     height: auto;
 }
-.todos-os-modulos{
+
+.todos-os-modulos {
     display: flex;
-    gap: 3rem;
-    align-items: center;
-}
-.modulo{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem 2rem;
-    background-color: #ffffff;
-    border-radius: 1.5rem;
-    border:1px solid rgba(62, 62, 62, 0.104);
-    transition: 0.3s ease all;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 3vw, 3rem);
 }
 
-.modulo:hover{
-    box-shadow: 0px 2px 10px rgba(154, 151, 151, 0.4);
+.modulo {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2vw, 2rem);
+    padding: clamp(1rem, 2vw, 2rem);
+    background-color: #ffffff;
+    border-radius: clamp(1rem, 1.5vw, 1.5rem);
+    border: 1px solid rgba(62, 62, 62, 0.104);
+    transition: 0.3s ease;
+    cursor: pointer;
+    flex: 1 1 220px;
+    min-width: 150px;
 }
-.modulo-textos{
-    width: 30rem;
+.modulo:hover {
+    box-shadow: 0px 2px 10px rgba(154, 151, 151, 0.4);
 }
 
 .modulo-verificacao-img,
 .modulo-treinamento-img,
-.modulo-inspecao-img{
-    padding: 1rem;
+.modulo-inspecao-img {
+    padding: clamp(0.7rem, 1vw, 1rem);
     border-radius: 1rem;
-    display: flex;
-    justify-content: left;
-    margin-right: 29rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
 }
+.modulo-verificacao-img { background-color: #2b7fff; }
+.modulo-treinamento-img { background-color: #00c950; }
+.modulo-inspecao-img    { background-color: #00bba7; }
 
-.modulo-verificacao-img{
-    background-color: #2b7fff;
-}
-
-.modulo-treinamento-img{
-    background-color: #00c950;
-}
-.modulo-inspecao-img{
-    background-color: #00bba7;
-}
-
-.modulo-textos{
+.modulo-textos {
     display: flex;
     flex-direction: column;
-    gap: .9rem;
+    gap: clamp(0.5rem, 0.8vw, 0.9rem);
+    width: 100%;
+    max-width: 30rem;
 }
-
-.modulo-titulo{
-    font-size: 1.6rem;
-    width: 500;
+.modulo-titulo {
+    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+    font-weight: 500;
 }
-
-.modulo-descricao{
-    font-size: 1.6rem;
+.modulo-descricao {
+    font-size: clamp(1rem, 1.5vw, 1.6rem);
     color: #717182;
 }
 
-.modulo-botao{
+.modulo-botao {
     border: 1px solid #5c5b5b37;
-    padding: 1.2rem;
-    color: #000000;
+    padding: clamp(0.8rem, 1.2vw, 1.2rem);
+    color: #000;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
     background: none;
     border-radius: 1rem;
-    transition: 0.3s ease all;
+    transition: 0.3s ease;
+    cursor: pointer;
 }
-
-.modulo-botao:hover{
+.modulo-botao:hover {
     background-color: #d7d4d45d;
 }
 
-/* ===== RODAPÉ (FOOTER) ===== */
+/* ===== RODAPÉ ===== */
 .footer-simples {
     background: none;
-    padding: 1.5rem;
-    margin-top: 0;
+    padding: clamp(1rem, 1.5vw, 1.5rem);
     text-align: center;
 }
-
 .footer-conteudo p {
     color: #6d6d6d;
-    font-size: 1.2rem;
-    margin: 0;
+    font-size: clamp(0.75rem, 1.2vw, 1.2rem);
     opacity: 0.9;
 }
 
-/* Responsividade do footer */
-@media (max-width: 640px) {
-    .footer-simples {
-        padding: 1rem;
-        margin-top: 0;
+/* ============================================================ */
+/* ===== RESPONSIVIDADE ADICIONAL (breakpoints fixos) ===== */
+/* ============================================================ */
+
+/* Telas até 768px – empilha algumas linhas e ajusta */
+@media (max-width: 768px) {
+    .linha1 {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
-    
-    .footer-conteudo p {
-        font-size: 0.75rem;
+    .bloco1 {
+        flex-direction: column;
+    }
+    .bloco1-texto {
+        align-items: center;
+    }
+    .bloco2, .bloco3 {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+    .linha2 {
+        justify-content: center;
+    }
+    .linha3 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .bloco4, .bloco5, .bloco6 {
+        padding-right: 1rem; /* reduz drasticamente o padding direito */
+        align-items: center;
+        text-align: center;
+    }
+
+    .informacoes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .card-superior {
+        max-width: 100%;
+        align-items: flex-start;
+    }
+
+    .todos-os-modulos {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .modulo-textos {
+        max-width: 100%;
+    }
+    .modulo-verificacao-img,
+    .modulo-treinamento-img,
+    .modulo-inspecao-img {
+        margin-right: 0;
+    }
+}
+
+/* Telas até 480px – redução extra */
+@media (max-width: 480px) {
+    .bloco4, .bloco5, .bloco6 {
+        padding: 0.8rem;
+    }
+    .card-treinamento,
+    .card-acidentes,
+    .card-epis,
+    .card-incidentes {
+        padding: 1rem;
+        min-width: 0;
+    }
+    .notificacao-infor {
+        flex-wrap: wrap;
+    }
+}
+
+/* Telas até 340px – ajustes finos */
+@media (max-width: 340px) {
+    .bloco2, .bloco3 {
+        padding: 0.6rem;
+    }
+    .bloco4, .bloco5, .bloco6 {
+        padding: 0.6rem;
+    }
+    .card-treinamento,
+    .card-acidentes,
+    .card-epis,
+    .card-incidentes {
+        padding: 0.8rem;
+    }
+    .modulo {
+        padding: 0.8rem;
+        gap: 0.8rem;
+    }
+    .modulo-botao {
+        padding: 0.6rem;
+    }
+    .notificacao,
+    .notificacao-aviso {
+        padding: 0.6rem;
+    }
+    .alertas {
+        padding: 0.8rem;
     }
 }
