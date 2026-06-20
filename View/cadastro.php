@@ -43,39 +43,39 @@
                     Realize o cadastro para ser identificado !
                 </p>
 
-                <form id="formCadastro">
+                <form  action="login.php" id="formCadastro" method="post">
                     <div class="input_nome">
                         <label>Nome</label>
-                        <input type="text" placeholder="Digite o seu nome completo">
+                        <input type="text" placeholder="Digite o seu nome completo" required>
                     </div>
 
                     <div class="input_cpf">
                         <label>CPF</label>
-                        <input type="text" placeholder="Digite o seu CPF">
+                        <input type="text" placeholder="Digite o seu CPF" required>
                     </div>
 
                     <div class="input_senha">
                         <label>Senha</label>
-                        <input type="password" placeholder="Digite a senha">
+                        <input type="password" placeholder="Digite a senha" required>
                     </div>
 
                     <div class="input_confirmar_senha">
                         <label>Confirmar Senha</label>
-                        <input type="password" placeholder="Digite novamente a senha">
+                        <input type="password" placeholder="Digite novamente a senha" required>
                     </div>
 
                     <div class="input_cargo">
                         <label>Cargo</label>
-                        <input type="text" placeholder="Digite o seu cargo">
+                        <input type="text" placeholder="Digite o seu cargo" required>
                     </div>
 
                     <div class="input_setor">
                         <label>Setor</label>
-                        <input type="text" placeholder="Digite o setor correspondente">
+                        <input type="text" placeholder="Digite o setor correspondente" required>
                     </div>
 
                     <div class="btn_cadastro">
-                        <button type="button" onclick="window.location.href='login.php'">
+                        <button type="submit">
                             Cadastrar
                         </button>
                     </div>

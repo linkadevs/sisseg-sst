@@ -232,7 +232,11 @@ main {
 }
 
 .btn_cadastro button:hover {
-    opacity: 0.9;
+    background: #320388;
+}
+
+.btn_cadastro button:active {
+    background: #320388;
 }
 
 /* =========================
@@ -302,12 +306,21 @@ main {
     .input_cargo input,
     .input_setor input {
         height: 3.6rem;
-        font-size: 1.1rem;
+        font-size: 1.09rem;
     }
 
     .btn_cadastro button {
         height: 3.8rem;
         font-size: 1.5rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 
     .login {
@@ -347,7 +360,7 @@ main {
     .input_confirmar_senha label,
     .input_cargo label,
     .input_setor label {
-        font-size: 1.1rem;
+        font-size: 1.27rem;
     }
 
     .input_nome input,
@@ -357,12 +370,21 @@ main {
     .input_cargo input,
     .input_setor input {
         height: 3rem;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
     .btn_cadastro button {
         height: 3.2rem;
         font-size: 1.4rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 
     .circuloazul1 img,
@@ -395,8 +417,28 @@ main {
         font-size: 1.4rem;
     }
 
-    .subtitulo{
+    .setavoltarbranca img {
+        width: 1.5rem;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .subtitulo {
         font-size: 1.1rem;
+    }
+
+    .btn_cadastro button {
+        height: 2.89rem;
+        font-size: 1.4rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 }
 
@@ -427,6 +469,7 @@ main {
     .input_cargo input,
     .input_setor input {
         height: 3.1rem;
+        font-size: 1rem;
     }
 
     .circuloazul1 img,
@@ -434,10 +477,22 @@ main {
         width: 11rem;
     }
 
-
     .btn_cadastro button {
-        height: 2.8rem;
-        font-size: 1.25rem;
+        height: 2.5rem;
+        font-size: 1.23rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
+    }
+
+    .login {
+        font-size: 1rem;
     }
 }
 
@@ -477,17 +532,45 @@ main {
     .input_cargo input,
     .input_setor input {
         height: 3rem;
-        font-size: 0.9rem;
+        font-size: 0.96rem;
+    }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1.1rem;
     }
 
     .btn_cadastro button {
-        height: 2.8rem;
-        font-size: 1.1rem;
+        height: 2.4rem;
+        font-size: 1.07rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 
     .circuloazul1 img,
     .circuloazul2 img {
         width: 14rem;
+    }
+
+    .setavoltarbranca img {
+        width: 1.2rem;
+        height: auto;
+        cursor: pointer;
+    }
+
+    .setavoltarbranca span {
+        font-size: 1.09rem;
     }
 }
 
@@ -511,7 +594,17 @@ main {
     }
 
     .login {
-        font-size: 0.8rem;
+        font-size: 0.83rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 2.8rem;
+        font-size: 0.96rem;
     }
 
     .circuloazul1 img,
@@ -519,8 +612,17 @@ main {
         width: 13rem;
     }
 
-     .btn_cadastro button {
-        height: 2.6rem;
+    .btn_cadastro button {
+        height: 2.3rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 }
 
@@ -540,7 +642,7 @@ main {
     }
 
     .subtitulo {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
 
     .input_nome input,
@@ -549,11 +651,22 @@ main {
     .input_confirmar_senha input,
     .input_cargo input,
     .input_setor input {
-        height: 2.8rem;
+        height: 2.4rem;
+        font-size: 0.9rem;
     }
 
     .btn_cadastro button {
-        height: 2.6rem;
+        height: 2.1rem;
+        font-size: 0.97rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
     }
 
     .circuloazul1 img,
