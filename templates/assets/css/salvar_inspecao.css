@@ -319,6 +319,68 @@ form button{
     display: none;
 }
 
+.foto {
+    display: none;
+    gap: 2rem;
+}
+
+.foto figure {
+    background-color: #f1f5f9;
+    width: 100%;
+    height: 25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+}
+
+.foto figure svg {
+    width: 6rem;
+    color: #94a3b8;
+}
+
+.foto_buttons {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 2rem;
+}
+
+.capturar {
+    transition: 300ms;
+    display: flex;
+    gap: 1rem;
+    border-style: none;
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+.capturar:hover {
+    transition: 300ms;
+    background-color: #336dc9;
+}
+
+.cancel {
+    transition: 300ms;
+    background-color: #ffffff;
+    color: #000000;
+    border-style: solid;
+    border-width: .1rem;
+    border-color: #e5e5e5;
+}
+
+.cancel:hover {
+    transition: 300ms;
+    background-color:#e5e5e5;
+}
+
+.capturar, .cancel {
+    padding: 1rem !important;
+}
+
+.capturar svg {
+    width: 2rem;
+}
+
 @media screen and (max-width: 860px) {
     .organizer {
         grid-template-columns: 1fr 1fr;

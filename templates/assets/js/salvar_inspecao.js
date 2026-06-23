@@ -15,7 +15,11 @@ const iconeCanetaC = document.querySelector('#assinarColaborador>#iconeCaneta')
 const iconeCheckC = document.querySelector('#assinarColaborador>#iconeCheck')
 const iconeCanetaS = document.querySelector('#assinarSupervisor>#iconeCaneta')
 const iconeCheckS = document.querySelector('#assinarSupervisor>#iconeCheck')
-
+const submit = document.querySelector('.submit')
+const fotoDiv = document.querySelector('.foto')
+const cancel = document.querySelector('.cancel')
+const capturar = document.querySelector('.capturar')
+const form = document.querySelector('form')
 
 let assinatura = null
 
@@ -116,4 +120,22 @@ assinar.addEventListener('click', () => {
         btnSuper.style.backgroundColor = '#f0fdf4'
         btnSuper.style.pointerEvents = 'none'
     }
+})
+
+submit.addEventListener('click', () => {
+    fotoDiv.style.display = 'flex'
+    submit.style.display = 'none'
+})
+
+cancel.addEventListener('click', () => {
+    submit.style.display = 'block'
+    fotoDiv.style.display = 'none'
+})
+
+capturar.addEventListener('click', () => {
+    window.location.href = 'resultado_inspecao.html'
+})
+
+form.addEventListener('click', (e) => {
+    e.preventDefault()
 })
