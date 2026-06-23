@@ -310,7 +310,7 @@
 
     <footer class="footer-simples">
         <div class="footer-conteudo">
-            <p class = "footer2026">&copy; 2026 SISSEG SST - Todos os direitos reservados.</p>
+            <p class="footer2026">&copy; 2026 SISSEG SST - Todos os direitos reservados.</p>
         </div>
     </footer>
 
