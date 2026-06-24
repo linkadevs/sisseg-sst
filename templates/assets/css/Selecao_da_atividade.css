@@ -46,11 +46,58 @@ h1{
   width: auto;  
 }
 
+.seta img{
+    height: 2.5rem;
+    width: auto;
+}
+
 .card{
     display: flex;
     flex-direction: column;
     background-color: #ffff;
     border-radius: 1rem;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.107);
-    padding: 2rem ;
+    padding: 2rem;
+    gap: 1.5rem;
+}
+
+.icones{
+    display: flex;
+    justify-content: space-between;
+}
+
+.titulo{
+    font-size: 1.6rem;
+    font-weight: 350;
+}
+
+.dados{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #155DFC;
+    border-radius: 3rem;
+    color: #FFFFFF;
+    padding: .5rem;
+}
+
+.qtdepis{
+    color: #6A7282;
+    font-size: 1rem;
+}
+
+.msg{
+    background-color: #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.3rem;
+}
+.msg p{
+    color: #364153;
 }
