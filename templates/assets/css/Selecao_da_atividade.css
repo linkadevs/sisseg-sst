@@ -8,11 +8,17 @@ body {
     padding: 2rem;
 }
 
-.container{
+.container {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
 
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .conteudo {
@@ -25,33 +31,33 @@ body {
     gap: 1rem;
 }
 
-h1{
+h1 {
     font-size: 2.4rem;
     font-weight: bold;
 }
 
-.descricao{
+.descricao {
     font-size: 1.4rem;
     font-weight: 300;
 }
 
-.grid{
+.grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
-.card img{
-  height: 3rem;
-  width: auto;  
+.card img {
+    height: 3rem;
+    width: auto;
 }
 
-.seta img{
+.seta img {
     height: 2.5rem;
     width: auto;
 }
 
-.card{
+.card {
     display: flex;
     flex-direction: column;
     background-color: #ffff;
@@ -59,24 +65,31 @@ h1{
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.107);
     padding: 2rem;
     gap: 1.5rem;
+    transition: 0.3s ease all;
 }
 
-.icones{
+.card:hover {
+    transform: scale(1.050);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.227);
+}
+
+
+.icones {
     display: flex;
     justify-content: space-between;
 }
 
-.titulo{
+.titulo {
     font-size: 1.6rem;
     font-weight: 350;
 }
 
-.dados{
+.dados {
     display: flex;
     justify-content: space-between;
 }
 
-.nr{
+.nr {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,18 +99,26 @@ h1{
     padding: .5rem;
 }
 
-.qtdepis{
+.qtdepis {
     color: #6A7282;
     font-size: 1rem;
 }
 
-.msg{
+.msg {
     background-color: #EFF6FF;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.3rem;
+    border: 1px solid #BEDBFF;
+    border-radius: 1rem;
 }
-.msg p{
+
+.msg p {
     color: #364153;
+    font-size: 1.5rem;
+}
+
+span {
+    font-weight: bold;
 }
