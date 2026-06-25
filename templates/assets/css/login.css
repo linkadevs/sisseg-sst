@@ -122,7 +122,7 @@ body {
 
 .input_cpf label,
 .input_senha label {
-    font-size: 1.8rem;
+    font-size: 1.65rem;
     color: #094C71;
     font-weight: 500;
 }
@@ -199,6 +199,12 @@ body {
    NOTEBOOK
 ========================= */
 
+
+
+
+
+
+
 @media (max-width:1025px) {
 
     .circuloazul1 img,
@@ -209,6 +215,8 @@ body {
     .card-login {
         max-width: 38rem;
         padding: 2.5rem;
+        height: 39rem;
+
     }
 
     .subtitulo {
@@ -247,6 +255,67 @@ body {
 
 }
 
+@media (max-width:1025px) and (min-height:1300px) {
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 34rem;
+    }
+
+    .card-login {
+        max-width: 48rem;
+        padding: 2.5rem;
+        height: 47rem;
+
+    }
+
+    .input_cpf input,
+    .input_senha input {
+        width: 100%;
+        margin-top: 0.5rem;
+        height: 4rem;
+        padding: 0 1rem;
+        border: none;
+        border-radius: 1rem;
+        background: #f1f1f19f;
+        font-size: 1.3rem;
+    }
+
+    .subtitulo {
+        font-size: 1.6rem;
+        margin-top: 2rem;
+    }
+
+    .input_cpf label,
+    .input_senha label {
+        font-size: 1.5rem;
+        color: #094C71;
+        font-weight: 500;
+    }
+
+    .btn_login button {
+        width: 100%;
+        height: 3.3rem;
+        border: none;
+        border-radius: 1rem;
+        background: #094B6F;
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: 0.25s;
+    }
+
+    .btn_login button:hover {
+        background: #01012f;
+    }
+
+    .btn_login button:active {
+        background: #01012f;
+    }
+
+
+
+}
 
 /* =========================
    TABLET
@@ -285,7 +354,7 @@ body {
 
     .input_cpf label,
     .input_senha label {
-        font-size: 1.9rem;
+        font-size: 1.67rem;
         color: #094C71;
         font-weight: 500;
     }
@@ -351,17 +420,17 @@ body {
     .input_cpf input,
     .input_senha input {
 
-        height: 4.2rem;
+        height: 4rem;
         padding: 0 1rem;
         border: none;
         border-radius: 1rem;
         background: #f1f1f19f;
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 
     .input_cpf label,
     .input_senha label {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         color: #094C71;
         font-weight: 500;
     }
@@ -480,23 +549,23 @@ body {
     }
 
     .card-login h1 {
-        font-size: 2.6rem;
+        font-size: 2.4rem;
     }
 
     .input_cpf label,
     .input_senha label {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
     }
 
 
     .input_cpf input,
     .input_senha input {
-        height: 4rem;
+        height: 3.7rem;
         padding: 0 1rem;
         border: none;
         border-radius: 1rem;
         background: #f1f1f19f;
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
 
     .setavoltarbranca {
@@ -557,6 +626,20 @@ body {
     }
 }
 
+
+@media (max-width: 480px) {
+
+    .input_cpf label,
+    .input_senha label {
+        font-size: 1.4rem;
+    }
+
+    .input_senha ,
+    .input_cpf {
+        margin-bottom: 2.2rem;
+    }
+}
+
 @media (max-width:400px) {
 
     .card-login {
@@ -575,12 +658,12 @@ body {
 
     .btn_login button {
         width: 100%;
-        height: 3rem;
+        height: 2.8rem;
         border: none;
         border-radius: 1rem;
         background: #094B6F;
         color: #ffffff;
-        font-size: 1.4rem;
+        font-size: 1.3rem;
         font-weight: 600;
         transition: 0.25s;
     }
