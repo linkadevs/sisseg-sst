@@ -40,7 +40,7 @@
             <div class="card-cadastro">
                 <h2>Cadastre-se</h2>
                 <p class="subtitulo">
-                    Realize o cadastro para ser identificado !
+                    Realize o cadastro para ser identificado!
                 </p>
 
                 <form  action="login.php" id="formCadastro" method="post">

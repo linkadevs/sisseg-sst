@@ -155,7 +155,7 @@ main {
 .subtitulo {
     text-align: center;
     color: #094C71;
-    font-size: 1.4rem;
+    font-size: 1.65rem;
     margin-top: 1rem;
     margin-bottom: 2rem;
 }
@@ -285,7 +285,7 @@ main {
     }
 
     .subtitulo {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         margin-top: 1rem;
         margin-bottom: 2.5rem;
     }
@@ -310,7 +310,7 @@ main {
     }
 
     .btn_cadastro button {
-        height: 3.8rem;
+        height: 3.5rem;
         font-size: 1.5rem;
         transition: 0.3s;
     }
@@ -393,6 +393,75 @@ main {
     }
 }
 
+
+@media (max-width:1025px) and (min-height:1300px) {
+
+    .card-cadastro {
+        max-width: 38rem;
+        padding: 2.5rem;
+    }
+
+    .card-cadastro h2 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo {
+        font-size: 1.4rem;
+        margin-top: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1.27rem;
+    }
+
+    .input_nome input,
+    .input_cpf input,
+    .input_senha input,
+    .input_confirmar_senha input,
+    .input_cargo input,
+    .input_setor input {
+        height: 3rem;
+        font-size: 1.2rem;
+    }
+
+    .btn_cadastro button {
+        height: 3.2rem;
+        font-size: 1.4rem;
+        transition: 0.3s;
+    }
+
+    .btn_cadastro button:hover {
+        background: #320388;
+    }
+
+    .btn_cadastro button:active {
+        background: #320388;
+    }
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 40rem;
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .circuloazul1 img,
+    .circuloazul2 img {
+        width: 50rem;
+    }
+
+}
+
+
+
 /* =========================
    768px
 ========================= */
@@ -410,7 +479,7 @@ main {
 
     .circuloazul1 img,
     .circuloazul2 img {
-        width: 16rem;
+        width: 40rem;
     }
 
     .setavoltarbranca span {
@@ -424,8 +493,18 @@ main {
     }
 
     .subtitulo {
-        font-size: 1.1rem;
+        font-size: 1.4rem;
     }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1.27rem;
+    }
+
 
     .btn_cadastro button {
         height: 2.89rem;
@@ -474,7 +553,7 @@ main {
 
     .circuloazul1 img,
     .circuloazul2 img {
-        width: 11rem;
+        width: 27rem;
     }
 
     .btn_cadastro button {
@@ -522,7 +601,7 @@ main {
     }
 
     .subtitulo {
-        font-size: 1.0rem;
+        font-size: 1.2rem;
     }
 
     .input_nome input,
@@ -560,7 +639,7 @@ main {
 
     .circuloazul1 img,
     .circuloazul2 img {
-        width: 14rem;
+        width: 24rem;
     }
 
     .setavoltarbranca img {
@@ -590,7 +669,7 @@ main {
     }
 
     .subtitulo {
-        font-size: 0.85rem;
+        font-size: 1rem;
     }
 
     .login {
@@ -607,10 +686,6 @@ main {
         font-size: 0.96rem;
     }
 
-    .circuloazul1 img,
-    .circuloazul2 img {
-        width: 13rem;
-    }
 
     .btn_cadastro button {
         height: 2.3rem;
@@ -623,6 +698,15 @@ main {
 
     .btn_cadastro button:active {
         background: #320388;
+    }
+
+    .input_nome label,
+    .input_cpf label,
+    .input_senha label,
+    .input_confirmar_senha label,
+    .input_cargo label,
+    .input_setor label {
+        font-size: 1rem;
     }
 }
 
