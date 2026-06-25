@@ -183,6 +183,92 @@ main {
     width: 100%;
 }
 
+.sombra {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+form  {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40rem;
+    background-color: #ffffff;
+    z-index: 15;
+    display: none;
+    flex-direction: column;
+    padding: 2rem;
+    gap: .8rem;
+    border-radius: 1rem;
+}
+
+form figure img {
+    position: absolute;
+    left: 2rem;
+    top: 2rem;
+    width: 2rem;
+}
+
+form h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.input label {
+    padding-left: 1rem;
+    font-size: 1.4rem;
+    color: #5d359c;
+}
+
+.input input {
+    border-style: none;
+    border-radius: 1rem;
+    padding: .8rem 0 .8rem 2rem;
+    background-color: #f4f6f5;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    height: 25rem;
+    overflow-y: scroll;
+}
+
+form button {
+    font-size: 1.4rem;
+    font-weight: 500;
+    box-shadow: 0 .1rem .4rem 0 rgba(0, 0, 0, 0.4);
+    padding: .5rem;
+    border-style: none;
+    border-radius: .5rem;
+}
+
+.adicionar_epi {
+    background-color: #ffffff;
+    color: #6d2dd4;
+}
+
+.salvar {
+    background-color: #6d2dd4;
+    color: #ffffff;
+}
+
 @media screen and (max-width: 949px) and (min-width: 789px) {
     .grid {
         grid-template-columns: repeat(auto-fit, minmax(30rem, 30rem));
