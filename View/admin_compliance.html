@@ -52,7 +52,7 @@
         </div>
         <div class="relatorios">
             <h3>Relatórios para Exportação</h3>
-            <p>Gere relatórios em PDF ou Excel para auditorias e compliance</p>
+            <p class="relatorios_p">Gere relatórios em PDF ou Excel para auditorias e compliance</p>
             <div class="grid">
                 <div class="card">
                     <div class="svg svg-verde">
@@ -163,8 +163,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                 <h3>Próximas auditorias</h3>
             </div>
-            <p>Agenda de auditorias internas e externas</p>
-            <div class="auditoria">
+            <p class="auditorias_p">Agenda de auditorias internas e externas</p>
+            <div class="auditoria svg-verde auditoria_verde">
                 <div class="left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                     <div class="text">
@@ -172,9 +172,9 @@
                         <p>19/12/2025 - Eng. Carlos Mendes</p>
                     </div>
                 </div>
-                <p>Agendada</p>
+                <p class="auditoria_p">Agendada</p>
             </div>
-            <div class="auditoria">
+            <div class="auditoria svg-azul auditoria_azul">
                 <div class="left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                     <div class="text">
@@ -182,9 +182,9 @@
                         <p>14/01/2026 - Fiscal do MTE</p>
                     </div>
                 </div>
-                <p>Aguardando</p>
+                <p class="auditoria_p">Aguardando</p>
             </div>
-            <div class="auditoria">
+            <div class="auditoria svg-azul auditoria_azul">
                 <div class="left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                     <div class="text">
@@ -192,81 +192,81 @@
                         <p>09/02/2026 - Bureau Veritas</p>
                     </div>
                 </div>
-                <p>Aguardando</p>
+                <p class="auditoria_p">Aguardando</p>
             </div>
         </div>
         <div class="documentos_compliance">
             <h3>Documentos de compliance</h3>
-            <p>Documentação obrigatória para auditorias</p>
+            <p class="documentos_p">Documentação obrigatória para auditorias</p>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>PGR - Programa de gerenciamento de riscos</h3>
                         <p>Última atualização: 31/10/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>PCMAT - Programa de condições e meio ambiente</h3>
                         <p>Última atualização: 14/10/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>Ordem de serviço (OS) - NR-01</h3>
                         <p>Última atualização: 30/11/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>APR - Análise preliminar de risco</h3>
                         <p>Última atualização: 10/12/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>Registro de treinamentos</h3>
                         <p>Última atualização: 09/12/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>Fichas de entrega de EPIs</h3>
                         <p>Última atualização: 10/12/2025</p>
                     </div>
                 </div>
-                <p>Atualizado</p>
+                <p class="atualizado">Atualizado</p>
             </div>
             <div class="documento">
                 <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
                         <h3>Laudos de insalubridade/periculosidade</h3>
                         <p>Última atualização: 29/12/2025</p>
                     </div>
                 </div>
-                <p>Vencendo</p>
+                <p class="vencendo">Vencendo</p>
             </div>
         </div>
     </body>

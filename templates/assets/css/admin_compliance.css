@@ -12,7 +12,7 @@
     --roxo: #970ffa;
     --roxo-claro: #faf5ff;
     --vermelho: #e7000b;
-    --vermelh-claro: #fef2f2;
+    --vermelho-claro: #fef2f2;
     --cinza: #495464;
     --cinza-claro: #f9fafb;
 }
@@ -137,4 +137,257 @@ body {
     border-radius: .5rem;
     background-color: #00c950;
     width: fit-content;
+}
+
+.relatorios, .proximas_auditorias, .documentos_compliance {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: .1rem;
+    border-radius: 2rem;
+    border-color: #e5e5e5;
+}
+
+.relatorios h3, .documentos_compliance h3 {
+    font-size: 1.6rem;
+}
+
+.relatorios_p, .documentos_p {
+    font-size: 1.4rem;
+    color: #4a5565;
+    margin-bottom: 1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 2rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: .1rem;
+    border-radius: 1rem;
+    border-color: #e5e5e5;
+}
+
+.svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 1rem;
+}
+
+.svg-verde {
+    background-color: var(--verde-claro);
+}
+
+.svg-verde svg {
+    color: var(--verde);
+}
+
+.svg-vermelho {
+    background-color: var(--vermelho-claro);
+}
+
+.svg-vermelho svg {
+    color: var(--vermelho);
+}
+
+.svg-azul {
+    background-color: var(--azul-claro);
+}
+
+.svg-azul svg {
+    color: var(--azul);
+}
+
+.svg-laranja {
+    background-color: var(--laranja-claro);
+}
+
+.svg-laranja svg {
+    color: var(--laranja);
+}
+
+.svg-roxo {
+    background-color: var(--roxo-claro);
+}
+
+.svg-roxo svg {
+    color: var(--roxo);
+}
+
+.svg-cinza {
+    background-color: var(--cinza-claro);
+}
+
+.svg-cinza svg {
+    color: var(--cinza);
+}
+
+.card h3 {
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+.card p {
+    font-size: 1.4rem;
+    color: #4b505b;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+}
+
+.buttons button {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 500;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: #e5e5e5;
+    padding: .5rem;
+    transition: 300ms;
+}
+
+.buttons button:hover {
+    transition: 300ms;
+    background-color: #e5e5e5;
+}
+
+.buttons button svg {
+    width: 2rem;
+}
+
+.title_auditorias {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.title_auditorias h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.title_auditorias svg {
+    color: var(--azul);
+}
+
+.auditorias_p {
+    font-size: 1.4rem;
+    color: #4b505b;
+    margin-bottom: 1rem;
+}
+
+.auditoria {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: .1rem;
+    align-items: center;
+}
+
+.auditoria_verde {
+    border-color: var(--verde);
+}
+
+.auditoria_azul {
+    border-color: var(--azul);
+}
+
+.auditoria_verde .auditoria_p {
+    background-color: var(--verde);
+}
+
+.auditoria_azul .auditoria_p {
+    background-color: var(--azul);
+}
+
+.auditoria .auditoria_p {
+    color: #ffffff;
+    height: fit-content;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.left h3 {
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+.left p {
+    font-size: 1.4rem;
+    color: #4b505b;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem
+}
+
+.documentos_p {
+    margin-bottom: 2rem;
+}
+
+.documento {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 1rem;
+    align-items: center;
+    background-color: #f9fafb;
+}
+
+.atualizado {
+    color: #ffffff;
+    height: fit-content;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    background-color: var(--verde);
+}
+
+.vencendo {
+    color: #ffffff;
+    height: fit-content;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    background-color: var(--laranja);
 }
