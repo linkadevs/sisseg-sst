@@ -18,7 +18,7 @@ body {
     flex-direction: column;
     gap: 2rem;
     width: 100%;
-    max-width: 900px; /* Limita a largura para melhor legibilidade */
+    max-width: 900px; 
 }
 
 main {
@@ -101,7 +101,7 @@ main {
 .barra-progresso {
     background-color: #155DFC;
     height: 100%;
-    width: 0%; /* Controlado dinamicamente */
+    width: 0%; 
     border-radius: 2rem;
     transition: width 0.4s ease;
 }
@@ -306,9 +306,10 @@ main {
 
 .botoes-acao {
     display: flex;
-    justify-content: space-between;
     gap: 1.5rem;
     margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .botoes-acao button {
@@ -316,7 +317,8 @@ main {
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    padding: 1.2rem 2.5rem;
+    height: 3rem;
+    width: 20rem;
     font-size: 1.3rem;
     font-weight: 500;
     border-radius: 0.8rem;
@@ -335,9 +337,8 @@ main {
 }
 
 .btn-confirmar {
-    background-color: #9CA3AF;
-    color: #FFFFFF;
-    flex-grow: 1;
+    background-color: #E5E7EB;
+    color: #4B5563;
 }
 
 .btn-confirmar:not(:disabled) {
@@ -398,4 +399,57 @@ main {
     .botoes-acao button {
         width: 100%;
     }
+}
+
+/* ============================================
+   ESTILOS PARA CARDS CONFIRMADOS
+   ============================================ */
+
+.card-epi {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.card-epi.confirmado {
+    border: 3px solid #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.card-epi.confirmado .icone-epi {
+    background-color: #D1FAE5;
+}
+
+.card-epi.confirmado .checkmark {
+    border-color: #10B981;
+}
+
+.card-epi.confirmado .tag-ca {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+.card-epi.confirmado .tag-nr {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+/* ============================================
+   BOTÃO CONFIRMAR ATIVO
+   ============================================ */
+
+.btn-confirmar:not(:disabled) {
+    background-color: #10B981;
+    color: #FFFFFF;
+}
+
+.btn-confirmar:not(:disabled):hover {
+    background-color: #059669;
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+.btn-confirmar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
