@@ -1,5 +1,140 @@
 @import 'global.css';
 
+:root {
+    --azul: #2b7fff;
+    --azul-claro: #eff6ff;
+    --borda-azul: #bedbff;
+    --verde: #00c950;
+    --verde-claro: #f0fdf4;
+    --borda-verde: #b9f8cf;
+    --laranja: #ff6900;
+    --laranja-claro: #fff7ed;
+    --roxo: #970ffa;
+    --roxo-claro: #faf5ff;
+    --vermelho: #e7000b;
+    --vermelh-claro: #fef2f2;
+    --cinza: #495464;
+    --cinza-claro: #f9fafb;
+}
+
 body {
     background-color: #fcfdfd;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 8rem;
+}
+
+.voltar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: transparent;
+    border-style: none;
+    border-radius: .5rem;
+    padding: .5rem;
+    width: fit-content;
+    font-weight: 500;
+}
+
+.voltar:hover {
+    background-color: #e3e3e3;
+}
+
+.voltar svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title svg {
+    color: #4a5565;
+    width: 4rem;
+    height: 4rem;
+}
+
+.title h3 {
+    color: #101828;
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.gestao {
+    color: #4b505b;
+    font-size: 1.4rem;
+}
+
+.upper {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+}
+
+.mini_card {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    border-color: #e5e5e5;
+    border-width: .1rem;
+    border-style: solid;
+    width: 25rem;
+}
+
+.mini_card_title {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.mini_card_title svg {
+    width: 1.8rem;
+}
+
+.mini_card_title p {
+    font-size: 1.2rem;
+    color: #4b505b;
+}
+
+.svg1 {
+    color: var(--azul);
+}
+
+.svg2 {
+    color: var(--verde);
+}
+
+.svg3 {
+    color: var(--laranja);
+}
+
+.svg4 {
+    color: var(--roxo);
+}
+
+.mini_card h2 {
+    font-size: 2.4rem;
+    font-weight: 400;
+}
+
+.normal_p {
+    font-size: 1.2rem;
+    color: #4b505b;
+}
+
+.green_p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    padding: .3rem;
+    border-radius: .5rem;
+    background-color: #00c950;
+    width: fit-content;
 }
