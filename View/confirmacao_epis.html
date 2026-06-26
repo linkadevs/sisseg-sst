@@ -180,8 +180,14 @@
                     <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Seta para esquerda"> Voltar
                 </button>
                 <button type="submit" class="btn-confirmar" disabled>
-                    Confirmar e Continuar <img src="../templates/assets/img/seta-cinza-direita.png"
-                        alt="Seta para direita">
+                    Confirmar e Continuar
+                    <div class="setacinza">
+                        <img src="../templates/assets/img/seta-cinza-direita.png" alt="Seta cinza para direita">
+                    </div>
+
+                    <div class="setabranca">
+                        <img src="../templates/assets/img/seta-direita-branca.png" alt="seta branca para a direita">
+                    </div>
                 </button>
             </footer>
         </main>
@@ -194,6 +200,8 @@
             const botaoconfirmar = document.querySelector('.btn-confirmar');
             const contador = document.querySelector('.contador');
             const barraProgresso = document.querySelector('.barra-progresso');
+            const setacinza = document.querySelector('.setacinza')
+            const setabranca = document.querySelector('.setabranca')
             const totalEpis = cards.length;
 
 
@@ -209,8 +217,12 @@
 
                 if (cardsmarcados === totalEpis) {
                     botaoconfirmar.disabled = false;
+                    setacinza.style.display = 'none'
+                    setabranca.style.display = 'block'
                 } else {
                     botaoconfirmar.disabled = true;
+                    setacinza.style.display = 'block'
+                    setabranca.style.display = 'none'
                 }
 
 
@@ -225,7 +237,7 @@
                 });
 
             }
-            
+
             cards.forEach(card => {
                 card.addEventListener('click', function (e) {
                     if (e.target.closest('.checkbox-container')) {
