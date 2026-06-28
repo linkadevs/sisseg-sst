@@ -9,6 +9,8 @@
 </head>
 
 <body>
+
+
     <nav class="navbar">
         <div class="nav-conteudo">
             <div class="logo">
@@ -39,7 +41,7 @@
                     <p>Você está apto e com os EPIs corretos</p>
                 </div>
             </div>
-            
+
             <div class="status-detalhes">
                 <div class="linha-detalhe">
                     <span class="label">Atividade:</span>
@@ -54,7 +56,7 @@
 
         <main>
             <div class="grid-info">
-                
+
                 <div class="card-info">
                     <div class="card-info-topo">
                         <figure class="icone-box azul">
@@ -87,7 +89,7 @@
             <section class="indicadores-secao">
                 <h3>Indicadores de Segurança</h3>
                 <div class="grid-indicadores">
-                    
+
                     <div class="card-indicador verde">
                         <p class="numero">15</p>
                         <p class="legenda">Dias sem acidentes</p>
@@ -123,6 +125,26 @@
             </footer>
         </main>
     </div>
+
+
+    <script>
+        const btninicio = document.querySelector('.inicio');
+        const normaaplicavel = document.querySelector('.link-detalhes');
+
+        if (btninicio) {
+            btninicio.addEventListener('click', () => {
+                window.location.href = 'pagina_principal_funcionario.html';
+            })
+        }
+
+
+        if (normaaplicavel) {
+            normaaplicavel.addEventListener('click', () => {
+                window.location.href = 'norma_aplicavel.html';
+            })
+        }
+
+    </script>
 </body>
 
 </html>

@@ -9,7 +9,13 @@
 </head>
 
 <body>
-
+    <header>
+        <button onclick="window.history.back()">
+            <figure>
+                <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="">
+            </figure>
+        </button>
+    </header>
     <main>
         <div class="container">
 
@@ -46,12 +52,33 @@
                 </button>
             </div>
 
-                <p class="mensagem">
-                    Sua segurança é nossa prioridade
-                </p>
+            <p class="mensagem">
+                Sua segurança é nossa prioridade
+            </p>
         </div>
     </main>
 
+    <script>
+        const afirmativo = document.querySelector('.afirmativo');
+        const negativo = document.querySelector('.negativo');
+
+
+        if (afirmativo) {
+            afirmativo.addEventListener('click', () => {
+                window.location.href = 'selecao_da_atividade.html';
+            });
+        }
+
+        if (negativo) {
+            negativo.addEventListener('click', () => {
+                window.location.href = 'direito_recusa.html'
+            });
+        }
+
+
+
+
+    </script>
 </body>
 
 </html>

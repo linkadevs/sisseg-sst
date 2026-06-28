@@ -9,6 +9,14 @@
 </head>
 
 <body>
+    <header>
+        <button onclick="window.history.back()">
+            <figure>
+                <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="">
+            </figure>
+        </button>
+    </header>
+
     <div class="container">
         <div class="conteudo">
             <h1>Selecione sua atividade</h1>
@@ -301,6 +309,22 @@
             </div>
         </main>
     </div>
+
+    <script>
+        //Remover pós adição do PHP
+        const cards = document.querySelectorAll('.card')
+
+        cards.forEach(card => {
+
+            if (card) {
+                card.addEventListener('click', () => {
+                    window.location.href = 'confirmacao_epis.html';
+                });
+            }
+        });
+
+
+    </script>
 </body>
 
 </html>

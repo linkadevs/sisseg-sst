@@ -176,7 +176,7 @@
             </div>
 
             <footer class="botoes-acao">
-                <button type="button" class="btn-voltar">
+                <button type="button" class="btn-voltar" onclick="window.history.back()">
                     <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Seta para esquerda"> Voltar
                 </button>
                 <button type="submit" class="btn-confirmar" disabled>
@@ -259,9 +259,10 @@
                 });
             });
 
+        //Remover pós adição do PHP
             botaoconfirmar.addEventListener('click', function () {
                 if (!this.disabled) {
-                    window.location.href = '';
+                    window.location.href = 'liberacao.html';
                 }
             });
 
