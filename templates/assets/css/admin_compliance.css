@@ -85,7 +85,7 @@ body {
     border-color: #e5e5e5;
     border-width: .1rem;
     border-style: solid;
-    width: 25rem;
+    width: 100%;
 }
 
 .mini_card_title {
@@ -390,4 +390,52 @@ body {
     font-weight: 600;
     font-size: 1.2rem;
     background-color: var(--laranja);
+}
+
+@media screen and (max-width: 1020px) {
+    :root {
+        font-size: 50%;
+    }
+}
+
+@media screen and (max-width: 816px) {
+    :root {
+        font-size: 62.5%;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .upper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mini_card {
+        width: 100%;
+    }
+
+    .left h3 {
+        font-size: 1.4rem;
+    }
+    .left p {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 690px) {
+    body {
+        padding: 2rem;
+    }
+}
+
+@media screen and (max-width: 510px) {
+    :root {
+        font-size: 50%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    :root {
+        font-size: 42%;
+    }
 }
