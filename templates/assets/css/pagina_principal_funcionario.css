@@ -7,7 +7,6 @@ body {
     padding: clamp(0.8rem, 3vw, 3rem) clamp(0.5rem, 3vw, 3rem) 0 clamp(0.5rem, 3vw, 3rem);
     gap: clamp(2rem, 4vw, 4rem);
     background-color: #f7fbff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ===== CONTAINER PRINCIPAL ===== */
