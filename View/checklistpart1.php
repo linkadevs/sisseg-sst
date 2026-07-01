@@ -18,15 +18,23 @@
     </button>
 
     <main>
+<div class="container_diario">
+    <figure>
+        <img src="../templates/assets/img/checklist.png" alt="Checklist">
+    </figure>
 
-        <div class="container_diario">
-            <figure>
-                <img src="../templates/assets/img/checklist.png" alt="Checklist">
-            </figure>
+    <h1 class="titulo_checklist">Checklist Diário - NR-18</h1>
+    <p class="subtitulo">
+        Inspeção diária das condições de segurança no canteiro de obras
+    </p>
 
-            <h1 class="titulo_checklist">Checklist Diário - NR-18</h1>
-            <p class="subtitulo"> Inspeção diária das condições de segurança no canteiro de obras</p>
-        </div>
+    <button
+        class="btn_ver_checklists"
+        type="button"
+        onclick="window.location.href='checklistsrealizados.php'">
+        Ver Checklists Realizados
+    </button>
+</div>
 
 
         <div class="container_dados">

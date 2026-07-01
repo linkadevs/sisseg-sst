@@ -371,6 +371,45 @@ option {
 
 
 /* =========================
+   BOTÃO VER CHECKLISTS
+========================= */
+
+.btn_ver_checklists {
+    margin-top: 1.4rem;
+
+    min-height: 3.4rem;
+    padding: 0 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: .125rem solid #3f7cf0;
+    border-radius: .75rem;
+
+    background: #ffffff;
+    color: #3f7cf0;
+
+    font-size: 1.15rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn_ver_checklists:hover {
+    background: #3f7cf0;
+    color: #ffffff;
+    transform: translateY(-.1rem);
+    box-shadow: 0 .5rem 1rem rgb(63 124 240 / 20%);
+}
+
+.btn_ver_checklists:active {
+    transform: scale(.98);
+}
+
+
+/* =========================
    DESKTOP MÉDIO
 ========================= */
 
@@ -412,9 +451,14 @@ option {
         background: #060128;
     }
 
-     .mensagem_erro {
+    .mensagem_erro {
         margin-top: .6rem;
         font-size: .87rem !important;
+    }
+
+    .btn_ver_checklists {
+        font-size: 1.05rem;
+        min-height: 3.2rem;
     }
 }
 
@@ -515,7 +559,13 @@ option {
         transition: .25s;
     }
 
+    .btn_ver_checklists {
+        margin-top: 1.2rem;
+        margin-left: 0;
 
+        font-size: 1rem;
+        min-height: 3.2rem;
+    }
 
 
 }
@@ -645,6 +695,13 @@ option {
         transform: scale(.98);
         background: #060128;
     }
+
+    .btn_ver_checklists {
+        align-items: center;
+        justify-content: center;
+        font-size: .98rem;
+        min-height: 3rem;
+    }
 }
 
 
@@ -757,6 +814,11 @@ option {
         transform: scale(.98);
         background: #060128;
     }
+
+    .btn_ver_checklists {
+        font-size: .95rem;
+        min-height: 2.9rem;
+    }
 }
 
 /* =========================
@@ -852,6 +914,12 @@ option {
         transform: scale(.98);
         background: #060128;
     }
+
+    .btn_ver_checklists {
+        font-size: .9rem;
+        min-height: 2.8rem;
+        padding: 0 1rem;
+    }
 }
 
 
@@ -943,6 +1011,12 @@ option {
     .btn_iniciar button:active {
         transform: scale(.98);
         background: #060128;
+    }
+
+    .btn_ver_checklists {
+        font-size: .82rem;
+        min-height: 2.7rem;
+        padding: 0 .8rem;
     }
 }
 
