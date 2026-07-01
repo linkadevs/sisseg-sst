@@ -3,280 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão de EPIs</title>
-<link rel="stylesheet" href="../templates/assets/css/modulo-gestao-epis.css">
+<title>Treinamentos</title>
+<link rel="stylesheet" href="../templates/assets/css/treinamento_funcionario-adm.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Estilos de apoio para o preview de imagem no upload do modal.
+     Se preferir, mova este bloco para o arquivo CSS externo do projeto. */
+  .img-upload{
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .img-upload input[type="file"]{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .img-upload img.img-upload-preview{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+  .img-upload .img-upload-icon{
+    position: relative;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .img-upload.has-image .img-upload-icon{
+    display: none;
+  }
+  .img-upload .img-upload-remove{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, 0.75);
+    color: #fff;
+    border: none;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .img-upload.has-image .img-upload-remove{
+    display: flex;
+  }
+</style>
 </head>
 <body>
-<div class="page-wrap" id="view-list">
 
-  <a href="#" class="back-link" onclick="return false;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    Voltar ao Dashboard
-  </a>
+<div class="page">
 
-  <header class="page-header">
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 18v-1a8 8 0 0 1 16 0v1"></path>
-        <rect x="3" y="18" width="18" height="3" rx="1"></rect>
-        <line x1="12" y1="4" x2="12" y2="7"></line>
-      </svg>
-    </div>
-    <div class="header-text">
-      <h1>Gestão de EPIs</h1>
-      <p>Controle de estoque, check-in diário e trocas</p>
-    </div>
-  </header>
-
-  <!-- Estoque de EPIs -->
-  <section class="panel">
-    <h2 class="panel-title">Estoque de EPIs</h2>
-    <p class="panel-subtitle">Situação atual do almoxarifado</p>
-
-    <div class="stock-list">
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Capacete</p>
-          <p class="stock-qty">Disponível: 15 | Mínimo: 20</p>
-        </div>
-        <span class="badge ok">OK</span>
-      </div>
-
-      <div class="stock-row status-alert">
-        <span class="stock-icon orange">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v4a6 6 0 0 0 12 0V3"></path><path d="M6 21v-4a6 6 0 0 1 12 0v4"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Cinturão Paraquedista</p>
-          <p class="stock-qty">Disponível: 18 | Mínimo: 20</p>
-        </div>
-        <span class="badge alert">Alerta</span>
-      </div>
-
-      <div class="stock-row status-critical">
-        <span class="stock-icon red">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11V7a6 6 0 0 1 12 0v4"></path><path d="M6 11h12v6a3 3 0 0 1-3 3h-2l-1 2h-0l-1-2H9a3 3 0 0 1-3-3v-6z"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Luvas de Raspa</p>
-          <p class="stock-qty">Disponível: 12 | Mínimo: 25</p>
-        </div>
-        <span class="badge critical">Crítico</span>
-      </div>
-
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="12" r="3"></circle><path d="M9 12h6"></path><path d="M4 8l2-2h1"></path><path d="M20 8l-2-2h-1"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Óculos de Proteção</p>
-          <p class="stock-qty">Disponível: 50 | Mínimo: 40</p>
-        </div>
-        <span class="badge ok">OK</span>
-      </div>
-
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h4v9l4 3v3a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-3a2 2 0 0 1 1-1.7L9 12V3z"></path><path d="M6 21h12"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Botas de Segurança</p>
-          <p class="stock-qty">Disponível: 35 | Mínimo: 30</p>
-        </div>
-        <span class="badge ok">OK</span>
-      </div>
-
-      <div class="stock-row status-critical">
-        <span class="stock-icon red">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a8 8 0 0 1 16 0v5a3 3 0 0 1-3 3h-1a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"></path><path d="M4 10v5a3 3 0 0 0 3 3h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Protetor Auricular</p>
-          <p class="stock-qty">Disponível: 08 | Mínimo: 20</p>
-        </div>
-        <span class="badge critical">Crítico</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Trocas Necessárias -->
-  <section class="panel">
-    <h2 class="panel-title">Trocas Necessárias</h2>
-    <p class="panel-subtitle">EPIs que precisam ser substituídos</p>
-
-    <div class="swap-list">
-      <div class="swap-card orange">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">João Silva - Capacete</p>
-          <p class="swap-reason">Vencimento (6 meses) - Prazo: 15 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('João Silva', 'Capacete')">Agendar Troca</button>
-      </div>
-
-      <div class="swap-card red">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">Maria Santos - Cinturão Paraquedista</p>
-          <p class="swap-reason">Desgaste visível - Prazo: 3 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('Maria Santos', 'Cinturão Paraquedista')">Agendar Troca</button>
-      </div>
-
-      <div class="swap-card blue">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">Pedro Costa - Botas de Segurança</p>
-          <p class="swap-reason">Vencimento (1 ano) - Prazo: 20 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('Pedro Costa', 'Botas de Segurança')">Agendar Troca</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Check-in por Atividade -->
-  <section>
-    <h2 class="section-title">Check-in por Atividade</h2>
-    <div class="activity-grid">
-
-      <div class="activity-card">
-        <div class="activity-emoji">🪜</div>
-        <p class="activity-name">Trabalho em Altura</p>
-        <p class="activity-count">5 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('altura')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🧱</div>
-        <p class="activity-name">Alvenaria</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('alvenaria')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🪚</div>
-        <p class="activity-name">Carpintaria</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('carpintaria')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🎨</div>
-        <p class="activity-name">Pintura</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('pintura')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔥</div>
-        <p class="activity-name">Soldagem</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('soldagem')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">⚡</div>
-        <p class="activity-name">Eletricidade</p>
-        <p class="activity-count">7 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('eletricidade')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔒</div>
-        <p class="activity-name">Espaço Confinado</p>
-        <p class="activity-count">8 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('confinado')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔨</div>
-        <p class="activity-name">Demolição</p>
-        <p class="activity-count">7 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('demolicao')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔩</div>
-        <p class="activity-name">Armador de Ferro</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('armador')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🏗️</div>
-        <p class="activity-name">Concretagem</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('concretagem')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🚜</div>
-        <p class="activity-name">Operador de Máquinas</p>
-        <p class="activity-count">5 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('operador')">Ver EPIs</button>
-      </div>
-
-    </div>
-  </section>
-
-</div>
-
-<!-- ===== View: EPIs por Atividade (detalhe) ===== -->
-<div class="page-wrap" id="view-detail">
-
-  <a href="#" class="back-link" onclick="voltarLista(); return false;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  <!-- Back -->
+  <a href="#" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+    </svg>
     Voltar
   </a>
 
-  <header class="detail-header">
-    <div class="emoji-icon" id="detail-emoji">🪜</div>
-    <div>
-      <h1 id="detail-title">Trabalho em Altura</h1>
-      <p class="detail-subtitle" id="detail-subtitle">EPIs obrigatórios - NR-35</p>
-    </div>
-  </header>
-
-  <section class="panel">
-    <h2 class="checkin-heading">Check-in Diário</h2>
-    <p class="checkin-sub">Confirme o uso correto dos EPIs hoje</p>
-
-    <div class="checkin-alert">
-      <span class="checkin-alert-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-      </span>
-      <div class="checkin-alert-body">
-        <div class="checkin-alert-text">
-          <p class="title">Check-in pendente</p>
-          <p>Realize o check-in antes de iniciar o trabalho</p>
-        </div>
-        <span class="badge critical">Pendente</span>
+  <!-- Header Card -->
+  <div class="header-card">
+    <h1>Treinamentos</h1>
+    <p>Dê vida aos seus treinamentos: crie, atualize e gerencie tudo em um só lugar.</p>
+    <div class="kpi-row">
+      <div class="kpi-card blue">
+        <div class="kpi-label">Total de Cursos</div>
+        <div class="kpi-value">18</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Válidos</div>
+        <div class="kpi-value">10</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">Inválidos</div>
+        <div class="kpi-value">8</div>
       </div>
     </div>
+  </div>
 
-    <button class="btn-selfie" onclick="realizarCheckin()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-      Realizar Check-in com Selfie
+  <!-- Search & Actions -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input type="text" class="search-input" placeholder="Busque treinamentos, cursos ou conteúdos...">
+    </div>
+    <button class="btn-primary" id="btnCriarTreinamento">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span class="btn-text">Criar treinamento</span>
     </button>
-  </section>
+    <button class="btn-filter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+      </svg>
+      Filtrar
+    </button>
+  </div>
 
-  <section>
-    <h2 class="section-title">EPIs Obrigatórios</h2>
-    <div class="epi-list" id="epi-list"></div>
-  </section>
+  <!-- Courses Grid -->
+  <div class="courses-grid" id="coursesGrid"></div>
 
 </div>
 
-<script src="../templates/assets/js/modulo-gestao-epis.js"></script>
+<!-- Modal: Criar novo treinamento -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-back" id="modalBackBtn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+      </svg>
+      Voltar
+    </button>
+
+    <h2 class="modal-title" id="modalTitle">Criar novo treinamento</h2>
+
+    <div class="img-upload" id="imgUpload" title="Adicionar imagem">
+      <span class="img-upload-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+      </span>
+      <img class="img-upload-preview" id="imgUploadPreview" alt="Imagem do treinamento" hidden>
+      <button type="button" class="img-upload-remove" id="imgUploadRemove" title="Remover imagem">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <input type="file" id="inputImagem" accept="image/*">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="inputTitulo">Título</label>
+      <input id="inputTitulo" class="form-input" type="text" placeholder="Digite o título do treinamento">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="inputSubtitulo">Subtítulo</label>
+      <input id="inputSubtitulo" class="form-input" type="text" placeholder="Digite o subtítulo do treinamento">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="inputCarga">Carga horária</label>
+        <input id="inputCarga" class="form-input" type="text" placeholder="00:00">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="inputValidade">Validade</label>
+        <input id="inputValidade" class="form-input" type="text" placeholder="XX/XX/XXXX">
+      </div>
+      <div class="toggle-group">
+        <span class="toggle-label">Sem validade</span>
+        <input type="checkbox" class="toggle-checkbox" id="toggleSemValidade" checked>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="selectNR">NRs relacionada</label>
+      <div class="form-select-wrap">
+        <select id="selectNR" class="form-select">
+          <option value="" disabled selected>Digite o nome do treinamento</option>
+          <option value="nr06">NR-06 - EPI</option>
+          <option value="nr10">NR-10 - Eletricidade</option>
+          <option value="nr12">NR-12 - Máquinas e Equipamentos</option>
+          <option value="nr35">NR-35 - Trabalho em Altura</option>
+        </select>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-delete" id="btnExcluir">Excluir</button>
+      <button class="btn-save" id="btnSalvar">Salvar</button>
+    </div>
+  </div>
+</div>
+<script src="../templates/assets/js/treinamento_funcionario-adm.js"></script>
+
+<!-- Upload e preview de imagem do treinamento -->
+<script>
+  (function () {
+    const imgUpload = document.getElementById('imgUpload');
+    const inputImagem = document.getElementById('inputImagem');
+    const preview = document.getElementById('imgUploadPreview');
+    const removeBtn = document.getElementById('imgUploadRemove');
+
+    // Seleciona um arquivo -> lê e mostra a pré-visualização dentro da div
+    inputImagem.addEventListener('change', function (event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert('Selecione um arquivo de imagem válido.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.hidden = false;
+        imgUpload.classList.add('has-image');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Botão "x" remove a imagem e limpa o input, sem reabrir o seletor de arquivo
+    removeBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      preview.src = '';
+      preview.hidden = true;
+      inputImagem.value = '';
+      imgUpload.classList.remove('has-image');
+    });
+
+    // Ao reabrir o modal para "Criar novo treinamento", reseta a pré-visualização
+    document.getElementById('btnCriarTreinamento').addEventListener('click', function () {
+      preview.src = '';
+      preview.hidden = true;
+      inputImagem.value = '';
+      imgUpload.classList.remove('has-image');
+    });
+  })();
+</script>
 
 </body>
 </html>
