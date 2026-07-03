@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Cadastro</title>
     <link rel="stylesheet" href="../templates/assets/css/cadastro.css">
+
 </head>
 
 <body>
@@ -43,7 +44,7 @@
                     Realize o cadastro para ser identificado!
                 </p>
 
-                <form  action="login.php" id="formCadastro" method="post">
+                <form action="login.php" id="formCadastro" method="post">
                     <div class="input_nome">
                         <label>Nome</label>
                         <input type="text" placeholder="Digite o seu nome completo" required>
@@ -62,6 +63,18 @@
                     <div class="input_confirmar_senha">
                         <label>Confirmar Senha</label>
                         <input type="password" placeholder="Digite novamente a senha" required>
+                    </div>
+
+                    <div class="input_turno">
+
+                        <label>Turno</label>
+                        <select name="turno" required>
+                            <option value="">Selecione o turno</option>
+                            <option value="matutino">Matutino</option>
+                            <option value="vespertino">Vespertino</option>
+                            <option value="noturno">Noturno</option>
+                        </select>
+
                     </div>
 
                     <div class="input_cargo">

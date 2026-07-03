@@ -169,7 +169,8 @@ main {
 .input_senha,
 .input_confirmar_senha,
 .input_cargo,
-.input_setor {
+.input_setor,
+.input_turno {
     margin-bottom: 2rem;
 }
 
@@ -178,7 +179,8 @@ main {
 .input_senha label,
 .input_confirmar_senha label,
 .input_cargo label,
-.input_setor label {
+.input_setor label,
+.input_turno label {
     font-size: 1.4rem;
     color: #094C71;
     font-weight: 600;
@@ -191,7 +193,8 @@ main {
 .input_senha input,
 .input_confirmar_senha input,
 .input_cargo input,
-.input_setor input {
+.input_setor input,
+.input_turno select {
     width: 100%;
     height: 3rem;
     border: none;
@@ -206,7 +209,8 @@ main {
 .input_senha input:focus,
 .input_confirmar_senha input:focus,
 .input_cargo input:focus,
-.input_setor input:focus {
+.input_setor input:focus,
+.input_turno select:focus {
     outline: 0.08rem solid #03080b;
 }
 
@@ -295,7 +299,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1.3rem;
     }
 
@@ -304,7 +309,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 3.6rem;
         font-size: 1.09rem;
     }
@@ -359,7 +365,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1.27rem;
     }
 
@@ -368,7 +375,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 3rem;
         font-size: 1.2rem;
     }
@@ -416,7 +424,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1.27rem;
     }
 
@@ -425,7 +434,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 3rem;
         font-size: 1.2rem;
     }
@@ -501,7 +511,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1.27rem;
     }
 
@@ -546,7 +557,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 3.1rem;
         font-size: 1rem;
     }
@@ -609,7 +621,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 3rem;
         font-size: 0.96rem;
     }
@@ -619,7 +632,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1.1rem;
     }
 
@@ -681,7 +695,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 2.8rem;
         font-size: 0.96rem;
     }
@@ -705,7 +720,8 @@ main {
     .input_senha label,
     .input_confirmar_senha label,
     .input_cargo label,
-    .input_setor label {
+    .input_setor label,
+    .input_turno label {
         font-size: 1rem;
     }
 }
@@ -734,7 +750,8 @@ main {
     .input_senha input,
     .input_confirmar_senha input,
     .input_cargo input,
-    .input_setor input {
+    .input_setor input,
+    .input_turno select {
         height: 2.4rem;
         font-size: 0.9rem;
     }
