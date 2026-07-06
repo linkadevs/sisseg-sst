@@ -373,7 +373,7 @@
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 690px) {
       .page { padding: 20px 16px 48px; }
 
       .kpi-grid {
@@ -395,6 +395,9 @@
     }
 
     @media (max-width: 420px) {
+      :root {
+        font-size: 80%;
+      }
       .rank-stats {
         grid-template-columns: 1fr 1fr;
       }
