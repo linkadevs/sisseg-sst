@@ -118,6 +118,50 @@
 
         </div>
 
+
+
+        <div class="container_parcialmente_conforme" id="containerParcialmenteConforme">
+
+            <div class="titulo_parcialmente_conforme">
+                
+                <h2>
+                    Itens Não Conformes
+                    (<span id="totalParcialmenteConformes">6</span>)
+                </h2>
+            </div>
+
+            <div class="lista_parcialmente_conformes" id="listaParcialmenteConformes">
+
+                <div class="item_parcialmente_conforme">
+                    <strong>Organização do Canteiro</strong>
+                    <p>Tapumes e cercamento instalados</p>
+                </div>
+
+                <div class="item_parcialmente_conforme">
+                    <strong>Áreas de Vivência</strong>
+                    <p>Instalações sanitárias adequadas</p>
+                </div>
+
+            </div>
+
+            <div class="alerta_parcialmente_conforme">
+
+                <img src="../templates/assets/img/alerta_laranja.png" alt="Alerta">
+
+                <p class="acao_parcialmente_conforme">
+
+                    <strong>Ação Necessária:</strong>
+
+                    Regularizar os itens não conformes para atingir
+                    100% de conformidade.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
         <div class="container_conforme_wrapper" id="containerConforme">
             <div class="container_conforme">
                 <div class="titulo_conforme">
@@ -126,7 +170,7 @@
 
                     <div>
                         <h2>
-                             100% Conforme
+                            100% Conforme
                         </h2>
 
                         <p>

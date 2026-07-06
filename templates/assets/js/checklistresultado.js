@@ -12,34 +12,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const containerConforme =
         document.getElementById("containerConforme");
 
+    const containerParcialmenteConforme =
+        document.getElementById("containerParcialmenteConforme");
+
+    const TOTAL_ITENS = 40; 
+
     let totalNaoConformes = 0;
 
     if (totalNaoConformesElement) {
         totalNaoConformes =
-            parseInt(
-                totalNaoConformesElement.textContent
-            ) || 0;
+            parseInt(totalNaoConformesElement.textContent) || 0;
     }
 
-    // inicia escondido
-    containerConforme.style.display = "block";
+    const itensConformes =
+        TOTAL_ITENS - totalNaoConformes;
 
-    if (totalNaoConformes = 1) {
+    const percentual =
+        (itensConformes / TOTAL_ITENS) * 100;
 
-        statusResultado.textContent = "CONFORME";
+    statusResultado.classList.remove(
+        "status_nao_conforme",
+        "status_parcialmente_conforme",
+        "status_conforme"
+    );
 
-        statusResultado.classList.remove(
-            "status_nao_conforme"
-        );
+    containerNaoConforme.style.display = "none";
+    containerParcialmenteConforme.style.display = "none";
+    containerConforme.style.display = "none";
+
+    if (percentual === 100) {
+
+        statusResultado.textContent =
+            "CONFORME";
 
         statusResultado.classList.add(
             "status_conforme"
         );
 
-        containerNaoConforme.style.display =
-            "none";
-
         containerConforme.style.display =
+            "block";
+
+    } else if (percentual >= 70) {
+
+        statusResultado.textContent =
+            "PARCIALMENTE CONFORME";
+
+        statusResultado.classList.add(
+            "status_parcialmente_conforme"
+        );
+
+        containerParcialmenteConforme.style.display =
             "block";
 
     } else {
@@ -47,19 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
         statusResultado.textContent =
             "NÃO CONFORME";
 
-        statusResultado.classList.remove(
-            "status_conforme"
-        );
-
         statusResultado.classList.add(
             "status_nao_conforme"
         );
 
         containerNaoConforme.style.display =
             "block";
-
-        containerConforme.style.display =
-            "none";
     }
 
 });
