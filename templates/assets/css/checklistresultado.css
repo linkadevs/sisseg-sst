@@ -863,7 +863,7 @@ main {
 @media (max-width:768px) {
 
     .container_conforme_wrapper {
-        width: 94%;
+        width: 100%;
     }
 
     .container_conforme {
@@ -883,7 +883,7 @@ main {
 @media (max-width:600px) {
 
     .container_conforme_wrapper {
-        width: 96%;
+        width: 100%;
     }
 
     .titulo_conforme {
