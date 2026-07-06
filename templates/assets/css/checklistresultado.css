@@ -264,7 +264,7 @@ main {
 @media (max-width:1290px) {
 
     main {
-        width: 92%;
+        width: 86%;
         max-width: none;
     }
 
@@ -363,7 +363,7 @@ main {
 @media (max-width:1024px) {
 
     main {
-        width: 94%;
+        width: 90%;
     }
 
     .resultado_topo {

@@ -508,9 +508,11 @@ MODAL & BOTÕES
         max-width: 80rem;
         margin-left: auto;
         margin-right: auto;
+        padding-top: 1.5rem;
+
     }
 
-       .mensagem_erro {
+    .mensagem_erro {
         margin-top: .6rem;
         font-size: .82rem !important;
     }
@@ -535,13 +537,12 @@ MODAL & BOTÕES
         max-width: 75rem;
         margin-left: auto;
         margin-right: auto;
-        padding: 1.3rem 1.8rem;
+        padding-top: 1.3rem;
     }
 
     .btn_finalizar {
         width: 100%;
         max-width: 75rem;
-        margin: 0 auto 2.5rem;
     }
 
     .btn_finalizar_checklist {
@@ -591,8 +592,7 @@ MODAL & BOTÕES
     .container_topo,
     .grupo_checklist,
     .observacoes_container,
-    .assinatura_container,
-    .btn_finalizar {
+    .assinatura_container {
         max-width: 94%;
         margin-left: auto;
         margin-right: auto;
@@ -661,10 +661,11 @@ MODAL & BOTÕES
 
     .btn_finalizar {
         width: 94%;
-        margin: 0 auto 2.5rem;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-       .mensagem_erro {
+    .mensagem_erro {
         margin-top: .6rem;
         font-size: .8rem !important;
     }
@@ -893,7 +894,7 @@ MODAL & BOTÕES
         margin: 0 auto 2rem;
     }
 
-       .mensagem_erro {
+    .mensagem_erro {
         margin-top: .6rem;
         font-size: .7rem !important;
     }
@@ -993,7 +994,7 @@ MODAL & BOTÕES
         flex: 1;
     }
 
-      .mensagem_erro {
+    .mensagem_erro {
         margin-top: .6rem;
         font-size: .75rem !important;
     }

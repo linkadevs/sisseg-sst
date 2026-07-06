@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // inicia escondido
-    containerConforme.style.display = "none";
+    containerConforme.style.display = "block";
 
-    if (totalNaoConformes === 0) {
+    if (totalNaoConformes = 1) {
 
         statusResultado.textContent = "CONFORME";
 
