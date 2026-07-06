@@ -473,9 +473,26 @@ h2 {
     text-align: center;
 }
 
+footer {
+    padding: 4rem 0;
+}
+
 /* ============================================================ */
 /* ===== RESPONSIVIDADE ===== */
 /* ============================================================ */
+
+@media (max-width: 1329px) {
+    .linha3 div {
+        width: fit-content;
+        padding-right: 8rem;
+    }
+}
+
+@media (max-width: 1159px) {
+    .linha3 div {
+        padding-right: 2rem;
+    }
+}
 
 @media (max-width: 768px) {
     .linha1 {
@@ -515,11 +532,7 @@ h2 {
         padding-right: 1rem;
         align-items: center;
         text-align: center;
-        width: 100%;
-    }
-
-    .todos-os-modulos {
-        grid-template-columns: 1fr;
+        width: 100% !important;
     }
 
     .footer2026 {
@@ -635,6 +648,10 @@ h2 {
 
 @media (max-width: 500px) {
 
+    .todos-os-modulos {
+        grid-template-columns: 1fr;
+    }
+
     .bloco4,
     .bloco5,
     .bloco6,
@@ -742,6 +759,9 @@ h2 {
         font-size: 1.1rem;
         text-align: center;
     }
+    footer {
+        padding: 2rem 0;
+    }
 }
 
 @media (max-width: 340px) {
@@ -816,5 +836,5 @@ h2 {
     .footer2026{
     font-size: 0.8rem;
     text-align: center;
-}
+    }
 }
