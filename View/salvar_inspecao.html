@@ -13,7 +13,7 @@
             <button class="sair" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
             <p class="tituloModal">Assinar registro</p>
             <p class="descricaoModal">Desenhe sua assinatura abaixo</p>
-            <canvas id="signature" width="400" height="200"></canvas>
+            <canvas id="signature"></canvas>
             <div class="buttons">
                 <button type="button" class="limpar modalButton desativado" id="confirmarAssinatura">Limpar</button>
                 <button type="button" class="assinar modalButton desativado" id="limparCanvas">Assinar</button>
@@ -37,49 +37,49 @@
             <form>
                 <div class="container">
                     <h3 class="margin">EPIs Obrigatórios da Função</h3>
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Capacete com jugular" id="Capacete com jugular">
                         <label for="Capacete com jugular">Capacete com jugular <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Óculos anti-impacto" id="Óculos anti-impacto">
                         <label for="Óculos anti-impacto">Óculos anti-impacto <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Luvas de vaqueta/raspa" id="Luvas de vaqueta/raspa">
                         <label for="Luvas de vaqueta/raspa">Luvas de vaqueta/raspa <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Luvas nitrílicas (cimento)" id="Luvas nitrílicas (cimento)">
                         <label for="Luvas nitrílicas (cimento)">Luvas nitrílicas (cimento) <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Botina com biqueira" id="Botina com biqueira">
                         <label for="Botina com biqueira">Botina com biqueira <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Máscara PFF2" id="Máscara PFF2">
                         <label for="Máscara PFF2">Máscara PFF2 <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Protetor auricular" id="Protetor auricular">
                         <label for="Protetor auricular">Protetor auricular <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                     </div>
 
-                    <div class="input">
+                    <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Cinturão (altura)" id="Cinturão (altura)">
                         <label for="Cinturão (altura)">Cinturão (altura) <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
@@ -91,19 +91,19 @@
                     <div class="item">
                         <p>Capacete com Jugular</p>
                         <div class="organizer">
-                            <div class="input2">
+                            <div class="input2" onclick="event.stopPropagation()">
                                 <input type="checkbox" name="bom_estado" id="bom_estado">
                                 <label for="Bom estado">Bom estado</label>
                             </div>
-                            <div class="input2">
+                            <div class="input2" onclick="event.stopPropagation()">
                                 <input type="checkbox" name="desgastado" id="desgastado">
                                 <label for="Desgastado">Desgastado</label>
                             </div>
-                            <div class="input2">
+                            <div class="input2" onclick="event.stopPropagation()">
                                 <input type="checkbox" name="vencido" id="vencido">
                                 <label for="Vencido (CA)">Vencido (CA)</label>
                             </div>
-                            <div class="input2">
+                            <div class="input2" onclick="event.stopPropagation()">
                                 <input type="checkbox" name="reposicao" id="reposicao">
                                 <label for="Solicitar reposição">Solicitar reposição</label>
                             </div>
@@ -114,13 +114,13 @@
                     <h3 class="margin">Assinaturas</h3>
                     <p>Assinatura do colaborador</p>
                     <button type="button" id="assinarColaborador">
-                        <svg id="iconeCaneta" xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
+                        <svg id="iconeCaneta" xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
                         <svg id="iconeCheck" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-4 h-4"><path d="M20 6 9 17l-5-5"></path></svg>
                         <p>Assinatura digital - toque para assinar</p>
                     </button>
                     <p>Assinatura da supervisão</p>
                     <button type="button" id="assinarSupervisor">
-                        <svg id="iconeCaneta" xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
+                        <svg id="iconeCaneta" xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" /></svg>
                         <svg id="iconeCheck" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check w-4 h-4"><path d="M20 6 9 17l-5-5"></path></svg>
                         <p>Supervisor - toque para assinar</p>
                     </button>
