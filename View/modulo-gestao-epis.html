@@ -1,282 +1,585 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão de EPIs</title>
-<link rel="stylesheet" href="../templates/assets/css/modulo-gestao-epis.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de EPIs</title>
+  <link rel="stylesheet" href="../templates/assets/css/modulo-gestao-epis.css">
 </head>
+
 <body>
-<div class="page-wrap" id="view-list">
+  <div class="page-wrap" id="view-list">
 
-  <a href="#" class="back-link" onclick="return false;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    Voltar ao Dashboard
-  </a>
-
-  <header class="page-header">
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 18v-1a8 8 0 0 1 16 0v1"></path>
-        <rect x="3" y="18" width="18" height="3" rx="1"></rect>
-        <line x1="12" y1="4" x2="12" y2="7"></line>
+    <a href="#" class="back-link" onclick="return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
+      Voltar ao Dashboard
+    </a>
+
+    <header class="page-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M4 18v-1a8 8 0 0 1 16 0v1"></path>
+          <rect x="3" y="18" width="18" height="3" rx="1"></rect>
+          <line x1="12" y1="4" x2="12" y2="7"></line>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1>Gestão de EPIs</h1>
+        <p>Controle de estoque, check-in diário e trocas</p>
+      </div>
+    </header>
+
+    <!-- Estoque de EPIs -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">Estoque de EPIs</h2>
+          <p class="panel-subtitle">Situação atual do almoxarifado</p>
+        </div>
+        <button class="btn-add" onclick="abrirModalNovoEPI()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Novo EPI
+        </button>
+      </div>
+
+      <div class="stock-list" id="stock-list">
+        <div class="stock-row status-ok" data-id="1">
+          <span class="stock-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M4 18v-1a8 8 0 0 1 16 0v1"></path>
+              <rect x="3" y="18" width="18" height="3" rx="1"></rect>
+              <line x1="12" y1="4" x2="12" y2="7"></line>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Capacete</p>
+            <p class="stock-qty">Disponível: 15 | Mínimo: 20</p>
+          </div>
+          <span class="badge ok">OK</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(1)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(1)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(1)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(1)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stock-row status-alert" data-id="2">
+          <span class="stock-icon orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M6 3v4a6 6 0 0 0 12 0V3"></path>
+              <path d="M6 21v-4a6 6 0 0 1 12 0v4"></path>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Cinturão Paraquedista</p>
+            <p class="stock-qty">Disponível: 18 | Mínimo: 20</p>
+          </div>
+          <span class="badge alert">Alerta</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(2)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(2)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(2)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(2)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stock-row status-critical" data-id="3">
+          <span class="stock-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M6 11V7a6 6 0 0 1 12 0v4"></path>
+              <path d="M6 11h12v6a3 3 0 0 1-3 3h-2l-1 2h-0l-1-2H9a3 3 0 0 1-3-3v-6z"></path>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Luvas de Raspa</p>
+            <p class="stock-qty">Disponível: 12 | Mínimo: 25</p>
+          </div>
+          <span class="badge critical">Crítico</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(3)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(3)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(3)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(3)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stock-row status-ok" data-id="4">
+          <span class="stock-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="12" r="3"></circle>
+              <path d="M9 12h6"></path>
+              <path d="M4 8l2-2h1"></path>
+              <path d="M20 8l-2-2h-1"></path>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Óculos de Proteção</p>
+            <p class="stock-qty">Disponível: 50 | Mínimo: 40</p>
+          </div>
+          <span class="badge ok">OK</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(4)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(4)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(4)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(4)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stock-row status-ok" data-id="5">
+          <span class="stock-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M9 3h4v9l4 3v3a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-3a2 2 0 0 1 1-1.7L9 12V3z"></path>
+              <path d="M6 21h12"></path>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Botas de Segurança</p>
+            <p class="stock-qty">Disponível: 35 | Mínimo: 30</p>
+          </div>
+          <span class="badge ok">OK</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(5)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(5)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(5)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(5)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="stock-row status-critical" data-id="6">
+          <span class="stock-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M4 10a8 8 0 0 1 16 0v5a3 3 0 0 1-3 3h-1a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"></path>
+              <path d="M4 10v5a3 3 0 0 0 3 3h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4"></path>
+            </svg>
+          </span>
+          <div class="stock-info">
+            <p class="stock-name">Protetor Auricular</p>
+            <p class="stock-qty">Disponível: 08 | Mínimo: 20</p>
+          </div>
+          <span class="badge critical">Crítico</span>
+          <div class="stock-actions">
+            <button class="btn-icon" onclick="editarEPI(6)" title="Editar EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="aumentarQtd(6)" title="Aumentar quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="diminuirQtd(6)" title="Diminuir quantidade">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button class="btn-icon btn-danger" onclick="excluirEPI(6)" title="Excluir EPI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trocas Necessárias -->
+    <section class="panel">
+      <h2 class="panel-title">Trocas Necessárias</h2>
+      <p class="panel-subtitle">EPIs que precisam ser substituídos</p>
+
+      <div class="swap-list">
+        <div class="swap-card orange">
+          <span class="swap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </span>
+          <div class="swap-info">
+            <p class="swap-name">João Silva - Capacete</p>
+            <p class="swap-reason">Vencimento (6 meses) - Prazo: 15 dias</p>
+          </div>
+          <button class="btn-outline" onclick="agendarTroca('João Silva', 'Capacete')">Confirmar Troca</button>
+        </div>
+
+        <div class="swap-card red">
+          <span class="swap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </span>
+          <div class="swap-info">
+            <p class="swap-name">Maria Santos - Cinturão Paraquedista</p>
+            <p class="swap-reason">Desgaste visível - Prazo: 3 dias</p>
+          </div>
+          <button class="btn-outline" onclick="agendarTroca('Maria Santos', 'Cinturão Paraquedista')">Confirmar
+            Troca</button>
+        </div>
+
+        <div class="swap-card blue">
+          <span class="swap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </span>
+          <div class="swap-info">
+            <p class="swap-name">Pedro Costa - Botas de Segurança</p>
+            <p class="swap-reason">Vencimento (1 ano) - Prazo: 20 dias</p>
+          </div>
+          <button class="btn-outline" onclick="agendarTroca('Pedro Costa', 'Botas de Segurança')">Confirmar
+            Troca</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Check-in por Atividade -->
+    <section>
+      <h2 class="section-title">Check-in por Atividade</h2>
+      <div class="activity-grid">
+
+        <div class="activity-card">
+          <div class="activity-emoji">🪜</div>
+          <p class="activity-name">Trabalho em Altura</p>
+          <p class="activity-count">5 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('altura')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🧱</div>
+          <p class="activity-name">Alvenaria</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('alvenaria')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🪚</div>
+          <p class="activity-name">Carpintaria</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('carpintaria')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🎨</div>
+          <p class="activity-name">Pintura</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('pintura')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🔥</div>
+          <p class="activity-name">Soldagem</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('soldagem')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">⚡</div>
+          <p class="activity-name">Eletricidade</p>
+          <p class="activity-count">7 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('eletricidade')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🔒</div>
+          <p class="activity-name">Espaço Confinado</p>
+          <p class="activity-count">8 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('confinado')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🔨</div>
+          <p class="activity-name">Demolição</p>
+          <p class="activity-count">7 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('demolicao')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🔩</div>
+          <p class="activity-name">Armador de Ferro</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('armador')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🏗️</div>
+          <p class="activity-name">Concretagem</p>
+          <p class="activity-count">6 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('concretagem')">Ver EPIs</button>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-emoji">🚜</div>
+          <p class="activity-name">Operador de Máquinas</p>
+          <p class="activity-count">5 EPIs obrigatórios</p>
+          <button class="btn-full" onclick="verEpis('operador')">Ver EPIs</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== MODAL NOVO/EDITAR EPI ===== -->
+  <div class="modal-overlay" id="modalEpi">
+    <div class="modal">
+      <button class="modal-back" onclick="fecharModalEpi()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Voltar
+      </button>
+      <h2 class="modal-title" id="modalEpiTitle">Novo EPI</h2>
+
+      <form id="formEpi" onsubmit="salvarEPI(event)">
+        <input type="hidden" id="epiId" value="">
+
+        <div class="form-group">
+          <label class="form-label" for="epiNome">Nome do EPI</label>
+          <input type="text" id="epiNome" class="form-input" placeholder="Ex: Capacete de Segurança" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="epiQuantidade">Quantidade Disponível</label>
+          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="epiMinimo">Quantidade Mínima</label>
+          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="epiStatus">Status</label>
+          <select id="epiStatus" class="form-select">
+            <option value="ok">OK</option>
+            <option value="alert">Alerta</option>
+            <option value="critical">Crítico</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-delete" id="btnExcluirModal" onclick="excluirEPIModal()">Excluir</button>
+          <button type="submit" class="btn-save">Salvar</button>
+        </div>
+      </form>
     </div>
-    <div class="header-text">
-      <h1>Gestão de EPIs</h1>
-      <p>Controle de estoque, check-in diário e trocas</p>
-    </div>
-  </header>
+  </div>
 
-  <!-- Estoque de EPIs -->
-  <section class="panel">
-    <h2 class="panel-title">Estoque de EPIs</h2>
-    <p class="panel-subtitle">Situação atual do almoxarifado</p>
+  <!-- ===== View: EPIs por Atividade (detalhe) ===== -->
+  <div class="page-wrap" id="view-detail">
 
-    <div class="stock-list">
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
+    <a href="#" class="back-link" onclick="voltarLista(); return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Voltar
+    </a>
+
+    <header class="detail-header">
+      <div class="emoji-icon" id="detail-emoji">🪜</div>
+      <div>
+        <h1 id="detail-title">Trabalho em Altura</h1>
+        <p class="detail-subtitle" id="detail-subtitle">EPIs obrigatórios - NR-35</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h2 class="checkin-heading">Check-in Diário</h2>
+      <p class="checkin-sub">Confirme o uso correto dos EPIs hoje</p>
+
+      <div class="checkin-alert">
+        <span class="checkin-alert-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
         </span>
-        <div class="stock-info">
-          <p class="stock-name">Capacete</p>
-          <p class="stock-qty">Disponível: 15 | Mínimo: 20</p>
+        <div class="checkin-alert-body">
+          <div class="checkin-alert-text">
+            <p class="title">Check-in pendente</p>
+            <p>Realize o check-in antes de iniciar o trabalho</p>
+          </div>
+          <span class="badge critical">Pendente</span>
         </div>
-        <span class="badge ok">OK</span>
       </div>
 
-      <div class="stock-row status-alert">
-        <span class="stock-icon orange">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v4a6 6 0 0 0 12 0V3"></path><path d="M6 21v-4a6 6 0 0 1 12 0v4"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Cinturão Paraquedista</p>
-          <p class="stock-qty">Disponível: 18 | Mínimo: 20</p>
-        </div>
-        <span class="badge alert">Alerta</span>
-      </div>
+      <button class="btn-selfie" onclick="realizarCheckin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
+        Realizar Check-in com Selfie
+      </button>
+    </section>
 
-      <div class="stock-row status-critical">
-        <span class="stock-icon red">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11V7a6 6 0 0 1 12 0v4"></path><path d="M6 11h12v6a3 3 0 0 1-3 3h-2l-1 2h-0l-1-2H9a3 3 0 0 1-3-3v-6z"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Luvas de Raspa</p>
-          <p class="stock-qty">Disponível: 12 | Mínimo: 25</p>
-        </div>
-        <span class="badge critical">Crítico</span>
-      </div>
+    <section>
+      <h2 class="section-title">EPIs Obrigatórios</h2>
+      <div class="epi-list" id="epi-list"></div>
+    </section>
 
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="12" r="3"></circle><path d="M9 12h6"></path><path d="M4 8l2-2h1"></path><path d="M20 8l-2-2h-1"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Óculos de Proteção</p>
-          <p class="stock-qty">Disponível: 50 | Mínimo: 40</p>
-        </div>
-        <span class="badge ok">OK</span>
-      </div>
+  </div>
 
-      <div class="stock-row status-ok">
-        <span class="stock-icon green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h4v9l4 3v3a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-3a2 2 0 0 1 1-1.7L9 12V3z"></path><path d="M6 21h12"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Botas de Segurança</p>
-          <p class="stock-qty">Disponível: 35 | Mínimo: 30</p>
-        </div>
-        <span class="badge ok">OK</span>
-      </div>
-
-      <div class="stock-row status-critical">
-        <span class="stock-icon red">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a8 8 0 0 1 16 0v5a3 3 0 0 1-3 3h-1a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4"></path><path d="M4 10v5a3 3 0 0 0 3 3h1a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4"></path></svg>
-        </span>
-        <div class="stock-info">
-          <p class="stock-name">Protetor Auricular</p>
-          <p class="stock-qty">Disponível: 08 | Mínimo: 20</p>
-        </div>
-        <span class="badge critical">Crítico</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Trocas Necessárias -->
-  <section class="panel">
-    <h2 class="panel-title">Trocas Necessárias</h2>
-    <p class="panel-subtitle">EPIs que precisam ser substituídos</p>
-
-    <div class="swap-list">
-      <div class="swap-card orange">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">João Silva - Capacete</p>
-          <p class="swap-reason">Vencimento (6 meses) - Prazo: 15 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('João Silva', 'Capacete')">Agendar Troca</button>
-      </div>
-
-      <div class="swap-card red">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">Maria Santos - Cinturão Paraquedista</p>
-          <p class="swap-reason">Desgaste visível - Prazo: 3 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('Maria Santos', 'Cinturão Paraquedista')">Agendar Troca</button>
-      </div>
-
-      <div class="swap-card blue">
-        <span class="swap-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        </span>
-        <div class="swap-info">
-          <p class="swap-name">Pedro Costa - Botas de Segurança</p>
-          <p class="swap-reason">Vencimento (1 ano) - Prazo: 20 dias</p>
-        </div>
-        <button class="btn-outline" onclick="agendarTroca('Pedro Costa', 'Botas de Segurança')">Agendar Troca</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Check-in por Atividade -->
-  <section>
-    <h2 class="section-title">Check-in por Atividade</h2>
-    <div class="activity-grid">
-
-      <div class="activity-card">
-        <div class="activity-emoji">🪜</div>
-        <p class="activity-name">Trabalho em Altura</p>
-        <p class="activity-count">5 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('altura')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🧱</div>
-        <p class="activity-name">Alvenaria</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('alvenaria')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🪚</div>
-        <p class="activity-name">Carpintaria</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('carpintaria')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🎨</div>
-        <p class="activity-name">Pintura</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('pintura')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔥</div>
-        <p class="activity-name">Soldagem</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('soldagem')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">⚡</div>
-        <p class="activity-name">Eletricidade</p>
-        <p class="activity-count">7 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('eletricidade')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔒</div>
-        <p class="activity-name">Espaço Confinado</p>
-        <p class="activity-count">8 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('confinado')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔨</div>
-        <p class="activity-name">Demolição</p>
-        <p class="activity-count">7 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('demolicao')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🔩</div>
-        <p class="activity-name">Armador de Ferro</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('armador')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🏗️</div>
-        <p class="activity-name">Concretagem</p>
-        <p class="activity-count">6 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('concretagem')">Ver EPIs</button>
-      </div>
-
-      <div class="activity-card">
-        <div class="activity-emoji">🚜</div>
-        <p class="activity-name">Operador de Máquinas</p>
-        <p class="activity-count">5 EPIs obrigatórios</p>
-        <button class="btn-full" onclick="verEpis('operador')">Ver EPIs</button>
-      </div>
-
-    </div>
-  </section>
-
-</div>
-
-<!-- ===== View: EPIs por Atividade (detalhe) ===== -->
-<div class="page-wrap" id="view-detail">
-
-  <a href="#" class="back-link" onclick="voltarLista(); return false;">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    Voltar
-  </a>
-
-  <header class="detail-header">
-    <div class="emoji-icon" id="detail-emoji">🪜</div>
-    <div>
-      <h1 id="detail-title">Trabalho em Altura</h1>
-      <p class="detail-subtitle" id="detail-subtitle">EPIs obrigatórios - NR-35</p>
-    </div>
-  </header>
-
-  <section class="panel">
-    <h2 class="checkin-heading">Check-in Diário</h2>
-    <p class="checkin-sub">Confirme o uso correto dos EPIs hoje</p>
-
-    <div class="checkin-alert">
-      <span class="checkin-alert-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-      </span>
-      <div class="checkin-alert-body">
-        <div class="checkin-alert-text">
-          <p class="title">Check-in pendente</p>
-          <p>Realize o check-in antes de iniciar o trabalho</p>
-        </div>
-        <span class="badge critical">Pendente</span>
-      </div>
-    </div>
-
-    <button class="btn-selfie" onclick="realizarCheckin()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-      Realizar Check-in com Selfie
-    </button>
-  </section>
-
-  <section>
-    <h2 class="section-title">EPIs Obrigatórios</h2>
-    <div class="epi-list" id="epi-list"></div>
-  </section>
-
-</div>
-
-<script src="../templates/assets/js/modulo-gestao-epis.js"></script>
+  <script src="../templates/assets/js/modulo-gestao-epis.js"></script>
 
 </body>
+
 </html>
