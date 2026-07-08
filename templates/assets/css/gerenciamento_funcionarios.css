@@ -163,7 +163,7 @@ body {
 .tabela-funcionarios th {
     background-color: #3B82F6;
     color: #ffffff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     padding: 1.4rem 1.8rem;
     border-bottom: 1px solid #E5E7EB;
@@ -173,7 +173,7 @@ body {
     padding: 1.4rem 1.8rem;
     border-bottom: 1px solid #E5E7EB;
     color: #1F2937;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     vertical-align: middle;
 }
 
@@ -229,27 +229,12 @@ body {
 .badge-setor {
     padding: 0.4rem 1rem;
     border-radius: 2rem;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 600;
     display: inline-block;
-}
-
-.badge-setor.operacional {
     background-color: #EFF6FF;
     color: #1E40AF;
     border: 1px solid #BFDBFE;
-}
-
-.badge-setor.seguranca {
-    background-color: #ECFDF5;
-    color: #065F46;
-    border: 1px solid #A7F3D0;
-}
-
-.badge-setor.administrativo {
-    background-color: #F5F3FF;
-    color: #5B21B6;
-    border: 1px solid #DDD6FE;
 }
 
 /* Area de Exibição de Senha (sem botão) */
