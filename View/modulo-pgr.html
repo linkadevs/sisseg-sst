@@ -1,272 +1,224 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PGR - Programa de Gerenciamento de Riscos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../templates/assets/css/modulo-pgr.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGR - Gerador de Fichas de Risco</title>
+<link rel="stylesheet" href="../templates/assets/css/modulo-pgr.css">
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════
-     LIST PAGE
-══════════════════════════════════════════════════════════ -->
-<div id="list-page">
-<main class="page" role="main">
-
-  <button class="back-link" id="btn-back-dashboard" aria-label="Voltar ao Dashboard">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M19 12H5M12 5l-7 7 7 7"/>
-    </svg>
-    Voltar ao Dashboard
-  </button>
-
-  <header class="page-header">
-    <div class="page-title-row">
-      <div class="doc-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <rect x="4" y="2" width="12" height="20" rx="2"/>
-          <path d="M14 2v6h6"/>
-          <line x1="8" y1="13" x2="16" y2="13"/>
-          <line x1="8" y1="17" x2="12" y2="17"/>
-        </svg>
+  <!-- ================= MODAL: FORMULÁRIO (CRIAÇÃO) ================= -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal modal-large" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle">Nova Ficha de Risco</h2>
+        <button type="button" class="modal-close" id="modalClose" aria-label="Fechar formulário">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
-      <h1>PGR - Programa de Gerenciamento de Riscos</h1>
-    </div>
-    <p class="page-subtitle">Fichas de análise de risco por atividade conforme NR-01</p>
-  </header>
 
-  <section aria-label="Sobre o PGR">
-    <div class="sobre-card">
-      <h2>Sobre o PGR</h2>
-      <p>O Programa de Gerenciamento de Riscos (PGR) identifica os perigos e avalia os riscos
-         ocupacionais, implementando medidas de prevenção e proteção para cada atividade.</p>
-      <div class="risk-type-grid">
-        <div class="risk-type-item rt--purple">
-          <p class="rt-label">Físicos</p>
-          <p class="rt-examples">Ruído, Vibração</p>
-        </div>
-        <div class="risk-type-item rt--orange">
-          <p class="rt-label">Químicos</p>
-          <p class="rt-examples">Poeiras, Gases</p>
-        </div>
-        <div class="risk-type-item rt--blue">
-          <p class="rt-label">Ergonômicos</p>
-          <p class="rt-examples">Postura, Esforço</p>
-        </div>
-        <div class="risk-type-item rt--red">
-          <p class="rt-label">Acidentes</p>
-          <p class="rt-examples">Quedas, Choques</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="modal-body">
+        <form id="riskForm" novalidate>
 
-  <section aria-label="Fichas por Atividade">
-    <p class="section-title">Fichas por Atividade</p>
-    <div class="activities-grid">
+          <div class="form-section">
+            <h2 class="form-section-title">Dados da Atividade</h2>
+            <div class="field">
+              <label for="activityName">Nome da Atividade</label>
+              <input type="text" id="activityName" name="activityName" placeholder="Ex: Trabalho em Altura" required>
+            </div>
+          </div>
 
-      <article class="activity-card">
-        <div>
-          <p class="activity-name">Trabalho em Altura</p>
-          <p class="activity-count">2 riscos identificados</p>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge--critico">1 Crítico</span>
-          <span class="badge badge--alto">1 Alto</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            4 Medidas Coletivas
-          </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            4 Procedimentos
-          </span>
-        </div>
-        <button class="btn-ficha" data-activity="Trabalho em Altura">Ver Ficha Completa</button>
-      </article>
+          <div class="form-section">
+            <h2 class="form-section-title">Riscos Identificados</h2>
+            <div id="createRisksContainer"><!-- Blocos de risco renderizados dinamicamente via JS --></div>
+            <button type="button" class="btn-add-risk" id="btnAddCreateRisk">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Adicionar Risco
+            </button>
+          </div>
 
-      <article class="activity-card">
-        <div>
-          <p class="activity-name">Eletricidade</p>
-          <p class="activity-count">2 riscos identificados</p>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge--critico">2 Críticos</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            4 Medidas Coletivas
-          </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            4 Procedimentos
-          </span>
-        </div>
-        <button class="btn-ficha" data-activity="Eletricidade">Ver Ficha Completa</button>
-      </article>
+          <div class="form-section">
+            <h2 class="form-section-title">Medidas Coletivas e Procedimentos</h2>
 
-      <article class="activity-card">
-        <div>
-          <p class="activity-name">Espaço Confinado</p>
-          <p class="activity-count">2 riscos identificados</p>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge--critico">2 Críticos</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            4 Medidas Coletivas
-          </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            4 Procedimentos
-          </span>
-        </div>
-        <button class="btn-ficha" data-activity="Espaço Confinado">Ver Ficha Completa</button>
-      </article>
+            <div class="field">
+              <label>Medidas de Proteção Coletiva</label>
+              <div class="add-item-row">
+                <input type="text" id="collectiveInput" placeholder="Ex: Guarda-corpo rígido nos perímetros">
+                <button type="button" class="btn-add" id="btnAddCollective">+</button>
+              </div>
+              <ul class="chip-list" id="collectiveList"></ul>
+            </div>
 
-      <article class="activity-card">
-        <div>
-          <p class="activity-name">Soldagem</p>
-          <p class="activity-count">2 riscos identificados</p>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge--alto">2 Altos</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            4 Medidas Coletivas
-          </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            4 Procedimentos
-          </span>
-        </div>
-        <button class="btn-ficha" data-activity="Soldagem">Ver Ficha Completa</button>
-      </article>
+            <div class="field">
+              <label>Procedimentos Obrigatórios</label>
+              <div class="add-item-row">
+                <input type="text" id="procedureInput" placeholder="Ex: Análise Preliminar de Risco (APR) diária">
+                <button type="button" class="btn-add" id="btnAddProcedure">+</button>
+              </div>
+              <ul class="chip-list" id="proceduresList"></ul>
+            </div>
+          </div>
 
-      <article class="activity-card">
-        <div>
-          <p class="activity-name">Demolição</p>
-          <p class="activity-count">3 riscos identificados</p>
-        </div>
-        <div class="badge-row">
-          <span class="badge badge--critico">2 Críticos</span>
-          <span class="badge badge--alto">1 Alto</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            4 Medidas Coletivas
-          </span>
-          <span class="meta-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            4 Procedimentos
-          </span>
-        </div>
-        <button class="btn-ficha" data-activity="Demolição">Ver Ficha Completa</button>
-      </article>
-
-    </div>
-  </section>
-
-  <section aria-label="Níveis de Risco">
-    <div class="legend-card">
-      <h3>Níveis de Risco</h3>
-      <div class="legend-grid">
-        <div class="legend-item"><span class="legend-dot legend-dot--baixo"></span>Baixo</div>
-        <div class="legend-item"><span class="legend-dot legend-dot--medio"></span>Médio</div>
-        <div class="legend-item"><span class="legend-dot legend-dot--alto"></span>Alto</div>
-        <div class="legend-item"><span class="legend-dot legend-dot--critico"></span>Crítico</div>
+          <button type="submit" class="btn-submit">Gerar e Adicionar Ficha de Risco</button>
+        </form>
       </div>
     </div>
-  </section>
-
-</main>
-</div><!-- /#list-page -->
-
-
-<!-- ══════════════════════════════════════════════════════════
-     DETAIL PAGE
-══════════════════════════════════════════════════════════ -->
-<div id="detail-page">
-<main class="page" role="main">
-
-  <button class="back-link" id="btn-back-fichas" aria-label="Voltar às Fichas">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M19 12H5M12 5l-7 7 7 7"/>
-    </svg>
-    Voltar às Fichas
-  </button>
-
-  <header class="page-header">
-    <h1 class="detail-title" id="detail-title">Trabalho em Altura</h1>
-    <p class="detail-sub">Programa de Gerenciamento de Riscos</p>
-  </header>
-
-  <!-- 1. Riscos Identificados -->
-  <div class="detail-card" id="riscos-card">
-    <div class="riscos-header">
-      <!-- Warning triangle -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-        <line x1="12" y1="9" x2="12" y2="13"/>
-        <line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-      <div class="riscos-header-text">
-        <h2>Riscos Identificados</h2>
-        <p>Análise detalhada dos riscos para esta atividade</p>
-      </div>
-    </div>
-
-    <!-- Riscos are rendered by JS -->
-    <div id="riscos-list"></div>
   </div>
 
-  <!-- 2. Medidas de Proteção Coletiva -->
-  <div class="detail-card medidas-card" id="medidas-section">
-    <div class="medidas-header">
-      <!-- Shield check -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <polyline points="9 12 11 14 15 10"/>
-      </svg>
-      <h2>Medidas de Proteção Coletiva</h2>
+  <!-- ================= MODAL: EDIÇÃO DE FICHA ================= -->
+  <div class="modal-overlay" id="editModalOverlay">
+    <div class="modal modal-large" id="editModalBox" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <div class="modal-header">
+        <h2 id="editModalTitle">Editar Ficha de Risco</h2>
+        <button type="button" class="modal-close" id="editModalClose" aria-label="Fechar edição">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="editModalBody">
+        <!-- Conteúdo renderizado dinamicamente via JS -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel btn-delete-activity" id="editModalDelete">Excluir Ficha</button>
+        <button type="button" class="btn-cancel" id="editModalCancel">Cancelar</button>
+        <button type="button" class="btn-submit" id="editModalSave">Salvar Alterações</button>
+      </div>
     </div>
-    <div id="medidas-list"></div>
   </div>
 
-  <!-- 3. Procedimentos Obrigatórios -->
-  <div class="detail-card procedimentos-card" id="procedimentos-section">
-    <div class="procedimentos-header">
-      <!-- Clipboard check -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
-        <rect x="9" y="3" width="6" height="4" rx="1"/>
-        <polyline points="9 12 11 14 15 10"/>
-      </svg>
-      <h2>Procedimentos Obrigatórios</h2>
-    </div>
-    <div id="procedimentos-list"></div>
-  </div>
+  <div class="app-shell">
+    <!-- ================= MAIN: DASHBOARD / DETALHAMENTO ================= -->
+    <main class="main-content">
 
-</main>
-</div><!-- /#detail-page -->
+      <!-- ---------- VIEW: DASHBOARD ---------- -->
+      <section class="view" id="dashboardView">
+        <div class="page-header">
+          <div class="page-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="9" y1="12" x2="15" y2="12"></line>
+              <line x1="9" y1="16" x2="13" y2="16"></line>
+            </svg>
+          </div>
+          <div class="page-header-text">
+            <h1 class="page-title">PGR - Programa de Gerenciamento de Riscos</h1>
+            <p class="page-subtitle">Fichas de análise de risco por atividade conforme NR-01</p>
+          </div>
+          <button type="button" class="btn-open-modal" id="btnOpenModal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Nova Ficha de Risco
+          </button>
+        </div>
+
+        <div class="about-card">
+          <h2>Sobre o PGR</h2>
+          <p>O Programa de Gerenciamento de Riscos (PGR) identifica os perigos e avalia os riscos ocupacionais, implementando medidas de prevenção e proteção para cada atividade.</p>
+          <div class="risk-type-grid">
+            <div class="risk-type-tag tag-physical">
+              <span class="tag-label">Físicos</span>
+              <span class="tag-desc">Ruído, Vibração</span>
+            </div>
+            <div class="risk-type-tag tag-chemical">
+              <span class="tag-label">Químicos</span>
+              <span class="tag-desc">Poeiras, Gases</span>
+            </div>
+            <div class="risk-type-tag tag-ergonomic">
+              <span class="tag-label">Ergonômicos</span>
+              <span class="tag-desc">Postura, Esforço</span>
+            </div>
+            <div class="risk-type-tag tag-accident">
+              <span class="tag-label">Acidentes</span>
+              <span class="tag-desc">Quedas, Choques</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Fichas por Atividade</h2>
+        <div class="cards-grid" id="cardsGrid">
+          <!-- Cards das atividades são renderizados dinamicamente via JS -->
+          <p class="empty-state" id="emptyState">Nenhuma ficha cadastrada ainda. Clique em "Nova Ficha de Risco" para gerar a primeira ficha.</p>
+        </div>
+
+        <div class="legend-card">
+          <h3>Níveis de Risco</h3>
+          <div class="legend-row">
+            <div class="legend-item"><span class="legend-dot dot-baixo"></span>Baixo</div>
+            <div class="legend-item"><span class="legend-dot dot-medio"></span>Médio</div>
+            <div class="legend-item"><span class="legend-dot dot-alto"></span>Alto</div>
+            <div class="legend-item"><span class="legend-dot dot-critico"></span>Crítico</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- VIEW: DETALHAMENTO ---------- -->
+      <section class="view hidden" id="detailView">
+        <button class="btn-back" id="btnVoltarDashboard" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Voltar ao Dashboard
+        </button>
+
+        <h1 class="detail-title" id="detailActivityName">—</h1>
+        <p class="detail-subtitle">Programa de Gerenciamento de Riscos</p>
+
+        <div class="detail-card">
+          <div class="detail-card-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <div>
+              <h2>Riscos Identificados</h2>
+              <p>Análise detalhada dos riscos para esta atividade</p>
+            </div>
+          </div>
+          <div id="risksList"><!-- Blocos de risco renderizados via JS --></div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-card-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            <h2>Medidas de Proteção Coletiva</h2>
+          </div>
+          <div class="green-list" id="collectiveMeasuresOutput"></div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-card-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+              <path d="M9 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-4"></path>
+              <polyline points="9 14 11 16 15 12"></polyline>
+            </svg>
+            <h2>Procedimentos Obrigatórios</h2>
+          </div>
+          <div class="blue-list" id="proceduresOutput"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
 
 <script src="../templates/assets/js/modulo-pgr.js"></script>
 </body>
