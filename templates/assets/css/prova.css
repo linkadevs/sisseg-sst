@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Simulador de Prova NR-06 — estilos
+   Paleta: fundo #F8FAFC, cards brancos com sombra suave, acentos
+   azul (ações/progresso), verde (aprovação/finalizar), vermelho (reprovação),
+   amarelo (instruções/avisos).
+   ========================================================================== */
+
+:root {
+  --azul: #2563eb;
+  --azul-hover: #1d4ed8;
+  --azul-bg: #eff4ff;
+  --azul-borda: #c7d6fb;
+  --verde: #16a34a;
+  --verde-bg: #f0fdf4;
+  --verde-borda: #bbf0cc;
+  --vermelho: #dc2626;
+  --vermelho-bg: #fef2f2;
+  --vermelho-borda: #f6c6c6;
+  --amarelo-bg: #fefbe9;
+  --amarelo-borda: #f2dd8a;
+  --amarelo-texto: #92620a;
+  --texto: #1f2430;
+  --texto-suave: #667085;
+  --borda: #e4e7ec;
+  --fundo: #F8FAFC;
+  --radius-lg: 18px;
+  --sombra: 0 1px 3px rgba(16, 24, 40, .06), 0 1px 2px rgba(16, 24, 40, .04);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* ---------- Utilitário central: mostrar/esconder ---------- */
+/* Todo o controle de "qual tela está visível" se resume a colar
+   ou remover a classe .oculto via JavaScript — nenhum HTML é
+   criado dinamicamente, só a visibilidade muda. */
+.oculto { display: none !important; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--texto);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 6px 0;
+  margin-bottom: 18px;
+}
+.back-link svg { width: 18px; height: 18px; }
+
+/* ---------- Card base ---------- */
+.card {
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--sombra);
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 15.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter .15s ease, transform .05s ease;
+}
+.btn svg { width: 18px; height: 18px; }
+.btn:hover:not(:disabled) { filter: brightness(0.96); }
+.btn:active:not(:disabled) { transform: scale(.99); }
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  filter: none;
+}
+.btn-azul { background: var(--azul); color: #fff; }
+.btn-verde { background: var(--verde); color: #fff; }
+.btn-outline {
+  background: #fff;
+  color: var(--texto-suave);
+  border: 1px solid var(--borda);
+}
+
+/* ==========================================================================
+   TELA 1 — Instruções
+   ========================================================================== */
+.cabecalho {
+  background: var(--azul-bg);
+  border: 1px solid var(--azul-borda);
+  border-radius: var(--radius-lg);
+  padding: 26px 24px;
+  margin-bottom: 18px;
+}
+.cabecalho h1 { margin: 0 0 4px; font-size: 23px; font-weight: 800; }
+.cabecalho p { margin: 0; color: var(--texto-suave); font-size: 15px; }
+
+.box-instrucoes {
+  background: var(--amarelo-bg);
+  border: 1px solid var(--amarelo-borda);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.box-instrucoes h3 { margin: 0 0 14px; font-size: 16px; color: #7c4a03; font-weight: 700; }
+.item-instrucao {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  margin-bottom: 11px;
+}
+.item-instrucao:last-child { margin-bottom: 0; }
+.item-instrucao svg { width: 19px; height: 19px; flex-shrink: 0; margin-top: 1px; color: #b45309; }
+
+.box-conteudo { padding: 22px 24px; margin-bottom: 22px; }
+.box-conteudo h3 { margin: 0 0 12px; font-size: 16px; font-weight: 700; }
+.box-conteudo ul { margin: 0; padding-left: 20px; }
+.box-conteudo li { margin-bottom: 8px; }
+.box-conteudo li::marker { color: var(--azul); }
+
+/* ==========================================================================
+   TELA 2 — Quiz
+   ========================================================================== */
+
+/* Só a questão com a classe .ativa aparece; as outras 4 ficam
+   escondidas no próprio HTML até o usuário navegar até elas. */
+.questao { display: none; }
+.questao.ativa { display: block; }
+
+.cabecalho-questao { padding: 20px 24px; margin-bottom: 16px; }
+.cabecalho-questao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.cabecalho-questao-topo h2 { margin: 0; font-size: 19px; font-weight: 700; }
+.tag-nr {
+  background: var(--azul-bg);
+  color: var(--azul-hover);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 8px;
+}
+.barra-progresso {
+  width: 100%;
+  height: 8px;
+  background: #e9ebf0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+/* A largura de cada barra já vem definida via style="width:.." no HTML
+   de cada questão — não precisa de JS para calcular o progresso. */
+.barra-progresso-fill {
+  height: 100%;
+  background: #12131a;
+  border-radius: 999px;
+}
+
+.card-pergunta {
+  padding: 28px 24px;
+  margin-bottom: 16px;
+  border: 1px solid var(--borda);
+}
+.texto-pergunta {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 22px;
+  padding: 0;
+}
+
+/* ---------- Alternativas (radio nativo) ---------- */
+.opcao {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1.5px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: border-color .12s ease, background .12s ease, color .12s ease;
+}
+.opcao:last-child { margin-bottom: 0; }
+.opcao:hover { border-color: #c7d2fe; }
+
+/* O input real fica invisível, mas continua clicável/acessível
+   (funciona com teclado e leitor de tela) por trás do label inteiro. */
+.opcao-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.opcao-radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #ccd0d8;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estado selecionado: nenhum JavaScript envolvido, só CSS reagindo
+   ao :checked do input nativo por dentro do label. */
+.opcao:has(.opcao-input:checked) {
+  border-color: var(--azul);
+  background: var(--azul-bg);
+  color: var(--azul-hover);
+  font-weight: 600;
+}
+.opcao:has(.opcao-input:checked) .opcao-radio {
+  border-color: var(--azul);
+  background: var(--azul);
+}
+.opcao:has(.opcao-input:checked) .opcao-radio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.rodape-nav {
+  display: flex;
+  gap: 12px;
+}
+.rodape-nav .btn { flex: 1; }
+
+/* ==========================================================================
+   TELA 3 — Resultado
+   ========================================================================== */
+.card-resultado {
+  border-radius: var(--radius-lg);
+  padding: 40px 26px 26px;
+  text-align: center;
+  border: 1px solid;
+}
+.card-resultado.aprovado { background: var(--verde-bg); border-color: var(--verde-borda); }
+.card-resultado.reprovado { background: var(--vermelho-bg); border-color: var(--vermelho-borda); }
+
+.icone-resultado {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+.icone-resultado svg { width: 36px; height: 36px; color: #fff; }
+.aprovado .icone-resultado { background: var(--verde); }
+.reprovado .icone-resultado { background: var(--vermelho); }
+
+.titulo-resultado { font-size: 25px; font-weight: 800; margin: 0 0 18px; }
+
+.badge-nota {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 9px 20px;
+  border-radius: 10px;
+  margin-bottom: 26px;
+}
+.aprovado .badge-nota { background: var(--verde); color: #fff; }
+.reprovado .badge-nota { background: var(--vermelho); color: #fff; }
+
+.grid-metricas {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid var(--borda);
+}
+.metrica { flex: 1; padding: 18px 8px; text-align: center; }
+.metrica + .metrica { border-left: 1px solid var(--borda); }
+.metrica-label { font-size: 13px; color: var(--texto-suave); margin-bottom: 6px; }
+.metrica-valor { font-size: 23px; font-weight: 800; }
+.metrica-valor.verde { color: var(--verde); }
+.metrica-valor.vermelho { color: var(--vermelho); }
+.metrica-valor.azul { color: var(--azul); }
+
+.aviso-final {
+  display: flex;
+  gap: 10px;
+  text-align: left;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  font-size: 14.5px;
+  background: #fff;
+}
+.aviso-final svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+.aprovado .aviso-final { color: #14532d; }
+.aprovado .aviso-final svg { color: var(--verde); }
+.reprovado .aviso-final { color: #7f1d1d; }
+.reprovado .aviso-final svg { color: var(--vermelho); }
+.aviso-final strong { display: block; margin-bottom: 2px; }
+
+.card-resultado .rodape-nav { margin-top: 4px; }
+
+/* ==========================================================================
+   Toasts
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 999;
+  padding: 0 16px;
+}
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, .18);
+  animation: toast-in .18s ease-out;
+}
+.toast svg { width: 18px; height: 18px; flex-shrink: 0; }
+.toast-aviso { background: var(--amarelo-bg); color: var(--amarelo-texto); border: 1px solid var(--amarelo-borda); }
+.toast-erro { background: #16181d; color: #fff; align-self: flex-end; margin-right: 4px; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Responsivo
+   ========================================================================== */
+@media (max-width: 480px) {
+  .page { padding: 20px 14px 50px; }
+  .cabecalho-questao, .card-pergunta, .cabecalho, .box-instrucoes, .box-conteudo { padding: 18px 16px; }
+  .texto-pergunta { font-size: 15.5px; }
+  .rodape-nav { flex-direction: column; }
+  .card-resultado { padding: 30px 18px 20px; }
+  .toast { max-width: 100%; }
+  .toast-erro { align-self: center; margin-right: 0; }
+}

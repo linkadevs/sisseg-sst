@@ -79,9 +79,8 @@ const cursos = [
     alert(`Abrindo vídeo do curso: ${titulo}`);
   }
 
-  function fazerProva(titulo) {
-    console.log(`[Fazer Prova] ${titulo}`);
-    alert(`Iniciando prova do curso: ${titulo}`);
+  function fazerProva() {
+    window.location.href = '../View/prova.html'
   }
 
   function verCertificado(titulo) {
