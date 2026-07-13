@@ -84,8 +84,7 @@ const cursos = [
   }
 
   function verCertificado(titulo) {
-    console.log(`[Certificado] ${titulo}`);
-    alert(`Exibindo certificado do curso: ${titulo}`);
+    window.location.href = '../View/certificado.html'
   }
 
   renderCursos();
