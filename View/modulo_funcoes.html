@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Inspeção de EPIs - Funções (Admin)</title>
+    <link rel="stylesheet" href="../templates/assets/css/Modulo_funcoes.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav-interna">
+            <a href="#" class="btn-voltar" onclick="window.history.back()">
+                <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar"> Voltar
+            </a>
+        </div>
+
+        <header class="header-dashboard">
+            <div class="titulo-sessao">
+                <div class="configuracao">
+                    <figure>
+                        <img src="../templates/assets/img/configuracao-enfeite.png" alt="Engrenagem">
+                    </figure>
+                </div>
+
+                <div class="textos">
+                    <h1>Gerenciamento de Funções</h1>
+                    <p>Configure e gerencie os EPIs obrigatórios de cada cargo</p>
+                </div>
+
+            </div>
+            <div class="card-contador">
+                <p class="contador-label">Total de funções</p>
+                <p class="contador-numero">4</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="barra-ferramentas">
+                <div class="campo-busca">
+                    <img src="../templates/assets/img/lupa_azul.png" alt="Buscar" class="lupa-busca">
+                    <input type="text" placeholder="Busque por funções">
+                </div>
+                <div class="botoes-grupo">
+                    <button type="button" class="btn-secundario btn-registro"
+                        onclick="window.location.href='Registro_inspecoes.html'">
+                        <img src="../templates/assets/img/pasta.png" alt="Histórico"> Inspeções do Dia
+                    </button>
+                    <button type="button" class="btn-principal btn-azul-claro">
+                        <img src="../templates/assets/img/mais.png" alt="Simbolo de mais"> Criar função
+                    </button>
+                    <button type="button" class="btn-secundario btn-filtro">
+                        <img src="../templates/assets/img/filtro-branco.png" alt="Filtrar"> Filtrar
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid-funcoes">
+
+                <div class="card-funcao">
+                    <div class="card-conteudo">
+                        <h3>Pedreiro</h3>
+                        <p class="qtd-epis">7 EPIs obrigatórios</p>
+                        <ul class="lista-prev-epis">
+                            <li>Capacete com jugular</li>
+                            <li>Óculos anti-impacto</li>
+                            <li>Luvas de vaqueta/raspa</li>
+                            <li class="mais-itens">+4 mais...</li>
+                        </ul>
+                        <button type="button" class="btn-acao-card">Editar função</button>
+                    </div>
+                </div>
+
+                <div class="card-funcao">
+                    <div class="card-conteudo">
+                        <h3>Servente de Obras</h3>
+                        <p class="qtd-epis">6 EPIs obrigatórios</p>
+                        <ul class="lista-prev-epis">
+                            <li>Capacete</li>
+                            <li>Óculos de proteção</li>
+                            <li>Luvas de vaqueta</li>
+                            <li class="mais-itens">+3 mais...</li>
+                        </ul>
+                        <button type="button" class="btn-acao-card">Editar função</button>
+                    </div>
+                </div>
+
+                <div class="card-funcao">
+                    <div class="card-conteudo">
+                        <h3>Mestre de Obras</h3>
+                        <p class="qtd-epis">6 EPIs obrigatórios</p>
+                        <ul class="lista-prev-epis">
+                            <li>Capacete</li>
+                            <li>Óculos</li>
+                            <li>Botina</li>
+                            <li class="mais-itens">+3 mais...</li>
+                        </ul>
+                        <button type="button" class="btn-acao-card">Editar função</button>
+                    </div>
+                </div>
+
+                <div class="card-funcao">
+                    <div class="card-conteudo">
+                        <h3>Encarregado</h3>
+                        <p class="qtd-epis">5 EPIs obrigatórios</p>
+                        <ul class="lista-prev-epis">
+                            <li>Capacete</li>
+                            <li>Óculos</li>
+                            <li>Botina</li>
+                            <li class="mais-itens">+2 mais...</li>
+                        </ul>
+                        <button type="button" class="btn-acao-card">Editar função</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="modal-card">
+            <header class="modal-header">
+
+                <h2>Criar nova função</h2>
+
+                <button type="button" class="btn-fechar-modal-editar">
+                    <img src="../templates/assets/img/x_preto.png" alt="x preto">
+                </button>
+            </header>
+
+            <form class="modal-corpo">
+                <div class="modal-campo">
+                    <label for="nome-funcao">Nome da Função</label>
+                    <input type="text" id="nome-funcao" placeholder="Ex: Gesseiro / Drywall">
+                </div>
+
+                <div class="modal-campo">
+                    <label for="epi-1">EPI - 1</label>
+                    <input type="text" id="epi-1" placeholder="Insira o nome do EPI 1">
+                </div>
+
+                <div class="modal-botoes">
+                    <button type="button" class="btn-modal-adicionar">Adicionar EPI</button>
+                    <button type="submit" class="btn-modal-salvar">Criar função</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-editar">
+        <div class="modal-card">
+            <header class="modal-header">
+
+                <h2>Editar função</h2>
+                <button type="button" class="btn-fechar-modal-editar">
+                    <img src="../templates/assets/img/x_preto.png" alt="x preto">
+                </button>
+            </header>
+
+            <form class="modal-corpo" id="form-editar">
+                <div class="modal-campo">
+                    <label for="editar-nome-funcao">Nome da Função</label>
+                    <input type="text" id="editar-nome-funcao" placeholder="Ex: Gesseiro / Drywall">
+                </div>
+
+                <div id="editar-campos-epis"></div>
+
+                <div class="modal-botoes">
+                    <button type="button" class="btn-modal-adicionar-editar">Adicionar EPI</button>
+                    <button type="submit" class="btn-modal-salvar">Salvar alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ===== VARIÁVEIS =====
+        let contadorEPI = 1;
+        let contadorEPIEditar = 1;
+        let funcaoAtual = null;
+
+        // ===== MODAL CRIAR =====
+        const modalCriar = document.querySelector('.modal-overlay');
+        const btnAbrirCriar = document.querySelector('.btn-azul-claro');
+        const btnFecharCriar = document.querySelector('.btn-fechar-modal-editar');
+        const btnAdicionarEPI = document.querySelector('.btn-modal-adicionar');
+        const modalCorpoCriar = document.querySelector('.modal-corpo');
+        const botoesContainerCriar = document.querySelector('.modal-botoes');
+
+        // ABRIR MODAL CRIAR
+        if (btnAbrirCriar) {
+            btnAbrirCriar.addEventListener('click', function(e) {
+                e.preventDefault();
+                abrirModal(modalCriar);
+            });
+        }
+
+        // FECHAR MODAL CRIAR (X)
+        if (btnFecharCriar) {
+            btnFecharCriar.addEventListener('click', function(e) {
+                e.preventDefault();
+                fecharModal(modalCriar);
+                resetarFormCriar();
+            });
+        }
+
+        // ADICIONAR EPI NO MODAL CRIAR
+        if (btnAdicionarEPI && modalCorpoCriar && botoesContainerCriar) {
+            btnAdicionarEPI.addEventListener('click', function(e) {
+                e.preventDefault();
+                contadorEPI++;
+
+                const novoCampo = document.createElement('div');
+                novoCampo.className = 'modal-campo';
+                novoCampo.style.marginTop = '1rem';
+                novoCampo.innerHTML = `
+                    <label for="epi-${contadorEPI}">EPI - ${contadorEPI}</label>
+                    <input type="text" id="epi-${contadorEPI}" placeholder="Insira o nome do EPI ${contadorEPI}">
+                `;
+
+                modalCorpoCriar.insertBefore(novoCampo, botoesContainerCriar);
+            });
+        }
+
+        // ===== MODAL EDITAR =====
+        const modalEditar = document.getElementById('modal-editar');
+        const btnFecharEditar = document.querySelector('#modal-editar .btn-fechar-modal-editar');
+        const btnAdicionarEPIEditar = document.querySelector('.btn-modal-adicionar-editar');
+        const modalCorpoEditar = document.getElementById('form-editar');
+        const botoesContainerEditar = document.querySelector('#form-editar .modal-botoes');
+        const containerCamposEPIs = document.getElementById('editar-campos-epis');
+
+        // BOTÕES "EDITAR FUNÇÃO" NOS CARDS
+        const botoesEditar = document.querySelectorAll('.btn-acao-card');
+
+        botoesEditar.forEach((botao, index) => {
+            botao.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const card = this.closest('.card-funcao');
+                const nomeFuncao = card.querySelector('h3').textContent;
+                const listaEPIs = card.querySelectorAll('.lista-prev-epis li:not(.mais-itens)');
+
+                document.getElementById('editar-nome-funcao').value = nomeFuncao;
+
+                containerCamposEPIs.innerHTML = '';
+
+                listaEPIs.forEach((epi, i) => {
+                    const num = i + 1;
+                    const campo = document.createElement('div');
+                    campo.className = 'modal-campo';
+                    campo.style.marginTop = i === 0 ? '0' : '1rem';
+                    campo.innerHTML = `
+                        <label for="editar-epi-${num}">EPI - ${num}</label>
+                        <input type="text" id="editar-epi-${num}" value="${epi.textContent.trim()}">
+                    `;
+                    containerCamposEPIs.appendChild(campo);
+                });
+
+                contadorEPIEditar = listaEPIs.length;
+                funcaoAtual = index;
+
+                abrirModal(modalEditar);
+            });
+        });
+
+        // FECHAR MODAL EDITAR (X)
+        if (btnFecharEditar) {
+            btnFecharEditar.addEventListener('click', function(e) {
+                e.preventDefault();
+                fecharModal(modalEditar);
+            });
+        }
+
+        // ADICIONAR EPI NO MODAL EDITAR
+        if (btnAdicionarEPIEditar && modalCorpoEditar && botoesContainerEditar) {
+            btnAdicionarEPIEditar.addEventListener('click', function(e) {
+                e.preventDefault();
+                contadorEPIEditar++;
+
+                const novoCampo = document.createElement('div');
+                novoCampo.className = 'modal-campo';
+                novoCampo.style.marginTop = '1rem';
+                novoCampo.innerHTML = `
+                    <label for="editar-epi-${contadorEPIEditar}">EPI - ${contadorEPIEditar}</label>
+                    <input type="text" id="editar-epi-${contadorEPIEditar}" placeholder="Insira o nome do EPI ${contadorEPIEditar}">
+                `;
+
+                modalCorpoEditar.insertBefore(novoCampo, botoesContainerEditar);
+            });
+        }
+
+        // ===== FUNÇÕES COMPARTILHADAS =====
+
+        function abrirModal(modal) {
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function fecharModal(modal) {
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // FECHAR MODAL CLICANDO FORA
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    fecharModal(this);
+                    if (this === modalCriar) {
+                        resetarFormCriar();
+                    }
+                }
+            });
+        });
+
+        // FECHAR MODAL COM TECLA ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (modalEditar.style.display === 'flex') {
+                    fecharModal(modalEditar);
+                } else if (modalCriar.style.display === 'flex') {
+                    fecharModal(modalCriar);
+                    resetarFormCriar();
+                }
+            }
+        });
+
+        // RESETAR FORMULÁRIO CRIAR
+        function resetarFormCriar() {
+            if (modalCorpoCriar) {
+                modalCorpoCriar.reset();
+            }
+            const camposExtras = modalCorpoCriar.querySelectorAll('.modal-campo:not(:first-child):not(:nth-child(2))');
+            camposExtras.forEach(campo => campo.remove());
+            contadorEPI = 1;
+        }
+
+        // SUBMIT DO FORM CRIAR
+        if (modalCorpoCriar) {
+            modalCorpoCriar.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Função criada com sucesso!');
+                fecharModal(modalCriar);
+                resetarFormCriar();
+            });
+        }
+
+        // SUBMIT DO FORM EDITAR
+        if (modalCorpoEditar) {
+            modalCorpoEditar.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Função editada com sucesso!');
+                fecharModal(modalEditar);
+            });
+        }
+    });
+</script>
+</body>
+
+</html>

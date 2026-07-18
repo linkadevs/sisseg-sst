@@ -1,0 +1,1065 @@
+@import 'global.css';
+
+body {
+    background-color: #f7f8fa;
+    padding: 2.5rem;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.nav-interna .btn-voltar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #1F2937;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.nav-interna .btn-voltar:hover {
+    opacity: 0.7;
+}
+
+.nav-interna .btn-voltar img {
+    height: 1.1rem;
+}
+
+.header-dashboard {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.8rem;
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.titulo-sessao img {
+    height: 4rem;
+    width: auto;
+}
+
+.titulo-sessao {
+    display: flex;
+    gap: 1rem;
+}
+
+.textos h1 {
+    font-size: 2.6rem;
+    color: #000000;
+    margin: 0 0 0.6rem 0;
+    font-weight: bold;
+}
+
+.textos p {
+    font-size: 1.3rem;
+    color: #4B5563;
+    margin: 0;
+}
+
+.card-contador {
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 0.6rem;
+    padding: 1.4rem 2.2rem;
+    min-width: 16rem;
+}
+
+.contador-label {
+    font-size: 1.1rem;
+    color: #3B82F6;
+    margin: 0 0 0.5rem 0;
+}
+
+.contador-numero {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1D4ED8;
+    margin: 0;
+}
+
+.barra-ferramentas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.8rem;
+    flex-wrap: wrap;
+}
+
+.campo-busca {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.campo-busca input {
+    width: 100%;
+    padding: 1.3rem 1.3rem 1.3rem 4rem;
+    font-size: 1.3rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.8rem;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-busca input:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.lupa-busca {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.8rem;
+}
+
+.botoes-grupo {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-principal,
+.btn-secundario {
+    padding: 1rem 2.2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+button img {
+    height: 1.5rem;
+    width: auto;
+}
+
+.btn-principal {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+}
+
+.btn-principal:hover {
+    background-color: #2563EB;
+    transform: translateY(-1px);
+}
+
+.btn-principal:active {
+    transform: translateY(0);
+}
+
+.btn-secundario {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+}
+
+.btn-secundario:hover {
+    background-color: #2563EB;
+    transform: translateY(-1px);
+}
+
+.btn-registro {
+    background-color: #FFFFFF !important;
+    color: #3B82F6 !important;
+    border: 1px solid #3B82F6 !important;
+}
+
+.btn-registro:hover {
+    background-color: #EFF6FF !important;
+    transform: translateY(-1px);
+}
+
+.btn-registro:active {
+    transform: translateY(0);
+}
+
+.grid-funcoes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3.5rem;
+}
+
+.card-funcao {
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #E5E7EB;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-funcao:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.06);
+}
+
+.card-conteudo {
+    padding: 2.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-conteudo h3 {
+    font-size: 1.6rem;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+}
+
+.qtd-epis {
+    font-size: 1.15rem;
+    color: #6B7280;
+    margin: 0 0 1.5rem 0;
+}
+
+.lista-prev-epis {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.lista-prev-epis li {
+    font-size: 1.15rem;
+    color: #4B5563;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.lista-prev-epis li::before {
+    content: "•";
+    color: #3B82F6;
+    font-size: 1.4rem;
+}
+
+.lista-prev-epis .mais-itens {
+    color: #9CA3AF;
+    font-size: 1rem;
+    padding-left: 0.2rem;
+}
+
+.lista-prev-epis .mais-itens::before {
+    content: "";
+}
+
+.btn-acao-card {
+    background-color: #F3F4F6;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+    padding: 1.1rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto;
+    transition: all 0.2s ease;
+}
+
+.btn-acao-card:hover {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border-color: #3B82F6;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(31, 41, 55, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-card {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 0.8rem;
+    padding: 3rem;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+}
+
+.modal-corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 2rem;
+    color: #1F2937;
+    margin: 0;
+    font-weight: 600;
+}
+
+.btn-fechar-modal-editar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    padding: 0;
+}
+
+.btn-fechar-modal-editar:hover {
+    opacity: 0.6;
+}
+
+.btn-fechar-modal-editar img {
+    height: 1.5rem;
+    width: auto;
+}
+
+.modal-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.modal-campo label {
+    font-size: 1.2rem;
+    color: #737373;
+    font-weight: bold;
+}
+
+.modal-campo input {
+    width: 100%;
+    padding: 1.1rem;
+    font-size: 1.2rem;
+    background-color: #F3F4F6;
+    border: none;
+    border-radius: 0.6rem;
+    box-sizing: border-box;
+}
+
+.modal-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.btn-modal-adicionar {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    padding: 1.1rem;
+    font-size: 1.25rem;
+    border-radius: 0.6rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-modal-adicionar:hover {
+    background-color: #2563EB;
+}
+
+.btn-modal-adicionar-editar {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    padding: 1.1rem;
+    font-size: 1.25rem;
+    border-radius: 0.6rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-modal-adicionar-editar:hover {
+    background-color: #2563EB;
+}
+
+.btn-modal-salvar {
+    background-color: #044E77;
+    color: #FFFFFF;
+    padding: 1.1rem;
+    font-size: 1.25rem;
+    border-radius: 0.6rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-modal-salvar:hover {
+    background-color: #033958;
+}
+
+#editar-campos-epis {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* ============================================
+   RESPONSIVIDADE COMPLETA ATÉ 340px
+   ============================================ */
+
+/* TABLET (768px - 1024px) */
+@media (max-width: 1024px) {
+    .grid-funcoes {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .header-dashboard {
+        padding: 2rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .textos h1 {
+        font-size: 2.2rem;
+    }
+    
+    .barra-ferramentas {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .campo-busca {
+        width: 100%;
+        order: 2;
+        flex: 0 0 100%;
+    }
+    
+    .botoes-grupo {
+        order: 1;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .btn-principal,
+    .btn-secundario {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+        flex: 0 1 auto;
+    }
+}
+
+/* MOBILE GRANDE (600px - 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 1.5rem;
+    }
+    
+    .container {
+        gap: 1.5rem;
+    }
+    
+    .header-dashboard {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+    }
+    
+    .titulo-sessao {
+        width: 100%;
+    }
+    
+    .titulo-sessao img {
+        height: 3rem;
+    }
+    
+    .textos h1 {
+        font-size: 1.8rem;
+    }
+    
+    .textos p {
+        font-size: 1.1rem;
+    }
+    
+    .card-contador {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        min-width: unset;
+    }
+    
+    .contador-numero {
+        font-size: 2rem;
+    }
+    
+    .barra-ferramentas {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .campo-busca {
+        width: 100%;
+        order: 2;
+        flex: 0 0 100%;
+    }
+    
+    .campo-busca input {
+        padding: 1rem 1rem 1rem 3.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .lupa-busca {
+        height: 1.5rem;
+        left: 1.2rem;
+    }
+    
+    .botoes-grupo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        gap: 0.6rem;
+        order: 1;
+        flex-wrap: wrap;
+    }
+    
+    .btn-principal,
+    .btn-secundario {
+        flex: 0 1 auto;
+        justify-content: center;
+        padding: 0.9rem 1.5rem;
+        font-size: 1.1rem;
+        min-width: 140px;
+    }
+    
+    .grid-funcoes {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin-top: 2rem;
+    }
+    
+    .card-conteudo {
+        padding: 1.5rem;
+    }
+    
+    .card-conteudo h3 {
+        font-size: 1.4rem;
+    }
+    
+    .lista-prev-epis li {
+        font-size: 1rem;
+    }
+    
+    .modal-card {
+        margin: 1.5rem;
+        padding: 2rem;
+        max-width: 100%;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .modal-campo input {
+        font-size: 1rem;
+        padding: 0.9rem;
+    }
+    
+    .btn-modal-adicionar,
+    .btn-modal-salvar,
+    .btn-modal-adicionar-editar {
+        font-size: 1.1rem;
+        padding: 0.9rem;
+    }
+}
+
+/* MOBILE MÉDIO (480px - 600px) */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+    
+    .container {
+        gap: 1.2rem;
+    }
+    
+    .header-dashboard {
+        padding: 1.2rem;
+        border-radius: 0.6rem;
+    }
+    
+    .textos h1 {
+        font-size: 1.5rem;
+    }
+    
+    .textos p {
+        font-size: 0.95rem;
+    }
+    
+    .card-contador {
+        padding: 0.8rem 1rem;
+    }
+    
+    .contador-label {
+        font-size: 0.9rem;
+    }
+    
+    .contador-numero {
+        font-size: 1.6rem;
+    }
+    
+    .campo-busca input {
+        padding: 0.8rem 0.8rem 0.8rem 2.8rem;
+        font-size: 0.95rem;
+    }
+    
+    .lupa-busca {
+        height: 1.2rem;
+        left: 0.8rem;
+    }
+    
+    .botoes-grupo {
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-principal,
+    .btn-secundario {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95rem;
+        min-width: 120px;
+        flex: 0 1 auto;
+    }
+    
+    button img {
+        height: 1.2rem;
+    }
+    
+    .grid-funcoes {
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .card-conteudo {
+        padding: 1.2rem;
+    }
+    
+    .card-conteudo h3 {
+        font-size: 1.2rem;
+    }
+    
+    .qtd-epis {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    
+    .lista-prev-epis {
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .lista-prev-epis li {
+        font-size: 0.9rem;
+    }
+    
+    .btn-acao-card {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* MOBILE PEQUENO (340px - 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: 0.8rem;
+    }
+    
+    .container {
+        gap: 1rem;
+    }
+    
+    .nav-interna .btn-voltar {
+        font-size: 0.95rem;
+    }
+    
+    .nav-interna .btn-voltar img {
+        height: 0.9rem;
+    }
+    
+    .header-dashboard {
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+    
+    .titulo-sessao {
+        gap: 0.6rem;
+    }
+    
+    .titulo-sessao img {
+        height: 2.5rem;
+    }
+    
+    .textos h1 {
+        font-size: 1.3rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .textos p {
+        font-size: 0.85rem;
+    }
+    
+    .card-contador {
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.4rem;
+    }
+    
+    .contador-label {
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .contador-numero {
+        font-size: 1.4rem;
+    }
+    
+    .campo-busca input {
+        padding: 0.7rem 0.7rem 0.7rem 2.5rem;
+        font-size: 0.9rem;
+        border-radius: 0.5rem;
+    }
+    
+    .lupa-busca {
+        height: 1rem;
+        left: 0.7rem;
+    }
+    
+    .botoes-grupo {
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-principal,
+    .btn-secundario {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+        border-radius: 0.4rem;
+        gap: 0.4rem;
+        min-width: 100px;
+        flex: 0 1 auto;
+    }
+    
+    button img {
+        height: 1rem;
+    }
+    
+    .grid-funcoes {
+        gap: 0.8rem;
+        margin-top: 1rem;
+    }
+    
+    .card-funcao {
+        border-radius: 0.6rem;
+    }
+    
+    .card-conteudo {
+        padding: 1rem;
+    }
+    
+    .card-conteudo h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .qtd-epis {
+        font-size: 0.85rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .lista-prev-epis {
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+    }
+    
+    .lista-prev-epis li {
+        font-size: 0.85rem;
+        gap: 0.4rem;
+    }
+    
+    .lista-prev-epis li::before {
+        font-size: 1rem;
+    }
+    
+    .lista-prev-epis .mais-itens {
+        font-size: 0.8rem;
+    }
+    
+    .btn-acao-card {
+        padding: 0.7rem;
+        font-size: 0.85rem;
+        border-radius: 0.4rem;
+    }
+    
+    .modal-overlay {
+        align-items: flex-end;
+    }
+    
+    .modal-card {
+        margin: 0;
+        padding: 1.2rem;
+        border-radius: 0.8rem 0.8rem 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+        gap: 1.2rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .btn-fechar-modal-editar img {
+        height: 1.2rem;
+    }
+    
+    .modal-campo {
+        gap: 0.4rem;
+    }
+    
+    .modal-campo label {
+        font-size: 0.9rem;
+    }
+    
+    .modal-campo input {
+        font-size: 0.9rem;
+        padding: 0.7rem;
+        border-radius: 0.4rem;
+    }
+    
+    .modal-botoes {
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+    }
+    
+    .btn-modal-adicionar,
+    .btn-modal-salvar,
+    .btn-modal-adicionar-editar {
+        font-size: 0.95rem;
+        padding: 0.8rem;
+        border-radius: 0.4rem;
+    }
+}
+
+/* MOBILE EXTRA PEQUENO (até 340px) */
+@media (max-width: 340px) {
+    body {
+        padding: 0.5rem;
+    }
+    
+    .container {
+        gap: 0.8rem;
+    }
+    
+    .nav-interna .btn-voltar {
+        font-size: 0.85rem;
+    }
+    
+    .header-dashboard {
+        padding: 0.7rem;
+        border-radius: 0.4rem;
+    }
+    
+    .titulo-sessao img {
+        height: 2rem;
+    }
+    
+    .textos h1 {
+        font-size: 1.1rem;
+    }
+    
+    .textos p {
+        font-size: 0.75rem;
+    }
+    
+    .card-contador {
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .contador-label {
+        font-size: 0.7rem;
+    }
+    
+    .contador-numero {
+        font-size: 1.2rem;
+    }
+    
+    .campo-busca input {
+        padding: 0.6rem 0.6rem 0.6rem 2.2rem;
+        font-size: 0.8rem;
+        border-radius: 0.4rem;
+    }
+    
+    .lupa-busca {
+        height: 0.9rem;
+        left: 0.6rem;
+    }
+    
+    .botoes-grupo {
+        gap: 0.3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-principal,
+    .btn-secundario {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.75rem;
+        border-radius: 0.3rem;
+        gap: 0.3rem;
+        min-width: 80px;
+        flex: 0 1 auto;
+    }
+    
+    button img {
+        height: 0.9rem;
+    }
+    
+    .grid-funcoes {
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+    }
+    
+    .card-conteudo {
+        padding: 0.8rem;
+    }
+    
+    .card-conteudo h3 {
+        font-size: 0.95rem;
+    }
+    
+    .qtd-epis {
+        font-size: 0.75rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .lista-prev-epis {
+        gap: 0.3rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .lista-prev-epis li {
+        font-size: 0.75rem;
+    }
+    
+    .btn-acao-card {
+        padding: 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .modal-card {
+        padding: 0.8rem;
+        gap: 0.8rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1rem;
+    }
+    
+    .btn-fechar-modal-editar img {
+        height: 1rem;
+    }
+    
+    .modal-campo label {
+        font-size: 0.8rem;
+    }
+    
+    .modal-campo input {
+        font-size: 0.8rem;
+        padding: 0.6rem;
+    }
+    
+    .btn-modal-adicionar,
+    .btn-modal-salvar,
+    .btn-modal-adicionar-editar {
+        font-size: 0.85rem;
+        padding: 0.6rem;
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .modal-card {
+        padding: 1rem;
+        max-height: 85vh;
+        overflow-y: auto;
+        gap: 1rem;
+    }
+    
+    .modal-campo {
+        gap: 0.3rem;
+    }
+    
+    .modal-campo input {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .modal-botoes {
+        flex-direction: row;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn-modal-adicionar,
+    .btn-modal-salvar,
+    .btn-modal-adicionar-editar {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+}
+
+@media (hover: none) {
+    .card-funcao:hover {
+        transform: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    }
+    
+    .btn-acao-card:hover {
+        background-color: #F3F4F6;
+        color: #374151;
+        border-color: #E5E7EB;
+    }
+    
+    .btn-acao-card:active {
+        background-color: #3B82F6;
+        color: #FFFFFF;
+        border-color: #3B82F6;
+    }
+}

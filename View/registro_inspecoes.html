@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Inspeções Diárias</title>
+    <link rel="stylesheet" href="../templates/assets/css/Registro_inspecoes.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="nav-interna">
+            <a href="Modulo_funcoes.html" class="btn-voltar">
+                <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar"> Voltar ao Painel
+            </a>
+        </div>
+
+        <header class="header-registro">
+            <div class="titulo-sessao">
+                <h1>Inspeções de Hoje</h1>
+                <p>Histórico e monitoramento de EPIs por função</p>
+            </div>
+            <div class="resumo-cards-dia">
+                <div class="mini-card verde">
+                    <p class="qtd">2</p>
+                    <p class="legenda">Liberados</p>
+                </div>
+                <div class="mini-card vermelho">
+                    <p class="qtd">1</p>
+                    <p class="legenda">Recusados</p>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="card-tabela-container">
+                <table class="tabela-inspecoes">
+                    <thead>
+                        <tr>
+                            <th>Colaborador</th>
+                            <th>Função</th>
+                            <th>Horário</th>
+                            <th>EPIs Verificados</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="colaborador-info"><p class="nome">Carlos Eduardo Santos</p></div></td>
+                            <td><span class="tag-funcao">Mestre de Obras</span></td>
+                            <td class="horario">07:42</td>
+                            <td class="epis-status">6 / 6</td>
+                            <td><span class="status-badge verde">Liberado</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="colaborador-info"><p class="nome">Marcos Aurélio Lima</p></div></td>
+                            <td><span class="tag-funcao">Pedreiro</span></td>
+                            <td class="horario">08:05</td>
+                            <td class="epis-status de-recusa">4 / 7</td>
+                            <td><span class="status-badge vermelho">Recusado</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="colaborador-info"><p class="nome">André Luiz Sousa</p></div></td>
+                            <td><span class="tag-funcao">Servente de Obras</span></td>
+                            <td class="horario">08:12</td>
+                            <td class="epis-status">6 / 6</td>
+                            <td><span class="status-badge verde">Liberado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
