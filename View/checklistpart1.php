@@ -31,7 +31,7 @@
     <button
         class="btn_ver_checklists"
         type="button"
-        onclick="window.location.href='checklistsrealizados.php'">
+        onclick="window.location.href='visualizacao_checklists.html'">
         Ver Checklists Realizados
     </button>
 </div>
