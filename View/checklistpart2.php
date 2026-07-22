@@ -1,3 +1,22 @@
+<?php
+
+session_start();
+
+date_default_timezone_set("America/Bahia");
+
+if (!isset($_SESSION["checagem"])) {
+    header("Location: checklistpart1.php");
+    exit;
+}
+
+$dados = $_SESSION["checagem"];
+
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,22 +38,27 @@
 
     <main>
 
-        <form id="formChecklist" method="POST">
-
+        <form id="formChecklist" method="POST" action="../Controller/ChecklistController.php?acao=salvarChecklist">
             <div class="container_topo">
                 <div class="dados">
                     <h1>Checklist em Andamento</h1>
                     <p>
                         Responsável:
-                        <strong id="responsavel">---</strong>
+                        <strong
+                            id="responsavel"><?= htmlspecialchars($dados["responsavel"], ENT_QUOTES, "UTF-8") ?></strong>
                     </p>
 
                     <p>
                         Turno:
-                        <strong id="turno">---</strong>
+                        <strong id="turno"><?= htmlspecialchars($dados["turno"], ENT_QUOTES, "UTF-8"); ?></strong>
                     </p>
 
-                    <p>Data: <strong id="data">--/--/----</strong></p>
+                    <p>
+                        Data e Hora:
+
+                        <strong id="data"><?= date("d/m/Y H:i:s") ?></strong>
+
+                    </p>
                 </div>
 
                 <div class="progresso">
@@ -366,7 +390,7 @@
 
             <div class="btn_finalizar">
 
-                <button class="btn_finalizar_checklist" type="button" id="btnFinalizarChecklist">
+                <button class="btn_finalizar_checklist" type="submit" id="btnFinalizarChecklist">
 
                     <img class="icone_finalizar" src="../templates/assets/img/finalizarChecklist.png" alt="Finalizar">
 
