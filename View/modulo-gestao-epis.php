@@ -1,3 +1,36 @@
+<?php 
+
+use Controller\EpiController;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/EpiController.php';
+
+$epiController = new EpiController();
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if(
+    !empty($_POST['epiNome']) && 
+    !empty($_POST['epiDescricao']) && 
+    !empty($_POST['epiFuncao']) && 
+    !empty($_POST['epi_ca']) && 
+    !empty($_POST['epiQuantidade']) && 
+    !empty($_POST['epiMinimo']) &&
+    !empty($_POST['epiStatus'])
+  ) {
+    $epiController->create_epi(
+      $_POST['epiNome'],
+      $_POST['epiDescricao'],
+      $_POST['epiFuncao'],
+      $_POST['epi_ca'],
+      $_POST['epiQuantidade'],
+      $_POST['epiMinimo'],
+      $_POST['epiStatus']
+    );
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -484,42 +517,42 @@
       </button>
       <h2 class="modal-title" id="modalEpiTitle">Novo EPI</h2>
 
-      <form id="formEpi" onsubmit="salvarEPI(event)">
+      <form id="formEpi" method="POST">
         <input type="hidden" id="epiId" value="">
 
         <div class="form-group">
           <label class="form-label" for="epiNome">Nome do EPI</label>
-          <input type="text" id="epiNome" class="form-input" placeholder="Ex: Capacete de Segurança" required>
+          <input type="text" name="epiNome" id="epiNome" class="form-input" placeholder="Ex: Capacete de Segurança" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiDescricao">Descrição</label>
-          <textarea type="text" id="epiDescricao" class="form-input" placeholder="Insira a descrição do EPI" required></textarea>
+          <textarea type="text" name="epiDescricao" id="epiDescricao" class="form-input" placeholder="Insira a descrição do EPI" required></textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiFuncao">Função</label>
-          <textarea type="text" id="epiFuncao" class="form-input" placeholder="Insira a função do EPI" required></textarea>
+          <textarea type="text" name="epiFuncao" id="epiFuncao" class="form-input" placeholder="Insira a função do EPI" required></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="epi_ca">Função</label>
-          <textarea type="text" id="epi_ca" class="form-input" placeholder="Insira o nº do certificado de aprovação do EPI" required></textarea>
+          <label class="form-label" for="epi_ca">CA</label>
+          <textarea type="text" name="epi_ca" id="epi_ca" class="form-input" placeholder="Insira o nº do certificado de aprovação do EPI" required></textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiQuantidade">Quantidade Disponível</label>
-          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0" required>
+          <input type="number" name="epiQuantidade" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiMinimo">Quantidade Mínima</label>
-          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0" required>
+          <input type="number" name="epiMinimo" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiStatus">Status</label>
-          <select id="epiStatus" class="form-select">
+          <select id="epiStatus" name="epiStatus" class="form-select">
             <option value="ok">OK</option>
             <option value="alert">Alerta</option>
             <option value="critical">Crítico</option>

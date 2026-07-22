@@ -250,7 +250,7 @@ form h2 {
     color: #5d359c;
 }
 
-.input input {
+.input input, .input select {
     border-style: none;
     border-radius: 1rem;
     padding: .8rem 0 .8rem 2rem;

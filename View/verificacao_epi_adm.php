@@ -1,3 +1,15 @@
+<?php
+
+use Controller\EpiController;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/EpiController.php';
+
+$epiController = new EpiController();
+
+$epis = $epiController->get_all_epis();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -22,7 +34,12 @@
                 </div>
                 <div class="input">
                     <label for="epi-1">EPI - 1</label>
-                    <input type="text" name="epi-1" id="epi-1" placeholder="Insira o nome do EPI 1">
+                    <select name="epi-1" id="epi-1">
+                        <?php foreach($epis as $epi):?>
+                            <option value="<?= htmlspecialchars($epi['id_epi'])?>"><?= htmlspecialchars($epi['nome_epi'])?></option>
+                        <?php endforeach;?>
+                    </select>
+                    <!-- <input type="text" name="epi-1" id="epi-1" placeholder="Insira o nome do EPI 1"> -->
                 </div>
                 <div class="input">
                     <label for="funcao-1">Função - 1</label>
