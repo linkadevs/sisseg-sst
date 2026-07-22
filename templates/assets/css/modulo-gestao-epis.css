@@ -724,6 +724,10 @@ body {
   background: #fff;
 }
 
+textarea {
+  resize: vertical;
+}
+
 .form-input:focus,
 .form-select:focus {
   border-color: var(--blue-icon);

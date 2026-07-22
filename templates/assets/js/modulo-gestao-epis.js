@@ -44,106 +44,106 @@ function fecharModalEpi() {
   editandoId = null;
 }
 
-function salvarEPI(event) {
-  event.preventDefault();
+// function salvarEPI(event) {
+//   event.preventDefault();
 
-  const nome = document.getElementById('epiNome').value.trim();
-  const quantidade = parseInt(document.getElementById('epiQuantidade').value);
-  const minimo = parseInt(document.getElementById('epiMinimo').value);
-  const status = document.getElementById('epiStatus').value;
-  const id = document.getElementById('epiId').value;
+//   const nome = document.getElementById('epiNome').value.trim();
+//   const quantidade = parseInt(document.getElementById('epiQuantidade').value);
+//   const minimo = parseInt(document.getElementById('epiMinimo').value);
+//   const status = document.getElementById('epiStatus').value;
+//   const id = document.getElementById('epiId').value;
 
-  if (!nome || isNaN(quantidade) || isNaN(minimo)) {
-    alert('Preencha todos os campos corretamente.');
-    return;
-  }
+//   if (!nome || isNaN(quantidade) || isNaN(minimo)) {
+//     alert('Preencha todos os campos corretamente.');
+//     return;
+//   }
 
-  if (id) {
-    const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-    if (row) {
-      row.querySelector('.stock-name').textContent = nome;
-      row.querySelector('.stock-qty').textContent = `Disponível: ${quantidade} | Mínimo: ${minimo}`;
-      row.className = `stock-row status-${status}`;
+//   if (id) {
+//     const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+//     if (row) {
+//       row.querySelector('.stock-name').textContent = nome;
+//       row.querySelector('.stock-qty').textContent = `Disponível: ${quantidade} | Mínimo: ${minimo}`;
+//       row.className = `stock-row status-${status}`;
 
-      const badge = row.querySelector('.badge');
-      badge.className = `badge ${status}`;
-      badge.textContent = status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico';
+//       const badge = row.querySelector('.badge');
+//       badge.className = `badge ${status}`;
+//       badge.textContent = status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico';
 
-      const icon = row.querySelector('.stock-icon');
-      icon.className = `stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}`;
-    }
-  } else {
-    const stockList = document.getElementById('stock-list');
-    const newId = Date.now();
+//       const icon = row.querySelector('.stock-icon');
+//       icon.className = `stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}`;
+//     }
+//   } else {
+//     const stockList = document.getElementById('stock-list');
+//     const newId = Date.now();
 
-    const newRow = document.createElement('div');
-    newRow.className = `stock-row status-${status}`;
-    newRow.setAttribute('data-id', newId);
-    newRow.innerHTML = `
-            <span class="stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
-            </span>
-            <div class="stock-info">
-                <p class="stock-name">${nome}</p>
-                <p class="stock-qty">Disponível: ${quantidade} | Mínimo: ${minimo}</p>
-            </div>
-            <span class="badge ${status}">${status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico'}</span>
-            <div class="stock-actions">
-                <button class="btn-icon" onclick="editarEPI(${newId})" title="Editar EPI">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                </button>
-                <button class="btn-icon" onclick="aumentarQtd(${newId})" title="Aumentar quantidade">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-                <button class="btn-icon" onclick="diminuirQtd(${newId})" title="Diminuir quantidade">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-                <button class="btn-icon btn-danger" onclick="excluirEPI(${newId})" title="Excluir EPI">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                </button>
-            </div>
-        `;
-    stockList.appendChild(newRow);
-  }
+//     const newRow = document.createElement('div');
+//     newRow.className = `stock-row status-${status}`;
+//     newRow.setAttribute('data-id', newId);
+//     newRow.innerHTML = `
+//             <span class="stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}">
+//                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
+//             </span>
+//             <div class="stock-info">
+//                 <p class="stock-name">${nome}</p>
+//                 <p class="stock-qty">Disponível: ${quantidade} | Mínimo: ${minimo}</p>
+//             </div>
+//             <span class="badge ${status}">${status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico'}</span>
+//             <div class="stock-actions">
+//                 <button class="btn-icon" onclick="editarEPI(${newId})" title="Editar EPI">
+//                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+//                 </button>
+//                 <button class="btn-icon" onclick="aumentarQtd(${newId})" title="Aumentar quantidade">
+//                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+//                 </button>
+//                 <button class="btn-icon" onclick="diminuirQtd(${newId})" title="Diminuir quantidade">
+//                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+//                 </button>
+//                 <button class="btn-icon btn-danger" onclick="excluirEPI(${newId})" title="Excluir EPI">
+//                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+//                 </button>
+//             </div>
+//         `;
+//     stockList.appendChild(newRow);
+//   }
 
-  fecharModalEpi();
-}
+//   fecharModalEpi();
+// }
 
-function excluirEPIModal() {
-  const id = document.getElementById('epiId').value;
-  if (id && confirm('Tem certeza que deseja excluir este EPI?')) {
-    excluirEPI(parseInt(id));
-    fecharModalEpi();
-  }
-}
+// function excluirEPIModal() {
+//   const id = document.getElementById('epiId').value;
+//   if (id && confirm('Tem certeza que deseja excluir este EPI?')) {
+//     excluirEPI(parseInt(id));
+//     fecharModalEpi();
+//   }
+// }
 
 // ===== FUNÇÕES DE QUANTIDADE =====
 
-function aumentarQtd(id) {
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (!row) return;
+// function aumentarQtd(id) {
+//   const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+//   if (!row) return;
 
-  const qtdText = row.querySelector('.stock-qty').textContent;
-  const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
-  const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
-  const novaQtd = disponivel + 1;
+//   const qtdText = row.querySelector('.stock-qty').textContent;
+//   const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
+//   const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
+//   const novaQtd = disponivel + 1;
 
-  row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
-  atualizarStatus(row, novaQtd, minimo);
-}
+//   row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
+//   atualizarStatus(row, novaQtd, minimo);
+// }
 
-function diminuirQtd(id) {
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (!row) return;
+// function diminuirQtd(id) {
+//   const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+//   if (!row) return;
 
-  const qtdText = row.querySelector('.stock-qty').textContent;
-  const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
-  const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
-  const novaQtd = Math.max(0, disponivel - 1);
+//   const qtdText = row.querySelector('.stock-qty').textContent;
+//   const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
+//   const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
+//   const novaQtd = Math.max(0, disponivel - 1);
 
-  row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
-  atualizarStatus(row, novaQtd, minimo);
-}
+//   row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
+//   atualizarStatus(row, novaQtd, minimo);
+// }
 
 function atualizarStatus(row, disponivel, minimo) {
   let status;
@@ -172,17 +172,17 @@ function atualizarStatus(row, disponivel, minimo) {
 
 // ===== FUNÇÃO DE EXCLUSÃO =====
 
-function excluirEPI(id) {
-  if (!confirm('Tem certeza que deseja excluir este EPI permanentemente?')) return;
+// function excluirEPI(id) {
+//   if (!confirm('Tem certeza que deseja excluir este EPI permanentemente?')) return;
 
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (row) {
-    row.style.transition = 'all 0.3s ease';
-    row.style.opacity = '0';
-    row.style.transform = 'translateX(-20px)';
-    setTimeout(() => row.remove(), 300);
-  }
-}
+//   const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+//   if (row) {
+//     row.style.transition = 'all 0.3s ease';
+//     row.style.opacity = '0';
+//     row.style.transform = 'translateX(-20px)';
+//     setTimeout(() => row.remove(), 300);
+//   }
+// }
 
 // ===== FUNÇÕES EXISTENTES (Trocas e Check-in) =====
 
