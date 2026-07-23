@@ -15,9 +15,27 @@ class ChecklistController
         $this->checagem = new Checagem();
     }
 
+
     /*
-        Recebe os dados da primeira etapa do checklist
-        e guarda temporariamente na SESSION.
+    |--------------------------------------------------------------------------
+    | Página 1
+    | Carrega administradores
+    |--------------------------------------------------------------------------
+    */
+
+    public function carregarChecklist()
+    {
+        $administradores = $this->checagem->listarAdministradores();
+        require "../View/checklistpart1.php";
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página 1 -> Página 2
+    | Salva dados temporários na SESSION
+    |--------------------------------------------------------------------------
     */
 
     public function iniciar()
@@ -28,37 +46,37 @@ class ChecklistController
 
             header("Location: ../View/checklistpart1.php");
             exit;
+
         }
 
-        // Agora recebe o ID do administrador
-        $idAdm = intval($_POST["id_adm"] ?? 0);
+        $id_adm = intval($_POST["id_adm"] ?? 0);
 
         $turno = trim($_POST["turno"] ?? "");
 
-        if ($idAdm <= 0 || empty($turno)) {
 
-            $_SESSION["erro"] = "Todos os campos são obrigatórios.";
+        if ($id_adm <= 0 || empty($turno)) {
+
+            $_SESSION["erro"] = "Preencha todos os campos.";
 
             header("Location: ../View/checklistpart1.php");
+
             exit;
         }
 
-        // Busca o administrador no banco
-        $administrador = $this->checagem->buscarAdministradorPorId($idAdm);
+
+        $administrador = $this->checagem->buscarAdministradorPorId($id_adm);
+
 
         if (!$administrador) {
 
             $_SESSION["erro"] = "Administrador inválido.";
 
             header("Location: ../View/checklistpart1.php");
+
             exit;
+
         }
 
-        $turno = htmlspecialchars(
-            $turno,
-            ENT_QUOTES,
-            "UTF-8"
-        );
 
         $_SESSION["checagem"] = [
 
@@ -71,20 +89,97 @@ class ChecklistController
         ];
 
         header("Location: ../View/checklistpart2.php");
+
         exit;
+
     }
 
-    public function carregarChecklist()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página 2 -> Página 3
+    | Salva checklist e prepara resultado
+    |--------------------------------------------------------------------------
+    */
+
+
+    public function salvarChecklist()
     {
-        $administradores = $this->checagem->listarAdministradores();
+        session_start();
 
-        require "../View/checklistpart1.php";
+        // mantém os dados da página 1
+        if (!isset($_SESSION["checagem"])) {
+
+            header("Location: ../View/checklistpart1.php");
+            exit;
+
+        }
+
+        // dados vindos da página 1
+        $dados = $_SESSION["checagem"];
+
+
+
+        // dados vindos da página 2 (checkboxes)
+        $postData = $_POST;
+
+
+        // envia para a Model
+        $resultado = $this->checagem->salvarChecklist(
+            $postData,
+            $dados
+        );
+
+        // abre página 3
+        require "../View/checklistresultado.php";
+
     }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página 4
+    | Lista todos os checklists
+    |--------------------------------------------------------------------------
+    */
+
+    public function listarChecklists()
+    {
+        $checklists = $this->checagem->listarTodosChecklists();
+        require "../View/visualizacao_checklists.php";
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página 4
+    | Pesquisa
+    |--------------------------------------------------------------------------
+    */
+
+    public function pesquisarChecklists()
+    {
+        $pesquisa = trim($_GET["pesquisa"] ?? "");
+
+        if (empty($pesquisa)) {
+            $checklists = $this->checagem->listarTodosChecklists();
+
+        } else {
+            $checklists = $this->checagem->buscarChecklistsPorPesquisa($pesquisa);
+        }
+
+        require "../View/visualizacao_checklists.php";
+
+    }
+
 }
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Roteamento
+| Rotas
 |--------------------------------------------------------------------------
 */
 
@@ -95,17 +190,35 @@ $acao = $_GET["acao"] ?? "";
 switch ($acao) {
 
     case "carregar":
-
         $controller->carregarChecklist();
         break;
 
-    case "iniciar":
 
+
+    case "iniciar":
         $controller->iniciar();
         break;
 
-    default:
 
+
+    case "salvar":
+        $controller->salvarChecklist();
+
+        break;
+
+
+    case "listar":
+        $controller->listarChecklists();
+        break;
+
+
+    case "pesquisar":
+
+        $controller->pesquisarChecklists();
+        break;
+
+    default:
         header("Location: ../View/checklistpart1.php");
         exit;
+
 }

@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const erroAssinatura = document.getElementById("erroAssinatura");
 
     const progressoTexto = document.querySelector(".progresso-text");
-    const progressoHidden = document.getElementById("progressoChecklist");
 
     if (
         !modal ||
@@ -39,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let assinou = false;
 
     // ===========================
-    // CONFIGURA CANVAS
+    // CONFIGURA O CANVAS
     // ===========================
 
     function configurarCanvas() {
@@ -138,13 +137,13 @@ document.addEventListener("DOMContentLoaded", () => {
     fecharModalCancelar.addEventListener("click", fecharModal);
 
     // ===========================
-    // LIMPAR
+    // LIMPAR ASSINATURA
     // ===========================
 
     btnLimpar.addEventListener("click", limparAssinaturaTemporaria);
 
     // ===========================
-    // DESENHO MOUSE
+    // DESENHO COM MOUSE
     // ===========================
 
     function iniciar(e) {
@@ -190,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("mouseleave", parar);
 
     // ===========================
-    // TOUCH
+    // DESENHO TOUCH
     // ===========================
 
     function iniciarTouch(e) {
@@ -296,12 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
         progressoTexto.textContent =
             porcentagem + "% Concluído";
 
-        if (progressoHidden) {
-
-            progressoHidden.value = porcentagem;
-
-        }
-
     }
 
     grupos.forEach(grupo => {
@@ -374,8 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
         abrirAssinatura.classList.remove(
             "erro_assinatura"
         );
-
-        atualizarProgresso();
 
         formChecklist.submit();
 
