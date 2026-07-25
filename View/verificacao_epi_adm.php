@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="gerencie">Gerencie as atividades realizadas pelo trabalhador</p>
                 <div class="atvs">
                     <p>Total de atividades</p>
-                    <h2>11</h2>
+                    <h2><?= htmlspecialchars(count($atividades))?></h2>
                 </div>
             </div>
             <div class="search_div">
