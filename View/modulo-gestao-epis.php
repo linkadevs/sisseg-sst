@@ -26,6 +26,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_POST['epiMinimo'],
       $_POST['epiStatus']
     );
+    header('Location: modulo-gestao-epis.php');
+    exit;
   }
 }
 

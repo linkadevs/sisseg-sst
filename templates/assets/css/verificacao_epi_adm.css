@@ -181,6 +181,10 @@ h1 {
 
 .card figure img {
     width: 25rem;
+    height: 9rem;
+    object-fit: cover;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
 }
 
 .card button {
@@ -224,10 +228,14 @@ form {
     border-radius: 1rem;
 }
 
-form figure img {
+form figure {
     position: absolute;
     left: 2rem;
     top: 2rem;
+    cursor: pointer;
+}
+
+form figure img {
     width: 2rem;
 }
 
@@ -250,11 +258,24 @@ form h2 {
     color: #5d359c;
 }
 
-.input input, .input select {
+.input input, .input select, .foto {
     border-style: none;
     border-radius: 1rem;
     padding: .8rem 0 .8rem 2rem;
     background-color: #f4f6f5;
+}
+
+.foto {
+    color: #707170;
+    text-align: left;
+}
+
+.input select {
+    color: #707170;
+}
+
+#foto {
+    display: none;
 }
 
 .inputs {
@@ -265,7 +286,7 @@ form h2 {
     overflow-y: scroll;
 }
 
-form button {
+.form_button {
     font-size: 1.4rem;
     font-weight: 500;
     box-shadow: 0 .1rem .4rem 0 rgba(0, 0, 0, 0.4);
