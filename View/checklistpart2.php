@@ -1,8 +1,5 @@
 <?php
-
 session_start();
-
-date_default_timezone_set("America/Bahia");
 
 if (!isset($_SESSION["checagem"])) {
     header("Location: checklistpart1.php");
@@ -10,13 +7,7 @@ if (!isset($_SESSION["checagem"])) {
 }
 
 $dados = $_SESSION["checagem"];
-
 ?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -38,7 +29,7 @@ $dados = $_SESSION["checagem"];
 
     <main>
 
-        <form id="formChecklist" method="POST" action="../Controller/ChecklistController.php?acao=salvarChecklist">
+        <form id="formChecklist" method="POST" action="../Controller/ChecklistController.php?acao=salvar">
             <div class="container_topo">
                 <div class="dados">
                     <h1>Checklist em Andamento</h1>
@@ -173,13 +164,13 @@ $dados = $_SESSION["checagem"];
                 </label>
 
                 <label class="item_check">
-                    <input type="checkbox" name="maquinas[]" value="Guincho/guindaste inspecionado">
-                    <span>Guincho/guindaste inspecionado</span>
+                    <input type="checkbox" name="maquinas[]" value="Guincho/Guindaste inspecionado">
+                    <span>Guincho/Guindaste inspecionado</span>
                 </label>
 
                 <label class="item_check">
-                    <input type="checkbox" name="maquinas[]" value="Retroescavadeira/empilhadeira OK">
-                    <span>Retroescavadeira/empilhadeira OK</span>
+                    <input type="checkbox" name="maquinas[]" value="Retroescavadeira/Empilhadeira OK">
+                    <span>Retroescavadeira/Empilhadeira OK</span>
                 </label>
 
             </div>
@@ -237,7 +228,7 @@ $dados = $_SESSION["checagem"];
                 <label class="item_check"><input type="checkbox" name="nr35[]"
                         value="Ancoragens certificadas"><span>Ancoragens certificadas</span></label>
                 <label class="item_check"><input type="checkbox" name="nr35[]" value="PT emitida"><span>PT emitida
-                        (Quando necessário)</span></label>
+                        (quando necessário)</span></label>
 
             </div>
 
