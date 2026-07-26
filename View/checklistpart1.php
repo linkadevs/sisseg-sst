@@ -1,3 +1,18 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/ChecklistController.php';
+
+use Controller\ChecklistController;
+
+$checklistController = new ChecklistController();
+
+$checklistController->carregarChecklist();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -58,7 +73,7 @@
                             Selecione o responsável
                         </option>
 
-                        <?php foreach ($administradores as $adm): ?>
+                        <?php foreach ($_SESSION['administradores'] as $adm): ?>
 
                             <option value="<?= $adm["id_adm"] ?>">
 

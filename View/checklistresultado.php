@@ -53,7 +53,7 @@ $resultado = array_merge($defaults, $resultado);
                     <span id="statusResultado"
                         class="<?= htmlspecialchars($resultado['classe_status'], ENT_QUOTES, 'UTF-8') ?>">
 
-                        <?= htmlspecialchars($resultado['status'], ENT_QUOTES, 'UTF-8') ?>
+                        <?= htmlspecialchars(strtoupper($resultado['status']), ENT_QUOTES, 'UTF-8') ?>
 
                     </span>
 
@@ -90,7 +90,7 @@ $resultado = array_merge($defaults, $resultado);
             </div>
         </div>
 
-        <?php if ($resultado["classe_status"] == "nao_conforme"): ?>
+        <?php if ($resultado["classe_status"] == "status_nao_conforme"): ?>
 
             <div class="container_nao_conforme" id="containerNaoConforme">
 
@@ -100,14 +100,14 @@ $resultado = array_merge($defaults, $resultado);
                     <h2>
                         Itens Não Conformes
                         (<span id="totalNaoConformes">
-                            <?= $resultado["total_nao_conformes"] ?>
+                            <?= count($resultado["total"]) ?>
                         </span>)
                     </h2>
                 </div>
 
                 <div class="lista_nao_conformes" id="listaNaoConformes">
 
-                    <?php foreach ($resultado["itens_nao_conformes"] as $item): ?>
+                    <?php foreach ($resultado["total"] as $item): ?>
 
                         <div class="item_nao_conforme">
                             <strong>
@@ -150,7 +150,7 @@ $resultado = array_merge($defaults, $resultado);
 
         <?php endif; ?>
 
-        <?php if ($resultado["classe_status"] == "parcialmente_conforme"): ?>
+        <?php if ($resultado["classe_status"] == "status_parcialmente_conforme"): ?>
 
             <div class="container_parcialmente_conforme" id="containerParcialmenteConforme">
 
@@ -158,14 +158,14 @@ $resultado = array_merge($defaults, $resultado);
                     <h2>
                         Itens Parcialmente Conformes
                         (<span id="totalParcialmenteConformes">
-                            <?= $resultado["total_parcialmente_conformes"] ?>
+                            <?= count($resultado["total"]) ?>
                         </span>)
                     </h2>
                 </div>
 
                 <div class="lista_parcialmente_conformes" id="listaParcialmenteConformes">
 
-                    <?php foreach ($resultado["itens_parcialmente_conformes"] as $item): ?>
+                    <?php foreach ($resultado["total"] as $item): ?>
 
                         <div class="item_parcialmente_conforme">
 
@@ -208,7 +208,7 @@ $resultado = array_merge($defaults, $resultado);
 
         <?php endif; ?>
 
-        <?php if ($resultado["classe_status"] == "conforme"): ?>
+        <?php if ($resultado["classe_status"] == "status_conforme"): ?>
 
             <div class="container_conforme_wrapper" id="containerConforme">
                 <div class="container_conforme">
@@ -260,7 +260,7 @@ $resultado = array_merge($defaults, $resultado);
 
                     <div class="barra">
                         <!-- CORREÇÃO DO HTML DA BARRA DE PROGRESSO -->
-                        <div class="barra_progresso" style="width: <?= $grupo["percentual"] ?>%;"></div>
+                        <div class="barra_progresso" style="width: <?= $grupo["percentual"] ?>%; background-color: #16A34A;"></div>
                     </div>
 
                 </div>
@@ -271,11 +271,11 @@ $resultado = array_merge($defaults, $resultado);
 
         <div class="opcoes_botoes">
 
-            <button type="button" class="btn_novo_checklist" onclick="window.location.href='checklistpart1.php'">
+            <button type="button" class="btn_novo_checklist" onclick="window.location.href='/sisseg-sst/View/checklistpart1.php'">
                 Novo Checklist
             </button>
 
-            <button type="button" class="btn_voltar_paginainicial" onclick="window.location.href='principal_adm.php'">
+            <button type="button" class="btn_voltar_paginainicial" onclick="window.location.href='/sisseg-sst/View/principal_adm.php'">
                 Voltar ao Menu Principal
             </button>
 

@@ -1,9 +1,16 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($checklists) || !is_array($checklists)) {
     $checklists = [];
 }
 // Recupera o termo de pesquisa (já disponível na página)
 $pesquisa = $_GET['pesquisa'] ?? '';
+
+$checklists = $_SESSION['checklists'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -33,13 +40,22 @@ $pesquisa = $_GET['pesquisa'] ?? '';
         <div class="search_div">
             <div class="search_input">
                 <figure><img src="../templates/assets/img/lupa_azul.png" alt=""></figure>
-                <form action="../Controller/ChecklistController.php?acao=pesquisar" method="GET" style="display: contents;">
-                    <input type="text" name="pesquisa" id="search" placeholder="Busque por atividades"
+                <form class="form" action="../Controller/ChecklistController.php?acao=pesquisar" method="GET" style="display: contents;">
+                    <input class="pesquisa_visible" type="text" name="pesquisa" id="search" placeholder="Busque por atividades"
                            value="<?= htmlspecialchars($pesquisa) ?>">
+                    <input type="hidden" name="acao" value="pesquisar">
                 </form>
             </div>
             <div class="buttons">
-                <button type="button" id="btnLimpar">Limpar</button>
+                <form action="../Controller/ChecklistController.php?acao=pesquisar" method="GET">
+                    <button type="submit" id="btnLimpar">Limpar</button>
+                    <input type="hidden" name="acao" value="pesquisar">
+                </form>
+                <form action="../Controller/ChecklistController.php?acao=pesquisar" method="GET">
+                    <button type="submit" id="btnBuscar">Buscar</button>
+                    <input type="hidden" name="acao" value="pesquisar">
+                    <input type="hidden" name="pesquisa" id="search2" placeholder="Busque por atividades">
+                </form>
             </div>
         </div>
 
@@ -47,9 +63,9 @@ $pesquisa = $_GET['pesquisa'] ?? '';
             <?php if (empty($checklists)): ?>
                 <div style="grid-column: 1/-1; text-align: center; padding: 50px; font-size: 1.3rem; color: #666;">
                     <?php if (!empty($pesquisa)): ?>
-                        <h3>Nenhum checklist encontrado.</h3>
+                        <h3 class="nenhum_checklist">Nenhum checklist encontrado.</h3>
                     <?php else: ?>
-                        <h3>Nenhum checklist realizado.</h3>
+                        <h3 class="nenhum_checklist">Nenhum checklist realizado.</h3>
                     <?php endif; ?>
                 </div>
             <?php else: ?>
@@ -88,9 +104,16 @@ $pesquisa = $_GET['pesquisa'] ?? '';
                     e.preventDefault();
                     // Limpa o campo e recarrega a lista sem filtro
                     document.getElementById('search').value = '';
-                    window.location.href = '../Controller/ChecklistController.php?acao=listar';
+                    window.location.href = '../Controller/ChecklistController.php?acao=pesquisar';
                 });
             }
+
+            const input_pesquisa = document.querySelector('.pesquisa_visible')
+            const input_hidden = document.querySelector('#search2')
+
+            input_pesquisa.addEventListener('input', () => {
+                input_hidden.value = input_pesquisa.value
+            })
         });
     </script>
 </body>

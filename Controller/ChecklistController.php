@@ -2,11 +2,11 @@
 
 namespace Controller;
 
-use Model\Checagem;
+use Model\Checklist;
 
 
 require_once __DIR__ . '/../Model/Connection.php';
-require_once __DIR__ . '/../Model/ChecklistModel.php';
+require_once __DIR__ . '/../Model/Checklist.php';
 
 
 class ChecklistController
@@ -15,7 +15,7 @@ class ChecklistController
 
     public function __construct()
     {
-        $this->checagem = new Checagem();
+        $this->checagem = new Checklist();
         
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -25,7 +25,8 @@ class ChecklistController
     public function carregarChecklist()
     {
         $administradores = $this->checagem->listarAdministradores();
-        require "../View/checklistpart1.php";
+        $_SESSION['administradores'] = $administradores;
+        // require "../View/checklistpart1.php";
     }
 
     public function iniciar()
@@ -93,19 +94,20 @@ class ChecklistController
     {
         // O Model já retorna o setor_adm silenciosamente
         $checklists = $this->checagem->listarTodosChecklists();
-        require "../View/visualizacao_checklists.php";
+        $_SESSION['checklists'] = $checklists;
+        // require "../View/visualizacao_checklists.php";
     }
 
     public function pesquisarChecklists()
     {
         $pesquisa = trim($_GET["pesquisa"] ?? "");
-        $pesquisa = filter_var($pesquisa, FILTER_SANITIZE_STRING);
-        
         if (empty($pesquisa)) {
             $checklists = $this->checagem->listarTodosChecklists();
+            $_SESSION['checklists'] = $checklists;
         } else {
             // A busca no Model já inclui administrador.setor_adm LIKE :pesquisa
             $checklists = $this->checagem->buscarChecklistsPorPesquisa($pesquisa);
+            $_SESSION['checklists'] = $checklists;
         }
         require "../View/visualizacao_checklists.php";
     }

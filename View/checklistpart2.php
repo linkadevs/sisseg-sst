@@ -47,7 +47,7 @@ $dados = $_SESSION["checagem"];
                     <p>
                         Data e Hora:
 
-                        <strong id="data"><?= date("d/m/Y H:i:s") ?></strong>
+                        <strong id="data"></strong>
 
                     </p>
                 </div>
@@ -227,8 +227,8 @@ $dados = $_SESSION["checagem"];
                         value="Cinturões revisados"><span>Cinturões revisados</span></label>
                 <label class="item_check"><input type="checkbox" name="nr35[]"
                         value="Ancoragens certificadas"><span>Ancoragens certificadas</span></label>
-                <label class="item_check"><input type="checkbox" name="nr35[]" value="PT emitida"><span>PT emitida
-                        (quando necessário)</span></label>
+                <label class="item_check"><input type="checkbox" name="nr35[]"
+                        value="PT emitida (quando necessário)"><span>PT emitida (quando necessário)</span></label>
 
             </div>
 
@@ -396,7 +396,33 @@ $dados = $_SESSION["checagem"];
         </form>
 
     </main>
+    <script>
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+        const agora = new Date().toLocaleString('pt-BR', { 
+            timeZone: userTimeZone,
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+
+        document.getElementById('data').textContent = `${agora}`;
+
+        // Detecta a timezone do navegador (ex: "America/Bahia" ou "America/Sao_Paulo")
+        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Verifica se o cookie já existe ou se precisa atualizar
+        if (!document.cookie.includes('user_tz=' + encodeURIComponent(userTz))) {
+        // Salva no cookie por 7 dias
+        document.cookie = `user_tz=${encodeURIComponent(userTz)}; max-age=${7 * 86400}; path=/; SameSite=Lax`;
+        
+        // Recarrega a página apenas na primeira vez para o PHP pegar o cookie imediatamente
+        location.reload();
+        }
+    </script>
     <script src="../templates/assets/js/checklistpart2.js"></script>
 
 </body>

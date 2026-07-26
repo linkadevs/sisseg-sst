@@ -5,10 +5,13 @@ namespace Model;
 use Model\Connection;
 use PDO;
 use PDOException;
+use Exception;
+use DateTime;
+use DateTimeZone;
 
 require_once __DIR__ . '/../Model/Connection.php';
 
-class Checagem
+class Checklist
 {
     private $conexao;
 
@@ -147,6 +150,18 @@ class Checagem
         $itensNaoConformes = [];
         $itensParcialmenteConformes = [];
         $itensBanco = [];
+        $total = [];
+        
+        // $postData (
+        //     [organizacao] => Array
+        //         (
+        //             [0] => Tapumes e cercamento instalados
+        //             [1] => Identificação da obra e CNPJ
+        //         )
+
+        //     [observacoes] => ""
+        //     [assinatura] => "data:image/png;base64,iVBORw0K..."
+        // )
 
         foreach ($this->itensChecklist as $grupo => $dadosGrupo) {
             $nomeGrupo = $dadosGrupo["nome"];
@@ -168,6 +183,7 @@ class Checagem
                 $itensBanco[] = ["nome" => $item, "valor" => $marcado ? 1 : 0];
 
                 if (!$marcado) {
+                    $total[] = ["grupo" => $nomeGrupo, "descricao" => $item];
                     if ($conformes == 0) {
                         $itensNaoConformes[] = ["grupo" => $nomeGrupo, "descricao" => $item];
                     } else {
@@ -178,21 +194,23 @@ class Checagem
             $totalItens += $totalGrupo;
             $totalConformes += $conformes;
         }
+        
 
         $progresso = $totalItens > 0 ? round(($totalConformes / $totalItens) * 100) : 0;
 
         if ($progresso == 100) {
             $status = "Conforme";
-            $classe_status = "conforme";
+            $classe_status = "status_conforme";
         } elseif ($progresso >= 70) {
             $status = "Parcialmente Conforme";
-            $classe_status = "parcialmente_conforme";
+            $classe_status = "status_parcialmente_conforme";
         } else {
             $status = "Não Conforme";
-            $classe_status = "nao_conforme";
+            $classe_status = "status_nao_conforme";
         }
+        $userTz = $_COOKIE['user_tz'] ?? 'UTC';
 
-        $data_checklist = date("Y-m-d H:i:s");
+        $data_checklist = (new DateTime('now', new DateTimeZone($userTz)))->format('d/m/y H:i:s');
         $turno_checklist = $dados["turno"];
         $observacao_checklist = $postData["observacoes"] ?? "";
         $id_adm_fk = $dados["id_adm"];
@@ -206,11 +224,13 @@ class Checagem
         $this->inserirChecklistCheckbox($id_checklist, $itensBanco);
         $administrador = $this->buscarAdministradorPorId($id_adm_fk);
 
+
+
         return [
             "id_checklist" => $id_checklist,
             "responsavel" => $administrador ? $administrador["nome_adm"] : "Desconhecido",
             "turno" => $turno_checklist,
-            "data" => date("d/m/Y H:i"),
+            "data" => (new DateTime('now', new DateTimeZone($userTz)))->format('d/m/y H:i:s'),
             "status" => $status,
             "classe_status" => $classe_status,
             "progresso" => $progresso,
@@ -218,7 +238,8 @@ class Checagem
             "total_nao_conformes" => count($itensNaoConformes),
             "total_parcialmente_conformes" => count($itensParcialmenteConformes),
             "itens_nao_conformes" => $itensNaoConformes,
-            "itens_parcialmente_conformes" => $itensParcialmenteConformes
+            "itens_parcialmente_conformes" => $itensParcialmenteConformes,
+            "total" => $total
         ];
     }
 
@@ -227,16 +248,20 @@ class Checagem
         try {
             $sql = "INSERT INTO checklist (data_checklist, turno_checklist, progresso_checklist, status_checklist, observacao_checklist, id_adm_fk) VALUES (:data_checklist, :turno_checklist, :progresso_checklist, :status_checklist, :observacao_checklist, :id_adm_fk)";
             $stmt = $this->conexao->prepare($sql);
-            $stmt->bindValue(":data_checklist", $data_checklist);
-            $stmt->bindValue(":turno_checklist", $turno_checklist);
-            $stmt->bindValue(":progresso_checklist", $progresso_checklist);
-            $stmt->bindValue(":status_checklist", $status_checklist);
-            $stmt->bindValue(":observacao_checklist", $observacao_checklist);
+            $stmt->bindValue(":data_checklist", $data_checklist, PDO::PARAM_STR);
+            $stmt->bindValue(":turno_checklist", $turno_checklist, PDO::PARAM_STR);
+            $stmt->bindValue(":progresso_checklist", $progresso_checklist, PDO::PARAM_INT);
+            $stmt->bindValue(":status_checklist", $status_checklist, PDO::PARAM_STR);
+            $stmt->bindValue(":observacao_checklist", $observacao_checklist, PDO::PARAM_STR);
             $stmt->bindValue(":id_adm_fk", $id_adm_fk, PDO::PARAM_INT);
             $stmt->execute();
-            return (int) $this->conexao->lastInsertId();
+            return $this->conexao->lastInsertId();
         } catch (PDOException $e) {
-            return 0;
+            throw new Exception(
+                'Erro ao inserir checklist',
+                0,
+                $e
+            );
         }
     }
 
@@ -271,13 +296,21 @@ class Checagem
     public function buscarChecklistsPorPesquisa($pesquisa)
     {
         try {
-            $sql = "SELECT checklist.id_checklist, checklist.data_checklist, checklist.turno_checklist, checklist.progresso_checklist, checklist.status_checklist, checklist.observacao_checklist, administrador.nome_adm, administrador.setor_adm FROM checklist INNER JOIN administrador ON checklist.id_adm_fk = administrador.id_adm WHERE administrador.nome_adm LIKE :pesquisa OR administrador.setor_adm LIKE :pesquisa OR checklist.turno_checklist LIKE :pesquisa OR checklist.status_checklist LIKE :pesquisa OR DATE_FORMAT(checklist.data_checklist,'%d/%m/%Y') LIKE :pesquisa ORDER BY checklist.data_checklist DESC";
+            $sql = "SELECT checklist.id_checklist, checklist.data_checklist, checklist.turno_checklist, checklist.progresso_checklist, checklist.status_checklist, checklist.observacao_checklist, administrador.nome_adm, administrador.setor_adm FROM checklist INNER JOIN administrador ON checklist.id_adm_fk = administrador.id_adm WHERE (administrador.nome_adm LIKE :pesquisa OR administrador.setor_adm LIKE :pesquisa1 OR checklist.turno_checklist LIKE :pesquisa2 OR checklist.status_checklist LIKE :pesquisa3 OR DATE_FORMAT(checklist.data_checklist,'%d/%m/%Y') LIKE :pesquisa4) ORDER BY checklist.data_checklist DESC";
             $stmt = $this->conexao->prepare($sql);
-            $stmt->bindValue(":pesquisa", "%" . $pesquisa . "%");
+            $stmt->bindValue(":pesquisa", "%" . $pesquisa . "%", PDO::PARAM_STR);
+            $stmt->bindValue(":pesquisa1", "%" . $pesquisa . "%", PDO::PARAM_STR);
+            $stmt->bindValue(":pesquisa2", "%" . $pesquisa . "%", PDO::PARAM_STR);
+            $stmt->bindValue(":pesquisa3", "%" . $pesquisa . "%", PDO::PARAM_STR);
+            $stmt->bindValue(":pesquisa4", "%" . $pesquisa . "%", PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            return [];
+            throw new Exception(
+                'Erro ao pesquisar checklist',
+                0,
+                $e
+            );
         }
     }
 
@@ -305,6 +338,7 @@ class Checagem
             $estatisticas = [];
             $itensNaoConformesRefinados = [];
             $itensParcialmenteConformesRefinados = [];
+            $total = [];
 
             foreach ($this->itensChecklist as $grupo => $dadosGrupo) {
                 $nomeGrupo = $dadosGrupo["nome"];
@@ -335,6 +369,7 @@ class Checagem
                         }
                     }
                     if (!$marcado) {
+                        $total[] = ["grupo" => $nomeGrupo, "descricao" => $item];
                         if ($conformes == 0) {
                             $itensNaoConformesRefinados[] = ["grupo" => $nomeGrupo, "descricao" => $item];
                         } else {
@@ -343,21 +378,21 @@ class Checagem
                     }
                 }
             }
-
             return [
                 "id_checklist" => $checklist['id_checklist'],
                 "responsavel" => $checklist['nome_adm'],
                 "turno" => $checklist['turno_checklist'],
                 "data" => date("d/m/Y H:i", strtotime($checklist['data_checklist'])),
                 "status" => $checklist['status_checklist'],
-                "classe_status" => strtolower(str_replace(' ', '_', $checklist['status_checklist'])),
+                "classe_status" => 'status_'.strtolower(str_replace(' ', '_', $checklist['status_checklist'])),
                 "progresso" => $checklist['progresso_checklist'],
                 "observacao" => $checklist['observacao_checklist'],
                 "grupos" => $estatisticas,
                 "total_nao_conformes" => count($itensNaoConformesRefinados),
                 "total_parcialmente_conformes" => count($itensParcialmenteConformesRefinados),
                 "itens_nao_conformes" => $itensNaoConformesRefinados,
-                "itens_parcialmente_conformes" => $itensParcialmenteConformesRefinados
+                "itens_parcialmente_conformes" => $itensParcialmenteConformesRefinados,
+                "total" => $total
             ];
         } catch (PDOException $e) {
             return null;
