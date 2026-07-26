@@ -6,7 +6,7 @@ use Model\Connection;
 use PDO;
 use PDOException;
 
-require_once __DIR__ . '/../config/Connection.php';
+require_once __DIR__ . '/../Model/Connection.php';
 
 class Checagem
 {

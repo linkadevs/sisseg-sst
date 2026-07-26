@@ -5,7 +5,9 @@ namespace Controller;
 use Model\Checagem;
 
 
-require_once __DIR__ . "/../Model/ChecklistModel.php";
+require_once __DIR__ . '/../Model/Connection.php';
+require_once __DIR__ . '/../Model/ChecklistModel.php';
+
 
 class ChecklistController
 {
@@ -152,6 +154,6 @@ switch ($acao) {
         $controller->exibirResultado();
         break;
     default:
-        header("Location: ../View/checklistpart1.php");
-        exit;
+        $controller->listarChecklists();
+        break;
 }
