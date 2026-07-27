@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+$erros = $_SESSION['erro_cadastro'] ?? [];
+$dados = $_SESSION['dados_form'] ?? [];
+
+unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -5,8 +14,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Cadastro</title>
-    <link rel="stylesheet" href="../templates/assets/css/cadastro.css">
 
+    <link rel="stylesheet" href="../templates/assets/css/cadastro.css">
 </head>
 
 <body>
@@ -14,7 +23,9 @@
     <main>
 
         <div class="circuloazul1">
-            <figure><img src="../templates/assets/img/circuloazulcadastro1.png" alt="circulo 1"></figure>
+            <figure>
+                <img src="../templates/assets/img/circuloazulcadastro1.png" alt="Circulo 1">
+            </figure>
         </div>
 
         <button class="setavoltarbranca" type="button" onclick="window.location.href='paginainicial.php'">
@@ -24,10 +35,10 @@
             <span>Voltar</span>
         </button>
 
-
-
         <div class="container">
+
             <div class="apresentacao">
+
                 <h1>Bem-Vindo ao<br>SISSEG SST</h1>
 
                 <p>
@@ -35,70 +46,175 @@
                     possibilitando o registro, acompanhamento e
                     organização de dados, documentos e processos.
                 </p>
+
             </div>
 
-
             <div class="card-cadastro">
+
                 <h2>Cadastre-se</h2>
+
                 <p class="subtitulo">
                     Realize o cadastro para ser identificado!
                 </p>
 
-                <form action="login.php" id="formCadastro" method="post">
+                <!-- Mensagens de erro -->
+                <?php if (!empty($erros)): ?>
+
+                    <div style="color: red; text-align:center; margin-bottom:15px;">
+
+                        <?php foreach ($erros as $erro): ?>
+
+                            <p style="margin:5px 0;">
+                                <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?>
+                            </p>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                <?php endif; ?>
+
+                <form action="../Controller/ControllerCad.php" id="formCadastro" method="post">
+
                     <div class="input_nome">
-                        <label>Nome</label>
-                        <input type="text" placeholder="Digite o seu nome completo" required>
+
+                        <label for="nome">Nome</label>
+
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Digite o seu nome completo"
+                            autocomplete="name"
+                            required
+                            value="<?= htmlspecialchars($dados['nome'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
                     </div>
 
                     <div class="input_cpf">
-                        <label>CPF</label>
-                        <input type="text" placeholder="Digite o seu CPF" required>
+
+                        <label for="cpf">CPF</label>
+
+                        <input
+                            type="text"
+                            id="cpf"
+                            name="cpf"
+                            placeholder="Digite o seu CPF"
+                            maxlength="14"
+                            autocomplete="username"
+                            required
+                            value="<?= htmlspecialchars($dados['cpf'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
                     </div>
 
                     <div class="input_senha">
-                        <label>Senha</label>
-                        <input type="password" placeholder="Digite a senha" required>
+
+                        <label for="senha">Senha</label>
+
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite a senha"
+                            autocomplete="new-password"
+                            required>
+
                     </div>
 
                     <div class="input_confirmar_senha">
-                        <label>Confirmar Senha</label>
-                        <input type="password" placeholder="Digite novamente a senha" required>
+
+                        <label for="confirmar_senha">Confirmar Senha</label>
+
+                        <input
+                            type="password"
+                            id="confirmar_senha"
+                            name="confirmar_senha"
+                            placeholder="Digite novamente a senha"
+                            autocomplete="new-password"
+                            required>
+
                     </div>
 
                     <div class="input_turno">
 
-                        <label>Turno</label>
-                        <select name="turno" required>
+                        <label for="turno">Turno</label>
+
+                        <select id="turno" name="turno" required>
+
                             <option value="">Selecione o turno</option>
-                            <option value="matutino">Matutino</option>
-                            <option value="vespertino">Vespertino</option>
-                            <option value="noturno">Noturno</option>
+
+                            <option value="Matutino"
+                                <?= (($dados['turno'] ?? '') == 'Matutino') ? 'selected' : ''; ?>>
+                                Matutino
+                            </option>
+
+                            <option value="Vespertino"
+                                <?= (($dados['turno'] ?? '') == 'Vespertino') ? 'selected' : ''; ?>>
+                                Vespertino
+                            </option>
+
+                            <option value="Noturno"
+                                <?= (($dados['turno'] ?? '') == 'Noturno') ? 'selected' : ''; ?>>
+                                Noturno
+                            </option>
+
+                            <option value="Integral"
+                                <?= (($dados['turno'] ?? '') == 'Integral') ? 'selected' : ''; ?>>
+                                Integral
+                            </option>
+
                         </select>
 
                     </div>
 
                     <div class="input_cargo">
-                        <label>Cargo</label>
-                        <input type="text" placeholder="Digite o seu cargo" required>
+
+                        <label for="cargo">Cargo</label>
+
+                        <input
+                            type="text"
+                            id="cargo"
+                            name="cargo"
+                            placeholder="Digite o seu cargo"
+                            autocomplete="organization-title"
+                            required
+                            value="<?= htmlspecialchars($dados['cargo'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
                     </div>
 
                     <div class="input_setor">
-                        <label>Setor</label>
-                        <input type="text" placeholder="Digite o setor correspondente" required>
+
+                        <label for="setor">Setor</label>
+
+                        <input
+                            type="text"
+                            id="setor"
+                            name="setor"
+                            placeholder="Digite o setor correspondente"
+                            autocomplete="organization"
+                            required
+                            value="<?= htmlspecialchars($dados['setor'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
                     </div>
 
                     <div class="btn_cadastro">
+
                         <button type="submit">
                             Cadastrar
                         </button>
-                    </div>
 
+                    </div>
 
                 </form>
 
                 <p class="login">
+
                     Já tem uma conta?
-                    <a href="login.php" class="link-login">Realize o Login</a>
+
+                    <a href="login.php" class="link-login">
+                        Realize o Login
+                    </a>
+
                 </p>
 
             </div>
@@ -106,7 +222,9 @@
         </div>
 
         <div class="circuloazul2">
-            <figure><img src="../templates/assets/img/circuloazulcadastro2.png" alt="circulo 2"></figure>
+            <figure>
+                <img src="../templates/assets/img/circuloazulcadastro2.png" alt="Circulo 2">
+            </figure>
         </div>
 
     </main>
