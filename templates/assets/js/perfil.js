@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
 
     showStatus('Alterações salvas com sucesso!');
-    alert('Alterações salvas com sucesso!');
   });
 
   /* Fazer Logout */
