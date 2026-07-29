@@ -14,7 +14,12 @@ if(!empty($_SESSION['erro'])) {
     echo "<script>alert('$erro')</script>";
 }
 
-$funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
+$todos_funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
+if(!empty($_GET['pesquisa'])) {
+    $funcionarios = $funcionarioController->pesquisarFuncionario($_GET['pesquisa']);
+} else {
+    $funcionarios = $todos_funcionarios;
+}
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(!empty($_POST['funcionario'])) {
@@ -27,10 +32,25 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['turno'],
                 $_POST['senha']
             );
-            header('Location: gerenciamento_funcionarios.php');
-            exit;
+            
+        }
+        if(is_numeric($_POST['funcionario'])) {
+            $funcionarioController->atualizarFuncionario(
+                $_POST['funcionario'],
+                $_POST['nome'],
+                $_POST['cpf'],
+                $_POST['setor'],
+                $_POST['cargo'],
+                $_POST['turno'],
+                $_POST['senha']
+            );
         }
     }
+    if(!empty($_POST['deletar']) && is_numeric($_POST['deletar'])) {
+        $funcionarioController->deletarFuncionario($_POST['deletar']);
+    }
+    header('Location: gerenciamento_funcionarios.php');
+    exit;
 }
 
 ?>
@@ -65,11 +85,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-grupo">
                             <label for="turno">Turno</label>
                             <select name="turno" id="turno" required>
-                                <option value="placeholder" disabled selected>Selecione o seu turno</option>
-                                <option value="matutino">Matutino</option>
-                                <option value="vespertino">Vespertino</option>
-                                <option value="noturno">Noturno</option>
-                                <option value="integral">Integral</option>
+                                <option class="turno_option" value="placeholder" id="placeholder" disabled selected>Selecione o seu turno</option>
+                                <option class="turno_option" value="Matutino" id="matutino">Matutino</option>
+                                <option class="turno_option" value="Vespertino" id="vespertino">Vespertino</option>
+                                <option class="turno_option" value="Noturno" id="noturno">Noturno</option>
+                                <option class="turno_option" value="Integral" id="integral">Integral</option>
                             </select>
                         </div>
                     </div>
@@ -94,17 +114,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="form-grupo">
                             <label for="setor">Setor</label>
                             <select id="setor" name="setor" required>
-                                <option value="placeholder" disabled selected>Selecione um setor...</option>
-                                <option value="Operacional">Operacional</option>
-                                <option value="HSE / Segurança">HSE / Segurança</option>
-                                <option value="Administrativo">Administrativo</option>
+                                <option class="setor_option" value="placeholder" id="placeholder2" disabled selected>Selecione um setor...</option>
+                                <option class="setor_option" value="Operacional" id="Operacional">Operacional</option>
+                                <option class="setor_option" value="HSE / Segurança" id="HSE / Segurança">HSE / Segurança</option>
+                                <option class="setor_option" value="Administrativo" id="Administrativo">Administrativo</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="modal-acoes">
                         <button type="button" class="btn-secundario" id="btn-cancelar">Cancelar</button>
-                        <button type="submit" class="btn-principal" name="funcionario" value="criar">Salvar Funcionário</button>
+                        <button type="submit" class="btn-principal funcionario" name="funcionario" value="criar">Salvar Funcionário</button>
                     </div>
                 </form>
             </div>
@@ -122,22 +142,26 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="card-contador">
                 <p class="contador-label">Funcionários Ativos</p>
-                <p class="contador-numero"><?= htmlspecialchars(count($funcionarios))?></p>
+                <p class="contador-numero"><?= htmlspecialchars(count($todos_funcionarios))?></p>
             </div>
         </header>
 
         <main>
-            <div class="barra-ferramentas">
+            <form method="GET" class="barra-ferramentas">
                 <div class="campo-busca">
                     <img src="../templates/assets/img/lupa_azul.png" alt="Buscar" class="lupa-busca">
-                    <input type="text" placeholder="Busque por nome, CPF, cargo ou setor...">
+                    <input type="text" id="pesquisa" name="pesquisa" placeholder="Busque por nome, CPF, cargo, turno ou setor...">
                 </div>
                 <div class="botoes-grupo">
+                    <button type="submit" class="btn-principal">Pesquisar</button>
+                    <?php if(!empty($_GET['pesquisa'])):?>
+                        <button type="button" class="btn-perigo">Limpar</button>
+                    <?php endif;?>
                     <button type="button" class="btn-principal adicionar_funcionario">
                         <span class="sinal-mais"><img src="../templates/assets/img/mais.png" alt=""></span> Cadastrar Funcionário
                     </button>
                 </div>
-            </div>
+            </form>
 
             <div class="card-tabela-container">
                 <table class="tabela-funcionarios">
@@ -170,12 +194,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </td>
                                 <td>
                                     <div class="wrapper-acoes">
-                                        <button type="button" class="btn-icone-acao editar" title="Editar dados">
+                                        <button type="button" class="btn-icone-acao editar" title="Editar dados"
+                                        data-id="<?= htmlspecialchars($funcionario['id_funcionario'])?>"
+                                        data-nome="<?= htmlspecialchars($funcionario['nome_funcionario'])?>"
+                                        data-cpf="<?= htmlspecialchars($funcionario['cpf_funcionario'])?>"
+                                        data-cargo="<?= htmlspecialchars($funcionario['cargo_funcionario'])?>"
+                                        data-setor="<?= htmlspecialchars($funcionario['setor_funcionario'])?>"
+                                        data-turno="<?= htmlspecialchars($funcionario['turno_funcionario'])?>">
                                             Editar
                                         </button>
-                                        <button type="button" class="btn-icone-acao deletar" title="Excluir funcionário">
-                                        Excluir
-                                        </button>
+                                        <form method="POST">
+                                            <button type="button" class="btn-icone-acao deletar" title="Excluir funcionário">
+                                                Excluir
+                                            </button>
+                                            <input type="hidden" id="deletar_input" name="deletar" value="<?= htmlspecialchars($funcionario['id_funcionario'])?>">
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

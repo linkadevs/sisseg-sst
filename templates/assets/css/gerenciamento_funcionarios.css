@@ -139,9 +139,35 @@ body {
     white-space: nowrap;
 }
 
+.btn-perigo {
+    padding: 1.2rem 2.2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: none;
+    background-color: #DC2626;
+    color: #FFFFFF;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
 .btn-principal:hover {
     background-color: #2563EB;
     transform: translateY(-1px);
+}
+
+.btn-perigo:hover {
+    background-color: #b11d1d;
+    transform: translateY(-1px);
+}
+
+.botoes-grupo {
+    display: flex;
+    gap: 1rem;
 }
 
 /* Tabela Dinâmica */
@@ -580,7 +606,7 @@ body {
         left: 1.2rem;
     }
 
-    .btn-principal {
+    .btn-principal, .btn-perigo {
         padding: 0.8rem 1.5rem;
         font-size: 1rem;
         justify-content: center;
@@ -683,7 +709,7 @@ body {
         left: 1rem;
     }
 
-    .btn-principal {
+    .btn-principal, .btn-perigo {
         padding: 0.6rem 1.2rem;
         font-size: 0.85rem;
         border-radius: 0.5rem;
