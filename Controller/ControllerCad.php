@@ -155,7 +155,10 @@ class ControllerCad
             // Cadastro realizado com sucesso
             $_SESSION['sucesso_cadastro'] = 'Cadastro realizado com sucesso! Faça o login.';
 
-            header('Location: ../View/login.php');
+            echo "<script>
+        alert('Cadastro realizado com sucesso!');
+        window.location.href = '../View/login.php';
+      </script>";
             exit;
 
         } catch (Exception $e) {
