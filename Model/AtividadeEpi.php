@@ -44,6 +44,24 @@ class AtividadeEpi {
             );
         }
     }
+
+    public function deleteAtvEpiByAtvId(
+        int $id_atividade
+    ) :bool {
+        try {
+            $sql = 'DELETE FROM atividade_epi WHERE id_atividade_fk = :id_atividade';
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':id_atividade' => $id_atividade
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao deletar atv_epi',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

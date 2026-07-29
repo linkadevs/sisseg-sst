@@ -18,20 +18,58 @@ $atividadeController = new AtividadeController();
 
 $nrs = $nrController->getAllNrs();
 $epis = $epiController->get_all_epis();
-$atividades = $atividadeController->getAllAtvs();
+$total_atividades = count($atividadeController->getAllAtvs());
+if(!empty($_GET['search'])){
+    $pesquisa = $_GET['search'];
+    $atividades = $atividadeController->searchAtvs($pesquisa);
+} else {
+    $atividades = $atividadeController->getAllAtvs();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(empty($_POST['id_atividade'])) {
         $atividadeEpiController->createAtvEpi(
             $_POST['nome_atividade'],
-            file_get_contents($_FILES['foto']['tmp_name']),
+            $_POST['icone'],
             $_POST['nr'],
             $_POST['epis']
         );
-        header('Location: verificacao_epi_adm.php');
-        exit;
+    } else {
+        $atividadeEpiController->updateAtvEpi(
+            intval($_POST['id_atividade']),
+            $_POST['nome_atividade'],
+            $_POST['icone'],
+            $_POST['nr'],
+            $_POST['epis']
+        );
     }
+    header('Location: verificacao_epi_adm.php');
+    exit;
 }
+
+$icons = [
+    'chave_inglesa' => '🔧️',
+    'guindaste' => '🏗️',
+    'ferramentas' => '🛠️',
+    'alta_tensao' => '⚡️',
+    'engrenagem' => '⚙️',
+    'fogo' => '🔥',
+    'escada' => '🪜',
+    'trator' => '🚜',
+    'caixa_pacote' => '📦',
+    'caminhao' => '🚛',
+    'deposito_galpao' => '🏬',
+    'etiqueta' => '🏷️',
+    'colete_seguranca' => '🦺',
+    'bota_protecao' => '🥾',
+    'oculos_protecao' => '🥽',
+    'protetor_auricular' => '🎧',
+    'luvas' => '🧤',
+    'mascara_protecao' => '😷',
+    'corda_no' => '🪢',
+    'capacete_obras' => '👷‍♀️',
+    'capacete_obras_sol' => '👷‍♂️'
+]
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
     <body>
         <div class="sombra"></div>
-        <form method="POST" enctype=multipart/form-data>
+        <form class="form" method="POST" enctype=multipart/form-data>
             <figure><img src="../templates/assets/img/seta_esquerda.png" alt=""></figure>
             <h2>Criar nova atividade</h2>
             <div class="inputs">
@@ -63,10 +101,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- <input type="text" name="nr" id="nr" placeholder="Selecione a NR da atividade"> -->
                 </div>
                 <div class="input">
-                    <label for="foto">Foto</label>
-                    <button class="foto" type="button" onclick="document.querySelector('#foto').value = ''; document.querySelector('#foto').click()">Selecione a foto da atividade</button>
+                    <label for="icone">Ícone</label>
+                    <div class="icones">
+                        <button class="icone" value="chave_inglesa" type="button">🔧️</button>
+                        <button class="icone" value="guindaste" type="button">🏗️</button>
+                        <button class="icone" value="ferramentas" type="button">🛠️</button>
+                        <button class="icone" value="alta_tensao" type="button">⚡️</button>
+                        <button class="icone" value="engrenagem" type="button">⚙️</button>
+                        <button class="icone" value="fogo" type="button">🔥</button>
+                        <button class="icone" value="escada" type="button">🪜</button>
+                        <button class="icone" value="trator" type="button">🚜</button>
+                        <button class="icone" value="caixa_pacote" type="button">📦</button>
+                        <button class="icone" value="caminhao" type="button">🚛</button>
+                        <button class="icone" value="deposito_galpao" type="button">🏬</button>
+                        <button class="icone" value="etiqueta" type="button">🏷️</button>
+                        <button class="icone" value="colete_seguranca" type="button">🦺</button>
+                        <button class="icone" value="bota_protecao" type="button">🥾</button> 
+                        <button class="icone" value="oculos_protecao" type="button">🥽</button>
+                        <button class="icone" value="protetor_auricular" type="button">🎧</button>
+                        <button class="icone" value="luvas" type="button">🧤</button>
+                        <button class="icone" value="mascara_protecao" type="button">😷</button>
+                        <button class="icone" value="corda_no" type="button">🪢</button>
+                        <button class="icone" value="capacete_obras" type="button">👷‍♀️</button>
+                        <button class="icone" value="capacete_obras_sol" type="button">👷‍♂️</button>
+                    </div>
                 </div>
-                <input type="file" id="foto" name="foto" accept="image/*">
+                <input type="hidden" id="icone" name="icone">
                 <div class="input">
                     <label for="epi-1">EPI - 1</label>
                     <select name="epis[]" id="epi-1" class="epi">
@@ -106,45 +166,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="gerencie">Gerencie as atividades realizadas pelo trabalhador</p>
                 <div class="atvs">
                     <p>Total de atividades</p>
-                    <h2><?= htmlspecialchars(count($atividades))?></h2>
+                    <h2><?= htmlspecialchars($total_atividades)?></h2>
                 </div>
             </div>
             <div class="search_div">
                 <div class="search_input">
                     <figure><img src="../templates/assets/img/lupa_azul.png" alt=""></figure>
-                    <input type="text" name="search" id="search" placeholder="Busque por atividades">
+                    <form class="search_form" method="GET"><input type="text" name="search" id="search" placeholder="Busque por atividades"></form>
                 </div>
                 <div class="buttons">
                     <button class="criar_atividade">
                         <figure><img src="../templates/assets/img/mais_branco.png" alt=""></figure>
                         Criar atividade
                     </button>
-                    <button>
+                    <button class="send_search">
                         <figure><img src="../templates/assets/img/filtro.png" alt=""></figure>
                         Filtrar
                     </button>
                 </div>
             </div>
             <div class="grid">
-                <div class="card">
-                    <figure><img src="../templates/assets/img/trabalho.png" alt=""></figure>
-                    <div class="title">
-                        <h3 class="trabalho">Trabalho em altura</h3>
-                        <p>NR-35</p>
-                    </div>
-                    <p class="nEPIs">Nº de EPIs: 5</p>
-                    <button>Editar atividade</button>
-                </div>
                 <?php foreach($atividades as $atividade):?>
                     <div class="card">
-                        <figure><img src="data:image/jpeg;base64,<?= base64_encode($atividade['foto_atividade'])?>" alt=""></figure>
+                        <span><?= htmlspecialchars($icons[$atividade['icone_atividade']])?></span>
                         <div class="title">
                             <h3 class="trabalho"><?= htmlspecialchars($atividade['nome_atividade'])?></h3>
                             <p><?= htmlspecialchars($atividade['nome_nr'])?></p>
                         </div>
                         <?php $nomes_epi = explode(', ',$atividade['nome_epi']);?>
                         <p class="nEPIs">Nº de EPIs: <?= htmlspecialchars(count($nomes_epi))?></p>
-                        <button>Editar atividade</button>
+                        <button class="edit" data-id="<?= htmlspecialchars($atividade['id_atividade'])?>" data-name="<?= htmlspecialchars($atividade['nome_atividade'])?>" data-nr="<?= htmlspecialchars($atividade['id_nr'])?>" data-icone="<?= htmlspecialchars($atividade['icone_atividade'])?>" data-epis="<?= htmlspecialchars($atividade['id_epi'])?>">Editar atividade</button>
                     </div>
                 <?php endforeach;?>
                 <!-- <div class="card">
@@ -215,12 +266,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script>
             let opcoesEpi = `
                 <?php foreach($epis as $epi):?>
-                    <option value="<?= htmlspecialchars($epi['id_epi'])?>"><?= htmlspecialchars($epi['nome_epi'])?></option>
+                    <option class="epi_option" value="<?= htmlspecialchars($epi['id_epi'])?>"><?= htmlspecialchars($epi['nome_epi'])?></option>
                 <?php endforeach;?>
             `
             let opcoesNr = `
                 <?php foreach($nrs as $nr):?>
-                    <option value="<?= htmlspecialchars($nr['id_nr'])?>"><?= htmlspecialchars($nr['nome_nr'])?></option>
+                    <option class="nr_option" value="<?= htmlspecialchars($nr['id_nr'])?>"><?= htmlspecialchars($nr['nome_nr'])?></option>
                 <?php endforeach;?>
             `
         </script>
