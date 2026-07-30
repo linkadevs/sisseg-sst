@@ -46,11 +46,11 @@ unset($_SESSION['erro_login'], $_SESSION['dados_login']);
             <!-- Mensagens de erro -->
             <?php if (!empty($erros)): ?>
 
-                <div style="color:red; text-align:center; margin-bottom:15px;">
+                <div class="mensagem-erro">
 
                     <?php foreach ($erros as $erro): ?>
 
-                        <p style="margin:5px 0;">
+                        <p class="erro-item">
                             <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?>
                         </p>
 
@@ -66,14 +66,8 @@ unset($_SESSION['erro_login'], $_SESSION['dados_login']);
 
                     <label for="cpf">CPF</label>
 
-                    <input
-                        type="text"
-                        id="cpf"
-                        name="cpf"
-                        placeholder="Digite o seu CPF"
-                        maxlength="14"
-                        autocomplete="username"
-                        required
+                    <input type="text" id="cpf" name="cpf" placeholder="Digite o seu CPF" maxlength="14"
+                        autocomplete="username" required
                         value="<?= htmlspecialchars($dados['cpf'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 </div>
@@ -82,13 +76,8 @@ unset($_SESSION['erro_login'], $_SESSION['dados_login']);
 
                     <label for="senha">Senha</label>
 
-                    <input
-                        type="password"
-                        id="senha"
-                        name="senha"
-                        placeholder="Digite a sua senha"
-                        autocomplete="current-password"
-                        required>
+                    <input type="password" id="senha" name="senha" placeholder="Digite a sua senha"
+                        autocomplete="current-password" required>
 
                 </div>
 
