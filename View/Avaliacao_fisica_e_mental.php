@@ -65,13 +65,13 @@
 
         if (afirmativo) {
             afirmativo.addEventListener('click', () => {
-                window.location.href = 'selecao_da_atividade.html';
+                window.location.href = 'selecao_da_atividade.php';
             });
         }
 
         if (negativo) {
             negativo.addEventListener('click', () => {
-                window.location.href = 'direito_recusa.html'
+                window.location.href = 'direito_recusa.php'
             });
         }
 

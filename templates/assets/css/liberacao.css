@@ -259,6 +259,8 @@ main {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 1.5rem;
 }
 
@@ -271,7 +273,7 @@ main {
 
 .grid-indicadores {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
@@ -288,7 +290,6 @@ main {
 
 .card-indicador.verde { background-color: #F0FDF4; }
 .card-indicador.azul { background-color: #EFF6FF; }
-.card-indicador.roxo { background-color: #FBF7FF; }
 
 .card-indicador .numero {
     font-size: 1.8rem;
@@ -298,7 +299,7 @@ main {
 
 .card-indicador.verde .numero { color: #16A34A; }
 .card-indicador.azul .numero { color: #2563EB; }
-.card-indicador.roxo .numero { color: #9333EA; }
+
 
 .card-indicador .legenda {
     font-size: 1.1rem;

@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/../Controller/ModuloVerificacaoeEpiController.php';
+
+$controller = new Controller\ModuloVerificacaoeEpiController();
+
+$contato_sesmt = $controller->obterContatoPorTipo('SESMT');
+$contato_lideranca = $controller->obterContatoPorTipo('Liderança');
+$contato_rh = $controller->obterContatoPorTipo('RH');
+$contato_cipa = $controller->obterContatoPorTipo('CIPA');
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -62,22 +75,30 @@
                 <div class="lista-inputs">
                     <div class="campo-grupo vermelho">
                         <label for="sesmt">SESMT - Serviço Especializado em Eng. de Segurança e Medicina do Trabalho</label>
-                        <input type="text" id="sesmt" placeholder="(00) 0000-0000">
+                        <input type="text" id="sesmt" 
+                               value="<?php echo htmlspecialchars($contato_sesmt['numero_contato'] ?? '(11) 98765-4321'); ?>" 
+                               readonly>
                     </div>
 
                     <div class="campo-grupo laranja">
                         <label for="lideranca">Liderança / Supervisor Direto</label>
-                        <input type="text" id="lideranca" placeholder="(00) 0000-0000">
+                        <input type="text" id="lideranca" 
+                               value="<?php echo htmlspecialchars($contato_lideranca['numero_contato'] ?? '(11) 91234-5678'); ?>" 
+                               readonly>
                     </div>
 
                     <div class="campo-grupo amarelo">
                         <label for="rh">RH - Recursos Humanos</label>
-                        <input type="text" id="rh" placeholder="(00) 0000-0000">
+                        <input type="text" id="rh" 
+                               value="<?php echo htmlspecialchars($contato_rh['numero_contato'] ?? '(11) 99876-5432'); ?>" 
+                               readonly>
                     </div>
 
                     <div class="campo-grupo azul">
                         <label for="cipa">CIPA - Comissão Interna de Prevenção de Acidentes</label>
-                        <input type="text" id="cipa" placeholder="(00) 0000-0000">
+                        <input type="text" id="cipa" 
+                               value="<?php echo htmlspecialchars($contato_cipa['numero_contato'] ?? '(11) 98765-1234'); ?>" 
+                               readonly>
                     </div>
                 </div>
 

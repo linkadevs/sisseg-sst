@@ -1,8 +1,37 @@
 <?php
 
-require_once __DIR__ . '/../Controller/SelecaodaatividadeController.php';
+session_start();
 
-$conexao = new Controller\SelecaodaatividadeController();
+require_once __DIR__ . '/../Controller/ModuloVerificacaoeEpiController.php';
+
+// ============================================
+// ARRAY COM OS ÍCONES
+// ============================================
+$icons = [
+    'chave_inglesa' => '🔧️',
+    'guindaste' => '🏗️',
+    'ferramentas' => '🛠️',
+    'alta_tensao' => '⚡️',
+    'engrenagem' => '⚙️',
+    'fogo' => '🔥',
+    'escada' => '🪜',
+    'trator' => '🚜',
+    'caixa_pacote' => '📦',
+    'caminhao' => '🚛',
+    'deposito_galpao' => '🏬',
+    'etiqueta' => '🏷️',
+    'colete_seguranca' => '🦺',
+    'bota_protecao' => '🥾',
+    'oculos_protecao' => '🥽',
+    'protetor_auricular' => '🎧',
+    'luvas' => '🧤',
+    'mascara_protecao' => '😷',
+    'corda_no' => '🪢',
+    'capacete_obras' => '👷‍♀️',
+    'capacete_obras_sol' => '👷‍♂️'
+];
+
+$conexao = new Controller\ModuloVerificacaoeEpiController();
 $atividades = $conexao->obteratividade();
 ?>
 
@@ -35,14 +64,25 @@ $atividades = $conexao->obteratividade();
             <div class="grid">
                 <?php if (!empty($atividades)): ?>
                     <?php foreach ($atividades as $atividade): ?>
-                        <div class="card" onclick="selecionarAtividade(<?php echo $atividade['id_atividade']; $_SESSION['id_atividade_modulo'] = $atividade['id_atividade'];  $_SESSION['nr_atividade_modulo'] = $atividade['nome_nr'];?>)">
+
+                        <div class="card" onclick="selecionarAtividade(
+                            <?php echo $atividade['id_atividade']; ?>,
+                            '<?php echo addslashes($atividade['nome_atividade']); ?>',
+                            '<?php echo addslashes($atividade['nome_nr']); ?>',
+                            '<?php echo addslashes($atividade['quantidade_epis']); ?>',
+                            <?php echo $atividade['id_nr_fk']; ?>
+                        )">
                             <div class="icones">
                                 <figure>
-                                    <?php if (!empty($atividade['foto_atividade'])): ?>
-
-                                        <span style="font-size: 40px;"><?php echo $atividade['foto_atividade']; ?></span>
+                                    <?php if (!empty($atividade['icone_atividade'])): ?>
+                                        <?php 
+                                            
+                                            $nome_icone = $atividade['icone_atividade'];
+                                            $icone = isset($icons[$nome_icone]) ? $icons[$nome_icone] : '📌';
+                                        ?>
+                                        <span style="font-size: 35px;"><?php echo $icone; ?></span>
                                     <?php else: ?>
-                                        <img src="../templates/assets/img/escada-de-mao.png" alt="Ícone padrão">
+                                        <span style="font-size: 35px;">📌</span>
                                     <?php endif; ?>
                                 </figure>
                                 <figure class="seta">
@@ -76,10 +116,44 @@ $atividades = $conexao->obteratividade();
     </div>
 
     <script>
-        function selecionarAtividade(id) {
-            // Redireciona para a página de confirmação
-            window.location.href = 'confirmacao_epis.php';
-        
+        function selecionarAtividade(id, nome, nr, qtd, idNr) {
+
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'salvar_session.php';
+
+            var campoId = document.createElement('input');
+            campoId.type = 'hidden';
+            campoId.name = 'id_atividade';
+            campoId.value = id;
+            form.appendChild(campoId);
+
+            var campoNome = document.createElement('input');
+            campoNome.type = 'hidden';
+            campoNome.name = 'nome_atividade';
+            campoNome.value = nome;
+            form.appendChild(campoNome);
+
+            var campoNr = document.createElement('input');
+            campoNr.type = 'hidden';
+            campoNr.name = 'nome_nr';
+            campoNr.value = nr;
+            form.appendChild(campoNr);
+
+            var campoIdNr = document.createElement('input');
+            campoIdNr.type = 'hidden';
+            campoIdNr.name = 'id_nr_fk';
+            campoIdNr.value = idNr;
+            form.appendChild(campoIdNr);
+
+            var campoQtdepis = document.createElement('input');
+            campoQtdepis.type = 'hidden';
+            campoQtdepis.name = 'quantidade_epis';
+            campoQtdepis.value = qtd;
+            form.appendChild(campoQtdepis);
+            
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

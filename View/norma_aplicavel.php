@@ -1,9 +1,8 @@
 <?php
-
-require_once __DIR__ . '/../Controller/NormaaplicavelController.php';
-$_SESSION['id_norma'] = 1;
-$id_norma = $_SESSION['id_norma'] ?? '';
-$conexao = new Controller\NormaaplicavelController;
+session_start();
+require_once __DIR__ . '/../Controller/ModuloVerificacaoeEpiController.php';
+$id_norma = $_SESSION['idnr_atividade_modulo'] ?? '';
+$conexao = new Controller\ModuloVerificacaoeEpiController;
 $informacao = $conexao->exibirNorma($id_norma);
 
 ?>
