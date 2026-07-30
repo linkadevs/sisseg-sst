@@ -62,7 +62,7 @@ class ControllerLogin
 
             // Procura o usuário na tabela de administradores
             $usuario = $this->db->buscarAdministrador($cpf);
-    
+
             // Caso não encontre, procura na tabela de funcionários
             if (!$usuario) {
 
@@ -79,6 +79,7 @@ class ControllerLogin
                     // Cria as sessões do funcionário
                     $_SESSION['id_funcionario'] = $usuario['id_funcionario'];
                     $_SESSION['nome'] = $usuario['nome_funcionario'];
+                    $_SESSION['setor'] = $usuario['setor_funcionario'];
                     $_SESSION['tipo'] = 'funcionario';
 
                     header('Location: ../View/pagina_principal_funcionario.php');
@@ -97,6 +98,7 @@ class ControllerLogin
             // Cria as sessões do administrador
             $_SESSION['id_adm'] = $usuario['id_adm'];
             $_SESSION['nome'] = $usuario['nome_adm'];
+            $_SESSION['setor'] = $usuario['setor_adm'];
             $_SESSION['tipo'] = 'administrador';
 
             header('Location: ../View/pagina_principal_adm.php');
