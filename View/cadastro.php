@@ -57,14 +57,15 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
                     Realize o cadastro para ser identificado!
                 </p>
 
+
                 <!-- Mensagens de erro -->
                 <?php if (!empty($erros)): ?>
 
-                    <div style="color: red; text-align:center; margin-bottom:15px;">
+                    <div class="mensagem-erro">
 
                         <?php foreach ($erros as $erro): ?>
 
-                            <p style="margin:5px 0;">
+                            <p class="erro-item">
                                 <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?>
                             </p>
 
@@ -80,13 +81,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="nome">Nome</label>
 
-                        <input
-                            type="text"
-                            id="nome"
-                            name="nome"
-                            placeholder="Digite o seu nome completo"
-                            autocomplete="name"
-                            required
+                        <input type="text" id="nome" name="nome" placeholder="Digite o seu nome completo"
+                            autocomplete="name" required
                             value="<?= htmlspecialchars($dados['nome'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     </div>
@@ -95,14 +91,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="cpf">CPF</label>
 
-                        <input
-                            type="text"
-                            id="cpf"
-                            name="cpf"
-                            placeholder="Digite o seu CPF"
-                            maxlength="14"
-                            autocomplete="username"
-                            required
+                        <input type="text" id="cpf" name="cpf" placeholder="Digite o seu CPF" maxlength="14"
+                            autocomplete="username" required
                             value="<?= htmlspecialchars($dados['cpf'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     </div>
@@ -111,13 +101,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="senha">Senha</label>
 
-                        <input
-                            type="password"
-                            id="senha"
-                            name="senha"
-                            placeholder="Digite a senha"
-                            autocomplete="new-password"
-                            required>
+                        <input type="password" id="senha" name="senha" placeholder="Digite a senha"
+                            autocomplete="new-password" required>
 
                     </div>
 
@@ -125,13 +110,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="confirmar_senha">Confirmar Senha</label>
 
-                        <input
-                            type="password"
-                            id="confirmar_senha"
-                            name="confirmar_senha"
-                            placeholder="Digite novamente a senha"
-                            autocomplete="new-password"
-                            required>
+                        <input type="password" id="confirmar_senha" name="confirmar_senha"
+                            placeholder="Digite novamente a senha" autocomplete="new-password" required>
 
                     </div>
 
@@ -143,23 +123,19 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                             <option value="">Selecione o turno</option>
 
-                            <option value="Matutino"
-                                <?= (($dados['turno'] ?? '') == 'Matutino') ? 'selected' : ''; ?>>
+                            <option value="Matutino" <?= (($dados['turno'] ?? '') == 'Matutino') ? 'selected' : ''; ?>>
                                 Matutino
                             </option>
 
-                            <option value="Vespertino"
-                                <?= (($dados['turno'] ?? '') == 'Vespertino') ? 'selected' : ''; ?>>
+                            <option value="Vespertino" <?= (($dados['turno'] ?? '') == 'Vespertino') ? 'selected' : ''; ?>>
                                 Vespertino
                             </option>
 
-                            <option value="Noturno"
-                                <?= (($dados['turno'] ?? '') == 'Noturno') ? 'selected' : ''; ?>>
+                            <option value="Noturno" <?= (($dados['turno'] ?? '') == 'Noturno') ? 'selected' : ''; ?>>
                                 Noturno
                             </option>
 
-                            <option value="Integral"
-                                <?= (($dados['turno'] ?? '') == 'Integral') ? 'selected' : ''; ?>>
+                            <option value="Integral" <?= (($dados['turno'] ?? '') == 'Integral') ? 'selected' : ''; ?>>
                                 Integral
                             </option>
 
@@ -171,13 +147,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="cargo">Cargo</label>
 
-                        <input
-                            type="text"
-                            id="cargo"
-                            name="cargo"
-                            placeholder="Digite o seu cargo"
-                            autocomplete="organization-title"
-                            required
+                        <input type="text" id="cargo" name="cargo" placeholder="Digite o seu cargo"
+                            autocomplete="organization-title" required
                             value="<?= htmlspecialchars($dados['cargo'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     </div>
@@ -186,13 +157,8 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
 
                         <label for="setor">Setor</label>
 
-                        <input
-                            type="text"
-                            id="setor"
-                            name="setor"
-                            placeholder="Digite o setor correspondente"
-                            autocomplete="organization"
-                            required
+                        <input type="text" id="setor" name="setor" placeholder="Digite o setor correspondente"
+                            autocomplete="organization" required
                             value="<?= htmlspecialchars($dados['setor'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     </div>
