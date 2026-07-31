@@ -171,36 +171,37 @@ class ModuloVerificacaoeEpi
         }
     }
 
-    public function exibirTodosIncidentes()
-    {
-        try {
-            $sql = "SELECT 
-                        i.id_incidente,
-                        i.descricao_incidente,
-                        i.local_incidente,
-                        i.acao_imediata_incidente,
-                        i.gravidade_incidente,
-                        i.tipo_incidente,
-                        i.testemunhas_incidente,
-                        i.treinamento_reciclagem_incidente,
-                        i.fotos_incidente,
-                        a.nome_atividade,
-                        a.icone_atividade,
-                        n.nome_nr
-                    FROM incidente i
-                    INNER JOIN atividade a ON i.id_atividade_fk = a.id_atividade
-                    LEFT JOIN nr n ON a.id_nr_fk = n.id_nr
-                    ORDER BY i.id_incidente DESC";
-            
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute();
-            $incidentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $incidentes;
-            
-        } catch (Exception $erro) {
-            throw new Exception("Erro ao buscar todos os incidentes: " . $erro->getMessage());
-        }
+public function exibirTodosIncidentes()
+{
+    try {
+        $sql = "SELECT 
+                    i.id_incidente,
+                    i.data_incidente,           
+                    i.descricao_incidente,
+                    i.local_incidente,
+                    i.acao_imediata_incidente,
+                    i.gravidade_incidente,
+                    i.tipo_incidente,
+                    i.testemunhas_incidente,
+                    i.treinamento_reciclagem_incidente,
+                    i.fotos_incidente,
+                    a.nome_atividade,
+                    a.icone_atividade,
+                    n.nome_nr
+                FROM incidente i
+                INNER JOIN atividade a ON i.id_atividade_fk = a.id_atividade
+                LEFT JOIN nr n ON a.id_nr_fk = n.id_nr
+                ORDER BY i.data_incidente DESC, i.id_incidente DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $incidentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $incidentes;
+        
+    } catch (Exception $erro) {
+        throw new Exception("Erro ao buscar todos os incidentes: " . $erro->getMessage());
     }
+}
 
     public function exibirIncidentePorId($id_incidente)
     {

@@ -1,14 +1,13 @@
 <?php
 session_start();
 
+date_default_timezone_set('America/Sao_Paulo');
+
 if (!isset($_SESSION['id_atividade_modulo']) || $_SESSION['id_atividade_modulo'] <= 0) {
     header('Location: selecao_atividade.php');
     exit;
 }
 
-// ============================================
-// ARRAY COM OS ÍCONES
-// ============================================
 $icons = [
     'chave_inglesa' => '🔧️',
     'guindaste' => '🏗️',
@@ -33,7 +32,6 @@ $icons = [
     'capacete_obras_sol' => '👷‍♂️'
 ];
 
-
 $id_atividade = $_SESSION['id_atividade_modulo'];
 $nome_atividade = $_SESSION['nome_atividade_modulo'] ?? 'Atividade não encontrada';
 $nome_nr = $_SESSION['nr_atividade_modulo'] ?? 'NR não atribuído';
@@ -41,55 +39,72 @@ $id_nr_fk = $_SESSION['idnr_atividade_modulo'] ?? 0;
 $quantidade_epis = $_SESSION['qtdepis_atividade_modulo'] ?? 0;
 $icone_atividade = $_SESSION['icone_atividade_modulo'] ?? '';
 
-
 $setor_funcionario = $_SESSION['setor_funcionario'] ?? 'Manutenção de Máquinas';
-
-$pontos_ganhos = 950;
-
+$pontos_ganhos = 850;
 
 require_once __DIR__ . '/../Controller/ModuloVerificacaoeEpiController.php';
 $controller = new Controller\ModuloVerificacaoeEpiController();
 
-
 $pontuacao_antes = $controller->obterPontuacaoSetor($setor_funcionario);
-
 
 $chave_pontos = 'pontos_adicionados_' . $id_atividade . '_' . md5($setor_funcionario);
 
 if (!isset($_SESSION[$chave_pontos]) || $_SESSION[$chave_pontos] !== true) {
-
     $controller->atualizarPontuacaoSetor($setor_funcionario, $pontos_ganhos);
     $_SESSION[$chave_pontos] = true;
-    
-  
     $pontuacao_final = $controller->obterPontuacaoSetor($setor_funcionario);
     $pontos_foram_adicionados = true;
     $mensagem_pontos = 'Você ganhou <strong>+' . $pontos_ganhos . ' pontos</strong> para o setor!';
 } else {
- 
     $pontuacao_final = $controller->obterPontuacaoSetor($setor_funcionario);
     $pontos_foram_adicionados = false;
     $mensagem_pontos = 'Você está contribuindo para uma obra mais segura';
 }
 
-
 $epis = $controller->obterepis($id_atividade);
 $norma = $controller->exibirNorma($id_nr_fk);
 $total_epis = count($epis);
-
 $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '📌';
+
+
+$incidentes = $controller->obterTodosIncidentes();
+$dias_sem_incidentes = 0;
+
+if (!empty($incidentes)) {
+    usort($incidentes, function($a, $b) {
+        return strtotime($b['data_incidente']) - strtotime($a['data_incidente']);
+    });
+    
+    $ultimo_incidente = $incidentes[0];
+    
+    if (isset($ultimo_incidente['data_incidente'])) {
+        $data_incidente = new DateTime($ultimo_incidente['data_incidente']);
+        $hoje = new DateTime();
+        
+       
+        $dias_sem_incidentes = $hoje->diff($data_incidente)->days;
+        
+        
+        if ($data_incidente >= $hoje) {
+            $dias_sem_incidentes = 0;
+        }
+        
+
+        if ($ultimo_incidente['data_incidente'] == date('Y-m-d', strtotime('-1 day'))) {
+            $dias_sem_incidentes = 1;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liberado para Trabalho</title>
     <link rel="stylesheet" href="../templates/assets/css/liberacao.css">
 </head>
-
 <body>
 
     <nav class="navbar">
@@ -145,7 +160,6 @@ $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '
 
         <main>
             <div class="grid-info">
-
                 <div class="card-info">
                     <div class="card-info-topo">
                         <figure class="icone-box azul">
@@ -187,29 +201,22 @@ $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '
                     <?php endif; ?>
                     <a href="#" class="link-detalhes" onclick="verDetalhesNorma()">Ver detalhes da norma →</a>
                 </div>
-
             </div>
 
             <section class="indicadores-secao">
                 <h3>Indicadores de Segurança</h3>
                 <div class="grid-indicadores">
-
                     <div class="card-indicador verde">
-                        <p class="numero">15</p>
+                        <p class="numero"><?php echo $dias_sem_incidentes; ?></p>
                         <p class="legenda">Dias sem incidentes</p>
                     </div>
-
                     <div class="card-indicador azul">
                         <p class="numero">100%</p>
                         <p class="legenda">Adesão EPIs</p>
                     </div>
-
                 </div>
             </section>
 
-            <!-- ============================================ -->
-            <!-- CARD DE GAMIFICAÇÃO                -->
-            <!-- ============================================ -->
             <footer class="gamificacao-footer">
                 <div class="premiacao-esquerda">
                     <figure class="icone-medalha">
@@ -236,7 +243,6 @@ $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '
                             Pontos do setor
                         <?php endif; ?>
                     </p>
-                   
                 </div>
             </footer>
         </main>
@@ -247,7 +253,7 @@ $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '
 
         if (btninicio) {
             btninicio.addEventListener('click', function() {
-                window.location.href = 'pagina_principal_funcionario.html';
+                window.location.href = 'pagina_principal_funcionario.php';
             });
         }
 
@@ -265,5 +271,4 @@ $icone_exibicao = isset($icons[$icone_atividade]) ? $icons[$icone_atividade] : '
         }
     </script>
 </body>
-
 </html>
