@@ -70,14 +70,14 @@ class PrincipalFuncionarioController
     }
 
     /**
-     * Busca total de incidentes abertos
+     * Busca total de incidentes (todos)
      */
-    public function incidentesAbertos()
+    public function totalIncidentes()
     {
         try {
-            return $this->model->contarIncidentesAbertos();
+            return $this->model->contarTotalIncidentes();
         } catch (Exception $e) {
-            throw new Exception("Erro ao buscar incidentes abertos: " . $e->getMessage());
+            throw new Exception("Erro ao buscar total de incidentes: " . $e->getMessage());
         }
     }
 

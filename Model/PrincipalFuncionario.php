@@ -81,7 +81,7 @@ class PrincipalFuncionario
     public function buscarUltimoIncidente()
     {
         try {
-            $sql = "SELECT data_incidente FROM incidente ORDER BY data_incidente DESC LIMIT 1";
+            $sql = "SELECT data_incidente FROM incidente ORDER BY id_incidente DESC LIMIT 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,18 +91,18 @@ class PrincipalFuncionario
     }
 
     /**
-     * Busca total de incidentes abertos (não resolvidos)
+     * Busca total de incidentes (todos, sem filtrar por tipo)
      */
-    public function contarIncidentesAbertos()
+    public function contarTotalIncidentes()
     {
         try {
-            $sql = "SELECT COUNT(*) as total FROM incidente WHERE tipo_incidente = 'Incidente' OR tipo_incidente = 'Quase Acidente'";
+            $sql = "SELECT COUNT(*) as total FROM incidente";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return (int) $result['total'];
         } catch (Exception $e) {
-            throw new Exception("Erro ao contar incidentes abertos: " . $e->getMessage());
+            throw new Exception("Erro ao contar total de incidentes: " . $e->getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ class PrincipalFuncionario
     }
 
     /**
-     * Busca os 2 incidentes mais recentes
+     * Busca os incidentes mais recentes (sem filtrar por tipo)
      */
     public function buscarUltimosIncidentes($limite = 2)
     {
@@ -160,7 +160,7 @@ class PrincipalFuncionario
         try {
             $notificacoes = [];
 
-
+            // 1. Busca o treinamento mais recente
             $ultimoTreinamento = $this->buscarUltimoTreinamento();
 
             if ($ultimoTreinamento) {
@@ -174,7 +174,7 @@ class PrincipalFuncionario
                 ];
             }
 
-
+            // 2. Busca os 2 incidentes mais recentes (QUALQUER TIPO)
             $incidentes = $this->buscarUltimosIncidentes(2);
 
             foreach ($incidentes as $incidente) {
@@ -188,7 +188,7 @@ class PrincipalFuncionario
                 ];
             }
 
-           
+            // 3. Se não há treinamento, preenche com mais incidentes
             if (!$ultimoTreinamento && count($notificacoes) < 3) {
                 $incidentesExtra = $this->buscarUltimosIncidentes(3 - count($notificacoes));
                 foreach ($incidentesExtra as $incidente) {
@@ -203,7 +203,7 @@ class PrincipalFuncionario
                 }
             }
 
-            
+            // 4. Se não há incidentes, preenche com mais treinamentos
             if (empty($incidentes) && count($notificacoes) < 3) {
                 $sql = "SELECT 
                             id_treinamento AS id,

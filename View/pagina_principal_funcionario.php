@@ -19,8 +19,8 @@ $progresso = $controller->progressoTreinamentos($id_funcionario);
 // Dias sem incidentes
 $dias_sem_incidentes = $controller->diasSemIncidentes();
 
-// Incidentes abertos
-$incidentes_abertos = $controller->incidentesAbertos();
+// Total de incidentes (todos)
+$total_incidentes = $controller->totalIncidentes();
 
 // Notificações (últimas 3)
 $notificacoes = $controller->notificacoes();
@@ -122,17 +122,17 @@ $notificacoes = $controller->notificacoes();
 
         <div class="card-incidentes">
             <div class="card-superior">
-                <p class="card-titulo">Incidentes Abertos</p>
+                <p class="card-titulo">Total de Incidentes</p>
                 <div class="card-subtitulo">
                     <figure>
                         <img src="../templates/assets/img/risco-vermelho.png" alt="risco vermelho">
                     </figure>
-                    <p class="card-infor"><?php echo $incidentes_abertos; ?></p>
+                    <p class="card-infor"><?php echo $total_incidentes; ?></p>
                 </div>
             </div>
             <div class="card-inferior">
                 <p class="card-incidentes-msg">
-                    <?php echo $incidentes_abertos > 0 ? 'Requer atenção' : 'Nenhum incidente aberto'; ?>
+                    <?php echo $total_incidentes > 0 ? 'Registros no sistema' : 'Nenhum incidente registrado'; ?>
                 </p>
             </div>
         </div>
