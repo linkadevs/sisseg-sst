@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const allInputs = Array.from(profileForm.querySelectorAll('.field__input'));
   const editButtons = document.querySelectorAll('[data-edit-target]');
   const statusMsg = document.getElementById('statusMsg');
+  const btnSave = document.querySelector('.btn--save')
 
   const originalValues = new Map();
   allInputs.forEach((input) => originalValues.set(input.id, input.value));
@@ -91,5 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Logout realizado com sucesso!');
     }
   });
+
+  btnSave.addEventListener('click', () => {
+    profileForm.submit()
+  })
 
 });

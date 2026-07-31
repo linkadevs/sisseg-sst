@@ -1,7 +1,11 @@
 <?php
-namespace Controller;
-use Model\Funcionario;
 
+namespace Controller;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Model/Funcionario.php';
+
+use Model\Funcionario;
 
 use PDO;
 use PDOException;
@@ -26,6 +30,7 @@ class FuncionarioController{
     public function updateFuncionario($id_funcionario, $nome_funcionario, $cpf_funcionario, $setor_funcionario, $cargo_funcionario){
 
         if($cpf_funcionario !== '') {
+            $cpf_funcionario = preg_replace('/\D/', '', $cpf_funcionario);
             if (strlen($cpf_funcionario) !== 11) {
                 echo '<script>
                         alert("O CPF deve conter exatamente 11 dígitos. (Insira apenas números)");
@@ -61,18 +66,14 @@ class FuncionarioController{
         }
     }
 
-    public function updatePassword($id_funcionario, $senha_funcionario, $confirmar_senha){
+    public function updatePassword($id_funcionario, $senha_funcionario){
 
-        if (empty($id_funcionario) || empty($senha_funcionario) || empty($confirmar_senha)) {
+        if (empty($id_funcionario) || empty($senha_funcionario)) {
             $_SESSION['error_message'] = "Todos os campos de senha são obrigatórios.";
             return false;
         }
-        if ($senha_funcionario !== $confirmar_senha) {
-            $_SESSION['error_message'] = "As senhas não coincidem.";
-            return false;
-        }
 
-        $success = $this->FuncionarioModel->changePassword($senha_funcionario, $id_funcionario);
+        $success = $this->FuncionarioModel->changePassword($id_funcionario, $senha_funcionario);
 
         if ($success) {
             $_SESSION['success_message'] = "Senha alterada com sucesso!";
