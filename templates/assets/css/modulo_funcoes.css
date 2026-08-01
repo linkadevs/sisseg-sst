@@ -267,7 +267,18 @@ button img {
     content: "";
 }
 
-.btn-acao-card {
+/* ============================================
+   BOTÕES DE AÇÃO (EDITAR E EXCLUIR)
+   ============================================ */
+.acoes-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.acoes-card .btn-acao-card {
     background-color: #F3F4F6;
     color: #374151;
     border: 1px solid #E5E7EB;
@@ -277,16 +288,36 @@ button img {
     border-radius: 0.6rem;
     cursor: pointer;
     width: 100%;
-    margin-top: auto;
     transition: all 0.2s ease;
 }
 
-.btn-acao-card:hover {
+.acoes-card .btn-acao-card:hover {
     background-color: #3B82F6;
     color: #FFFFFF;
     border-color: #3B82F6;
 }
 
+.acoes-card .btn-excluir-card {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 1.1rem;
+    font-size: 1.15rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.acoes-card .btn-excluir-card:hover {
+    background: #c82333;
+    transform: scale(1.02);
+}
+
+/* ============================================
+   MODAIS
+   ============================================ */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -360,7 +391,8 @@ button img {
     font-weight: bold;
 }
 
-.modal-campo input {
+.modal-campo input,
+.modal-campo select {
     width: 100%;
     padding: 1.1rem;
     font-size: 1.2rem;
@@ -368,6 +400,11 @@ button img {
     border: none;
     border-radius: 0.6rem;
     box-sizing: border-box;
+}
+
+.modal-campo select {
+    appearance: auto;
+    cursor: pointer;
 }
 
 .modal-botoes {
@@ -586,7 +623,8 @@ button img {
         font-size: 1.6rem;
     }
     
-    .modal-campo input {
+    .modal-campo input,
+    .modal-campo select {
         font-size: 1rem;
         padding: 0.9rem;
     }
@@ -596,6 +634,12 @@ button img {
     .btn-modal-adicionar-editar {
         font-size: 1.1rem;
         padding: 0.9rem;
+    }
+    
+    .acoes-card .btn-acao-card,
+    .acoes-card .btn-excluir-card {
+        padding: 0.9rem;
+        font-size: 1rem;
     }
 }
 
@@ -689,7 +733,8 @@ button img {
         font-size: 0.9rem;
     }
     
-    .btn-acao-card {
+    .acoes-card .btn-acao-card,
+    .acoes-card .btn-excluir-card {
         padding: 0.8rem;
         font-size: 0.95rem;
     }
@@ -821,7 +866,13 @@ button img {
         font-size: 0.8rem;
     }
     
-    .btn-acao-card {
+    .acoes-card {
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+    }
+    
+    .acoes-card .btn-acao-card,
+    .acoes-card .btn-excluir-card {
         padding: 0.7rem;
         font-size: 0.85rem;
         border-radius: 0.4rem;
@@ -856,7 +907,8 @@ button img {
         font-size: 0.9rem;
     }
     
-    .modal-campo input {
+    .modal-campo input,
+    .modal-campo select {
         font-size: 0.9rem;
         padding: 0.7rem;
         border-radius: 0.4rem;
@@ -977,9 +1029,16 @@ button img {
         font-size: 0.75rem;
     }
     
-    .btn-acao-card {
+    .acoes-card {
+        gap: 0.4rem;
+        margin-top: 0.6rem;
+    }
+    
+    .acoes-card .btn-acao-card,
+    .acoes-card .btn-excluir-card {
         padding: 0.6rem;
         font-size: 0.75rem;
+        border-radius: 0.3rem;
     }
     
     .modal-card {
@@ -999,7 +1058,8 @@ button img {
         font-size: 0.8rem;
     }
     
-    .modal-campo input {
+    .modal-campo input,
+    .modal-campo select {
         font-size: 0.8rem;
         padding: 0.6rem;
     }
@@ -1012,6 +1072,7 @@ button img {
     }
 }
 
+/* LANDSCAPE (Telas deitadas) */
 @media (max-height: 600px) and (orientation: landscape) {
     .modal-card {
         padding: 1rem;
@@ -1024,7 +1085,8 @@ button img {
         gap: 0.3rem;
     }
     
-    .modal-campo input {
+    .modal-campo input,
+    .modal-campo select {
         padding: 0.5rem;
         font-size: 0.9rem;
     }
@@ -1045,6 +1107,7 @@ button img {
     }
 }
 
+/* TOUCH DEVICES (Sem hover) */
 @media (hover: none) {
     .card-funcao:hover {
         transform: none;
@@ -1061,5 +1124,15 @@ button img {
         background-color: #3B82F6;
         color: #FFFFFF;
         border-color: #3B82F6;
+    }
+    
+    .acoes-card .btn-excluir-card:hover {
+        background: #dc3545;
+        transform: none;
+    }
+    
+    .acoes-card .btn-excluir-card:active {
+        background: #c82333;
+        transform: scale(0.98);
     }
 }
