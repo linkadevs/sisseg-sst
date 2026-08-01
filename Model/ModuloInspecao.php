@@ -171,4 +171,72 @@ class ModuloInspecao
             throw new Exception("Erro ao listar EPIs: " . $e->getMessage());
         }
     }
+
+    public function listarInspecoes()
+    {
+        try {
+            $sql = "SELECT 
+                        i.id_inspecao,
+                        i.data_hora_inspecao,
+                        i.epis_verificados_inspecao,
+                        i.status_inspecao,
+                        i.id_funcionario_fk,
+                        f.nome_funcionario,
+                        f.cargo_funcionario,
+                        f.setor_funcionario
+                    FROM inspecao i
+                    INNER JOIN funcionario f ON i.id_funcionario_fk = f.id_funcionario
+                    ORDER BY i.data_hora_inspecao DESC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception("Erro ao listar inspeções: " . $e->getMessage());
+        }
+    }
+
+    public function contarTotalInspecoes()
+    {
+        try {
+            $sql = "SELECT COUNT(*) as total FROM inspecao";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int) $result['total'];
+        } catch (Exception $e) {
+            throw new Exception("Erro ao contar total de inspeções: " . $e->getMessage());
+        }
+    }
+
+public function buscarInspecoes($termo)
+{
+    try {
+        $sql = "SELECT 
+                    i.id_inspecao,
+                    i.data_hora_inspecao,
+                    i.epis_verificados_inspecao,
+                    i.status_inspecao,
+                    i.id_funcionario_fk,
+                    f.nome_funcionario,
+                    f.cargo_funcionario,
+                    f.setor_funcionario
+                FROM inspecao i
+                INNER JOIN funcionario f ON i.id_funcionario_fk = f.id_funcionario
+                WHERE f.nome_funcionario LIKE :termo1 
+                   OR f.cargo_funcionario LIKE :termo2 
+                   OR f.setor_funcionario LIKE :termo3
+                   OR i.status_inspecao LIKE :termo4
+                ORDER BY i.data_hora_inspecao DESC";
+        $stmt = $this->db->prepare($sql);
+        $termoBusca = '%' . $termo . '%';
+        $stmt->bindParam(':termo1', $termoBusca, PDO::PARAM_STR);
+        $stmt->bindParam(':termo2', $termoBusca, PDO::PARAM_STR);
+        $stmt->bindParam(':termo3', $termoBusca, PDO::PARAM_STR);
+        $stmt->bindParam(':termo4', $termoBusca, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception("Erro ao buscar inspeções: " . $e->getMessage());
+    }
+}
 }

@@ -63,8 +63,8 @@ unset($_SESSION['mensagem'], $_SESSION['mensagem_tipo']);
                     <input type="text" placeholder="Busque por funções" id="busca-funcao">
                 </div>
                 <div class="botoes-grupo">
-                    <button type="button" class="btn-secundario btn-registro" onclick="window.location.href='registro_inspecoes.html'">
-                        <img src="../templates/assets/img/pasta.png" alt="Histórico"> Inspeções do Dia
+                    <button type="button" class="btn-secundario btn-registro" onclick="window.location.href='registro_inspecoes.php'">
+                        <img src="../templates/assets/img/pasta.png" alt="Histórico"> Inspeções
                     </button>
                     <button type="button" class="btn-principal btn-azul-claro" id="btn-abrir-modal-criar">
                         <img src="../templates/assets/img/mais.png" alt="Simbolo de mais"> Criar função

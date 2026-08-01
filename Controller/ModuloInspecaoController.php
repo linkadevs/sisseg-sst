@@ -125,4 +125,30 @@ class ModuloInspecaoController
         }
     }
 
+    public function listarInspecoes()
+    {
+        try {
+            return $this->model->listarInspecoes();
+        } catch (Exception $e) {
+            throw new Exception("Erro ao listar inspeções: " . $e->getMessage());
+        }
+    }
+
+    public function contarTotalInspecoes()
+    {
+        try {
+            return $this->model->contarTotalInspecoes();
+        } catch (Exception $e) {
+            throw new Exception("Erro ao contar inspeções: " . $e->getMessage());
+        }
+    }
+
+    public function buscarInspecoes($termo)
+    {
+        try {
+            return $this->model->buscarInspecoes($termo);
+        } catch (Exception $e) {
+            throw new Exception("Erro ao buscar inspeções: " . $e->getMessage());
+        }
+    }
 }
