@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+
+$epis = $_SESSION['epis'];
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -32,18 +39,21 @@
         <main>
             <div class="containerSuperior">
                 <h2>Inspeção de EPI – Diário</h2>
-                <h4><strong>João</strong> | Pedreiro | Setor 3</h4>
+                <h4><strong><?= htmlspecialchars($_SESSION['nome'])?></strong> | <?= htmlspecialchars($_SESSION['funcao'])?> | <?= htmlspecialchars($_SESSION['setor'])?></h4>
             </div>
             <form>
                 <div class="container">
                     <h3 class="margin">EPIs Obrigatórios da Função</h3>
-                    <div class="input" onclick="event.stopPropagation()">
-                        <input type="checkbox" name="Capacete com jugular" id="Capacete com jugular">
-                        <label for="Capacete com jugular">Capacete com jugular <span>*</span></label>
-                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
-                    </div>
+                    
+                    <?php foreach($epis as $index => $epi):?>
+                        <div class="input" onclick="event.stopPropagation()">
+                            <input class="checkboxes" type="checkbox" data-check="<?= 'epi'.strval($index);?>" name="<?= htmlspecialchars($epi)?>" id="<?= htmlspecialchars($epi)?>">
+                            <label for="<?= htmlspecialchars($epi)?>"><?= htmlspecialchars($epi)?> <span>*</span></label>
+                            <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                        </div>
+                    <?php endforeach;?>
 
-                    <div class="input" onclick="event.stopPropagation()">
+                    <!-- <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Óculos anti-impacto" id="Óculos anti-impacto">
                         <label for="Óculos anti-impacto">Óculos anti-impacto <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
@@ -83,11 +93,34 @@
                         <input type="checkbox" name="Cinturão (altura)" id="Cinturão (altura)">
                         <label for="Cinturão (altura)">Cinturão (altura) <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="container">
                     <h3>Condição dos EPIs</h3>
                     <h4 class="condicoes">Marque as condições encontradas (pode marcar mais de uma)</h4>
+                    <?php foreach($epis as $index => $epi):?>
+                        <div class="item <?= 'epi'.strval($index)?>">
+                            <p><?= htmlspecialchars($epi)?></p>
+                            <div class="organizer">
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="estado" value="bom_estado" id="bom_estado">
+                                    <label for="Bom estado">Bom estado</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="estado" value="desgastado" id="desgastado">
+                                    <label for="Desgastado">Desgastado</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="estado" value="vencido" id="vencido">
+                                    <label for="Vencido (CA)">Vencido (CA)</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="estado" value="reposicao" id="reposicao">
+                                    <label for="Solicitar reposição">Solicitar reposição</label>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
                     <div class="item">
                         <p>Capacete com Jugular</p>
                         <div class="organizer">

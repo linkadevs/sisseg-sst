@@ -91,7 +91,7 @@ label, h5 {
     font-size: 1.2rem;
 }
 
-input {
+input, select {
     background-color: #F6F6F6;
     border-radius: 1rem;
     padding: 1.5rem 0 1.5rem 1rem;

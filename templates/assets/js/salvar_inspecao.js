@@ -20,6 +20,7 @@ const fotoDiv = document.querySelector('.foto')
 const cancel = document.querySelector('.cancel')
 const capturar = document.querySelector('.capturar')
 const form = document.querySelector('form')
+const checkboxes = document.querySelectorAll('.checkboxes')
 
 let assinatura = null
 
@@ -193,4 +194,15 @@ capturar.addEventListener('click', () => {
 // CORREÇÃO DOS CHECKBOXES: O preventDefault agora roda no 'submit' para não bloquear cliques de interação
 form.addEventListener('submit', (e) => {
     e.preventDefault()
+})
+
+checkboxes.forEach(btn => {
+    btn.addEventListener('change', () => {
+        const condition = document.querySelector(`.${btn.dataset.check}`)
+        if(btn.checked) {
+            condition.style.display = 'flex'
+        } else {
+            condition.style.display = 'none'
+        }
+    })
 })
