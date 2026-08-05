@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// TODO: substituir por sessão real quando o login de administrador for implementado.
+if (!isset($_SESSION['id_adm'])) {
+    $_SESSION['id_adm'] = 1;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,12 +14,19 @@
 <title>Treinamentos</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../templates/assets/css/treinamento_funcionario-adm.css">
+<style>
+  /* Painel de filtro - classes novas que ainda não existem no CSS original */
+  .filter-panel{display:none;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:12px 16px;margin:-4px 0 16px 0;}
+  .filter-panel.open{display:flex;}
+  .filter-panel label{font-size:13px;font-weight:600;color:#444;margin-right:6px;}
+  .filter-panel select{padding:6px 10px;border-radius:8px;border:1px solid #ddd;}
+  .filter-panel .btn-limpar-filtro{background:none;border:none;color:#b23b3b;font-size:13px;cursor:pointer;text-decoration:underline;}
+</style>
 </head>
 <body>
 
 <div class="page">
 
-  <!-- Back -->
   <a href="#" class="back-btn" onclick="return false;">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
@@ -19,27 +34,25 @@
     Voltar
   </a>
 
-  <!-- Header Card -->
   <div class="header-card">
     <h1>Treinamentos</h1>
     <p>Dê vida aos seus treinamentos: crie, atualize e gerencie tudo em um só lugar.</p>
     <div class="kpi-row">
       <div class="kpi-card blue">
         <div class="kpi-label">Total de Cursos</div>
-        <div class="kpi-value" id="kpiTotal">18</div>
+        <div class="kpi-value" id="kpiTotal">0</div>
       </div>
       <div class="kpi-card green">
         <div class="kpi-label">Válidos</div>
-        <div class="kpi-value" id="kpiValidos">10</div>
+        <div class="kpi-value" id="kpiValidos">0</div>
       </div>
       <div class="kpi-card red">
         <div class="kpi-label">Inválidos</div>
-        <div class="kpi-value" id="kpiInvalidos">8</div>
+        <div class="kpi-value" id="kpiInvalidos">0</div>
       </div>
     </div>
   </div>
 
-  <!-- Search & Actions -->
   <div class="search-bar">
     <div class="search-wrap">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -59,7 +72,29 @@
     </button>
   </div>
 
-  <!-- Courses Grid -->
+  <!-- Painel de filtro: NR + status -->
+  <div class="filter-panel" id="filterPanel">
+    <div>
+      <label for="filtroNR">NR</label>
+      <select id="filtroNR">
+        <option value="">Todas</option>
+        <option value="NR-06">NR-06 - EPI</option>
+        <option value="NR-10">NR-10 - Eletricidade</option>
+        <option value="NR-12">NR-12 - Máquinas e Equipamentos</option>
+        <option value="NR-35">NR-35 - Trabalho em Altura</option>
+      </select>
+    </div>
+    <div>
+      <label for="filtroStatus">Status</label>
+      <select id="filtroStatus">
+        <option value="">Todos</option>
+        <option value="valido">Válido</option>
+        <option value="invalido">Inválido</option>
+      </select>
+    </div>
+    <button type="button" class="btn-limpar-filtro" id="btnLimparFiltro">Limpar filtros</button>
+  </div>
+
   <div class="courses-grid" id="coursesGrid"></div>
 
 </div>
@@ -88,7 +123,7 @@
           <path d="M18 6 6 18M6 6l12 12"/>
         </svg>
       </button>
-      <input type="file" id="inputImagem" accept="image/*">
+      <input type="file" id="inputImagem" accept="image/png, image/jpeg, image/webp">
     </div>
 
     <div class="form-group">
@@ -101,14 +136,19 @@
       <input id="inputSubtitulo" class="form-input" type="text" placeholder="Digite o subtítulo do treinamento">
     </div>
 
+    <div class="form-group">
+      <label class="form-label" for="inputLinkAulas">Link das videoaulas</label>
+      <input id="inputLinkAulas" class="form-input" type="url" placeholder="https://...">
+    </div>
+
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label" for="inputCarga">Carga horária</label>
-        <input id="inputCarga" class="form-input" type="text" placeholder="00:00">
+        <label class="form-label" for="inputCarga">Carga horária (horas)</label>
+        <input id="inputCarga" class="form-input" type="number" min="1" placeholder="Ex: 8">
       </div>
       <div class="form-group">
         <label class="form-label" for="inputValidade">Validade</label>
-        <input id="inputValidade" class="form-input" type="text" placeholder="XX/XX/XXXX">
+        <input id="inputValidade" class="form-input" type="date">
       </div>
       <div class="toggle-group">
         <span class="toggle-label">Sem validade</span>
@@ -120,11 +160,11 @@
       <label class="form-label" for="selectNR">NRs relacionada</label>
       <div class="form-select-wrap">
         <select id="selectNR" class="form-select">
-          <option value="" disabled selected>Digite o nome do treinamento</option>
-          <option value="nr06">NR-06 - EPI</option>
-          <option value="nr10">NR-10 - Eletricidade</option>
-          <option value="nr12">NR-12 - Máquinas e Equipamentos</option>
-          <option value="nr35">NR-35 - Trabalho em Altura</option>
+          <option value="" disabled selected>Selecione a NR do treinamento</option>
+          <option value="NR-06">NR-06 - EPI</option>
+          <option value="NR-10">NR-10 - Eletricidade</option>
+          <option value="NR-12">NR-12 - Máquinas e Equipamentos</option>
+          <option value="NR-35">NR-35 - Trabalho em Altura</option>
         </select>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"/>
