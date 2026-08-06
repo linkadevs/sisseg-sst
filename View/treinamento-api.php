@@ -1,5 +1,6 @@
 <?php
-require_once('../vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../Controller/TreinamentoController.php');
 use Controller\TreinamentoController;
 
 session_start();

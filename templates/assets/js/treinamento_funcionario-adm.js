@@ -1,5 +1,5 @@
 // ===== Estado da aplicação =====
-const API_URL = 'treinamento_api.php';
+const API_URL = 'treinamento-api.php';
 const IMG_PADRAO = 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=500&h=310&fit=crop';
 
 let treinamentos = [];  // cópia local dos dados vindos do banco

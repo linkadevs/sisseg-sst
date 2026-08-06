@@ -1,6 +1,6 @@
 <?php
 
-define("DB_NAME","sisseg-sst");
+define("DB_NAME","sisseg_sst");
 define("DB_HOST","");
 define("DB_USER","root");
 define("DB_PASSWORD",'');
