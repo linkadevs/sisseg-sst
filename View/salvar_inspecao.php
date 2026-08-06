@@ -103,19 +103,19 @@ $epis = $_SESSION['epis'];
                             <p><?= htmlspecialchars($epi)?></p>
                             <div class="organizer">
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="estado" value="bom_estado" id="bom_estado">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="bom_estado" id="bom_estado">
                                     <label for="Bom estado">Bom estado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="estado" value="desgastado" id="desgastado">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="desgastado" id="desgastado">
                                     <label for="Desgastado">Desgastado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="estado" value="vencido" id="vencido">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="vencido" id="vencido">
                                     <label for="Vencido (CA)">Vencido (CA)</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="estado" value="reposicao" id="reposicao">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="reposicao" id="reposicao">
                                     <label for="Solicitar reposição">Solicitar reposição</label>
                                 </div>
                             </div>
