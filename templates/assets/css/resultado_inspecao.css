@@ -29,7 +29,7 @@ body {
     color: #222b37;
 }
 
-.title p {
+.conforme {
     font-weight: 600;
     padding: .5rem;
     background-color: #16a34a;
@@ -37,8 +37,33 @@ body {
     border-radius: .7rem;
 }
 
-.title figure img {
+.parcialmenteconforme {
+    font-weight: 600;
+    padding: .5rem;
+    background-color: #f59e0b;
+    color: #ffffff;
+    border-radius: .7rem;
+}
+
+.naoconforme {
+    font-weight: 600;
+    padding: .5rem;
+    background-color: #dc2626;
+    color: #ffffff;
+    border-radius: .7rem;
+}
+
+.title figure img, .title svg {
     width: 3rem;
+    height: 3rem;
+}
+
+.svgnaoconforme {
+    color: #dc2626;
+}
+
+.svgparcialmenteconforme {
+    color: #f59e0b;
 }
 
 .info {
@@ -53,7 +78,7 @@ body {
     gap: .6rem;
 }
 
-.result {
+.resultconforme {
     display: flex;
     gap: 1rem;
     background-color: #f0fdf4;
@@ -65,18 +90,74 @@ body {
     width: 80%;
 }
 
-.result figure img {
+.resultconforme figure img {
     width: 2rem;
 }
 
-.result h3 {
+.resultconforme h3 {
     font-size: 1.4rem;
     color: #166534;
 }
 
-.result p {
+.resultconforme p, .resultconforme strong {
     font-size: 1.3rem;
     color: #166534;
+}
+
+.resultparcialmenteconforme {
+    display: flex;
+    gap: 1rem;
+    background-color: #fdfaf0;
+    padding: 2rem;
+    border-radius: 2rem;
+    border-style: solid;
+    border-width: .2rem;
+    border-color: #f59e0b;
+    width: 80%;
+}
+
+.resultparcialmenteconforme svg {
+    width: 2rem;
+    height: 2rem;
+    color: #f59e0b;
+}
+
+.resultparcialmenteconforme h3 {
+    font-size: 1.4rem;
+    color: #9d6709;
+}
+
+.resultparcialmenteconforme p, .resultparcialmenteconforme strong {
+    font-size: 1.3rem;
+    color: #9d6709;
+}
+
+.resultnaoconforme {
+    display: flex;
+    gap: 1rem;
+    background-color: #fdf0f0;
+    padding: 2rem;
+    border-radius: 2rem;
+    border-style: solid;
+    border-width: .2rem;
+    border-color: #dc2626;
+    width: 80%;
+}
+
+.resultnaoconforme svg {
+    width: 2rem;
+    height: 2rem;
+    color: #dc2626;
+}
+
+.resultnaoconforme h3 {
+    font-size: 1.4rem;
+    color: #a31a1a;
+}
+
+.resultnaoconforme p, .resultnaoconforme strong {
+    font-size: 1.3rem;
+    color: #a31a1a;
 }
 
 .inspecao svg {
@@ -124,6 +205,17 @@ body {
 .voltar:hover {
     transition: 300ms;
     background-color: #306fd3;
+}
+
+.epi {
+    display: flex;
+    gap: .5rem;
+}
+
+.epi svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: #a31a1a;
 }
 
 @media screen and (max-width: 600px){

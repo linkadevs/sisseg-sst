@@ -10,10 +10,19 @@ $inspecao_controller = new InspecaoController();
 session_start();
 
 $epis = $_SESSION['epis'];
-
 $funcionario = $_SESSION['funcionario'];
 
+$estado_epis = [];
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach($epis as $epi) {
+        if(!empty($_POST[str_replace(' ', '', htmlspecialchars($epi)).'estado'])){
+            $estado_epis[$epi] = $_POST[str_replace(' ', '', htmlspecialchars($epi)).'estado'];
+        } else {
+            $estado_epis[$epi] = 'Não entregue';
+        }
+    }
+    $_SESSION['estados'] = $estado_epis;
     $foto = $_FILES['foto_inspecao'];
     $_SESSION['inspecao_id'] = $inspecao_controller->criarInspecao(
         $_POST['qtd_bons'],
@@ -124,19 +133,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <p><?= htmlspecialchars($epi)?></p>
                             <div class="organizer">
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="bom_estado" class="bom_estado">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="bom_estado" class="bom_estado">
                                     <label for="Bom estado">Bom estado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="desgastado" class="desgastado">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="desgastado" class="desgastado">
                                     <label for="Desgastado">Desgastado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="vencido" class="vencido">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="vencido" class="vencido">
                                     <label for="Vencido (CA)">Vencido (CA)</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="reposicao" class="reposicao">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="reposicao" class="reposicao">
                                     <label for="Solicitar reposição">Solicitar reposição</label>
                                 </div>
                             </div>
