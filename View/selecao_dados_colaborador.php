@@ -28,10 +28,11 @@ $epis = explode(', ', $funcao['nome_epi']);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(!empty($_POST['nome']) && !empty($_POST['setor'])) {
-        $_SESSION['nome'] = $_POST['nome'];
+        $_SESSION['funcionario'] = $funcionarioController->selecionarFuncionarioPorId($_POST['nome']);
         $_SESSION['setor'] = $_POST['setor'];
         $_SESSION['epis'] = $epis;
         $_SESSION['funcao'] = $funcao['nome_funcao'];
+        $_SESSION['id_funcao'] = $id_funcao;
         header('Location: salvar_inspecao.php');
         exit;
     }
@@ -69,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select name="nome" id="nome">
                             <option value="" disabled selected hidden>Selecione o funcionário</option>
                             <?php foreach($funcionarios as $funcionario):?>
-                                <option value="<?= htmlspecialchars($funcionario['nome_funcionario'])?>"><?= htmlspecialchars($funcionario['nome_funcionario'])?></option>
+                                <option value="<?= htmlspecialchars($funcionario['id_funcionario'])?>"><?= htmlspecialchars($funcionario['nome_funcionario'])?></option>
                             <?php endforeach;?>
                         </select>
                     </div>

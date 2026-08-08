@@ -118,6 +118,18 @@ class FuncionarioController {
             );
         }
     }
+
+    public function selecionarFuncionarioPorId(int $id_funcionario) :array {
+        try {
+            return $this->funcionarioModel->selecionarFuncionarioPorId($id_funcionario);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar funcionário por ID',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

@@ -1,3 +1,26 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/InspecaoController.php';
+require_once __DIR__ . '/../Controller/FuncionarioController.php';
+require_once __DIR__ . '/../Controller/FuncaoController.php';
+
+use Controller\InspecaoController;
+use Controller\FuncionarioController;
+use Controller\FuncaoController;
+use DateTime;
+
+$inspecao_controller = new InspecaoController();
+$funcionario_controller = new FuncionarioController();
+$funcao_controller = new FuncaoController();
+
+$inspecao = $inspecao_controller->selecionarInspecaoPorId($_SESSION['inspecao_id']);
+$funcionario = $funcionario_controller->selecionarFuncionarioPorId($inspecao['id_funcionario_fk']);
+$funcao = $funcao_controller->selecionarFuncaoPorId($inspecao['id_funcao_fk']);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -14,9 +37,12 @@
                 <p>CONFORME</p>
             </div>
             <p class="info">
-                Colaborador: <strong>João</strong> | Função: <strong>Pedreiro</strong><br>
-                Setor: <strong>Setor 2</strong><br>
-                Data: 22/06/2026 às 16:58:41
+                Colaborador: <strong><?= htmlspecialchars($funcionario['nome_funcionario'])?></strong> | Função: <strong><?= htmlspecialchars($funcao['nome_funcao'])?></strong><br>
+                Setor: <strong><?= htmlspecialchars($_SESSION['setor'])?></strong><br>
+                <?php 
+                    $data = new DateTime($inspecao['data_hora_inspecao']);
+                ?>
+                Data:  <?= $data->format('d/m/Y'). ' às ' . $data->format('H:i:s')?>
             </p>
         </div>
         <div class="result">

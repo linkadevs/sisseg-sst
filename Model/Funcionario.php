@@ -178,6 +178,23 @@ class Funcionario {
             );
         }
     }
+
+    public function selecionarFuncionarioPorId(int $id_funcionario) :array {
+        try {
+            $sql = 'SELECT * FROM funcionario WHERE id_funcionario = :id_funcionario LIMIT 1';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':id_funcionario' => $id_funcionario
+            ]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar funcionário por ID',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

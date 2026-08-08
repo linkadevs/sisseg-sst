@@ -21,6 +21,9 @@ const cancel = document.querySelector('.cancel')
 const capturar = document.querySelector('.capturar')
 const form = document.querySelector('form')
 const checkboxes = document.querySelectorAll('.checkboxes')
+const bons_estados = document.querySelectorAll('.bom_estado')
+const foto_inspecao = document.querySelector('.foto_inspecao')
+const qtd_bons = document.getElementById('qtd_bons')
 
 let assinatura = null
 
@@ -188,10 +191,24 @@ cancel.addEventListener('click', () => {
 })
 
 capturar.addEventListener('click', () => {
-    window.location.href = 'resultado_inspecao.html'
+    foto_inspecao.click()
 })
 
-// CORREÇÃO DOS CHECKBOXES: O preventDefault agora roda no 'submit' para não bloquear cliques de interação
+foto_inspecao.addEventListener('change', () => {
+    qtd_checked = 0
+    bons_estados.forEach(estado => {
+        if(estado.checked){
+            qtd_checked += 1
+        }
+    })
+    qtd_bons.value = qtd_checked
+    if(btnColab.getAttribute('status') === 'assinado' && btnSuper.getAttribute('status') === 'assinado'){
+        form.submit()
+    } else {
+        alert('Por favor, assine antes de enviar.')
+    }
+})
+
 form.addEventListener('submit', (e) => {
     e.preventDefault()
 })

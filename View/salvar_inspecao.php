@@ -1,8 +1,29 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/InspecaoController.php';
+
+use Controller\InspecaoController;
+
+$inspecao_controller = new InspecaoController();
+
 session_start();
 
 $epis = $_SESSION['epis'];
+
+$funcionario = $_SESSION['funcionario'];
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $foto = $_FILES['foto_inspecao'];
+    $_SESSION['inspecao_id'] = $inspecao_controller->criarInspecao(
+        $_POST['qtd_bons'],
+        $funcionario['id_funcionario'],
+        $_SESSION['id_funcao'],
+        file_get_contents($foto['tmp_name'])
+    );
+    header('Location: resultado_inspecao.php');
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -39,9 +60,9 @@ $epis = $_SESSION['epis'];
         <main>
             <div class="containerSuperior">
                 <h2>Inspeção de EPI – Diário</h2>
-                <h4><strong><?= htmlspecialchars($_SESSION['nome'])?></strong> | <?= htmlspecialchars($_SESSION['funcao'])?> | <?= htmlspecialchars($_SESSION['setor'])?></h4>
+                <h4><strong><?= htmlspecialchars($funcionario['nome_funcionario'])?></strong> | <?= htmlspecialchars($_SESSION['funcao'])?> | <?= htmlspecialchars($_SESSION['setor'])?></h4>
             </div>
-            <form>
+            <form method="POST" enctype=multipart/form-data>
                 <div class="container">
                     <h3 class="margin">EPIs Obrigatórios da Função</h3>
                     
@@ -103,19 +124,19 @@ $epis = $_SESSION['epis'];
                             <p><?= htmlspecialchars($epi)?></p>
                             <div class="organizer">
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="bom_estado" id="bom_estado">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="bom_estado" class="bom_estado">
                                     <label for="Bom estado">Bom estado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="desgastado" id="desgastado">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="desgastado" class="desgastado">
                                     <label for="Desgastado">Desgastado</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="vencido" id="vencido">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="vencido" class="vencido">
                                     <label for="Vencido (CA)">Vencido (CA)</label>
                                 </div>
                                 <div class="input2" onclick="event.stopPropagation()">
-                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="reposicao" id="reposicao">
+                                    <input type="radio" name="<?= htmlspecialchars($epi)?>estado" value="reposicao" class="reposicao">
                                     <label for="Solicitar reposição">Solicitar reposição</label>
                                 </div>
                             </div>
@@ -170,9 +191,11 @@ $epis = $_SESSION['epis'];
                         </button>
                         <button type="button" class="cancel">Cancelar</button>
                     </div>
+                    <input type="file" class="foto_inspecao" name="foto_inspecao" accept="image/*" style="display: none;">
                 </div>
                 <input type="hidden" id="assinaturaColaborador" name="assinatura_colaborador">
                 <input type="hidden" id="assinaturaSupervisor" name="assinatura_supervisor">
+                <input type="hidden" id="qtd_bons" name="qtd_bons">
             </form>
         </main>
         <script src="../templates/assets/js/salvar_inspecao.js"></script>
