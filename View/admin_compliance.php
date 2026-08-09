@@ -1,3 +1,38 @@
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/FuncionarioController.php';
+require_once __DIR__ . '/../Controller/IncidenteController.php';
+require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
+
+use Controller\FuncionarioController;
+use Controller\IncidenteController;
+use Controller\FuncionarioTreinamentoController;
+
+$funcionario_controller = new FuncionarioController();
+$incidente_controller = new IncidenteController();
+$funcionario_treinamento_controller = new FuncionarioTreinamentoController();
+
+$funcionarios = $funcionario_controller->selecionarTodosOsFuncionarios();
+$incidentes = $incidente_controller->selecionarTodosOsIncidentes();
+$funcionarios_treinados = $funcionario_treinamento_controller->selecionarFuncionariosTreinados();
+
+$timezone = new DateTimeZone('America/Sao_Paulo');
+
+$hoje = new DateTime('today', $timezone);
+
+$incidentes_mes = 0;
+
+foreach($incidentes as $incidente) {
+    $data_incidente = new DateTime($incidente['data_incidente'], $timezone);
+    if($data_incidente->format('Y-m') === $hoje->format('Y-m')) {
+        $incidentes_mes++;
+    }
+}
+
+$qtd_funcionarios = count($funcionarios);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -22,8 +57,8 @@
                     <svg class="svg1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 text-blue-600" data-fg-bzec17="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:112:17:3257:43:e:Users::::::DV8M" data-fgid-bzec17=":rno:"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <p>Trabalhadores</p>
                 </div>
-                <h2>156</h2>
-                <p class="normal_p">91% treinados</p>
+                <h2><?= $qtd_funcionarios;?></h2>
+                <p class="normal_p"><?= round(($funcionarios_treinados['count_funcionarios']/$qtd_funcionarios)*100)?>% treinados</p>
             </div>
             <div class="mini_card">
                 <div class="mini_card_title">
@@ -31,14 +66,13 @@
                     <p>EPIs Ativos</p>
                 </div>
                 <h2>842</h2>
-                <p class="normal_p">798 distribuídos</p>
             </div>
             <div class="mini_card">
                 <div class="mini_card_title">
                     <svg class="svg3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 text-blue-600" data-fg-bzec17="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:112:17:3257:43:e:Users::::::DV8M" data-fgid-bzec17=":rno:"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <p>Incidentes (mês)</p>
                 </div>
-                <h2>1</h2>
+                <h2><?= $incidentes_mes;?></h2>
                 <p class="green_p">Baixo</p>
             </div>
             <div class="mini_card">
