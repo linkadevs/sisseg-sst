@@ -14,6 +14,7 @@ if (!isset($_SESSION['id_adm'])) {
 <title>Treinamentos</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../templates/assets/css/treinamento_funcionario-adm.css">
+<link rel="stylesheet" href="../templates/assets/css/provas-adm.css">
 <style>
   /* Painel de filtro - classes novas que ainda não existem no CSS original */
   .filter-panel{display:none;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:12px 16px;margin:-4px 0 16px 0;}
@@ -64,6 +65,7 @@ if (!isset($_SESSION['id_adm'])) {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
       <span class="btn-text">Criar treinamento</span>
     </button>
+    
     <button class="btn-filter" id="btnFiltrar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
@@ -179,7 +181,48 @@ if (!isset($_SESSION['id_adm'])) {
   </div>
 </div>
 
+<!-- Modal: Criar/Editar prova -->
+<div class="modal-overlay" id="modalProvaOverlay">
+  <div class="modal modal-prova" role="dialog" aria-modal="true" aria-labelledby="modalProvaTitle">
+    <button class="modal-back" id="modalProvaBackBtn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+      </svg>
+      Voltar
+    </button>
+
+    <h2 class="modal-title" id="modalProvaTitle">Criar nova prova</h2>
+
+    <div class="form-group">
+      <label class="form-label" for="provaTreinamento">Treinamento vinculado</label>
+      <div class="form-select-wrap">
+        <select id="provaTreinamento" class="form-select">
+          <option value="" disabled selected>Selecione o treinamento</option>
+        </select>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="provaTitulo">Título da prova</label>
+      <input id="provaTitulo" class="form-input" type="text" placeholder="Digite o título da prova">
+    </div>
+
+    <div id="questoesContainer"></div>
+
+    <button type="button" class="btn-add-questao" id="btnAdicionarQuestao">+ Adicionar questão</button>
+
+    <div class="modal-actions">
+      <button class="btn-delete" id="btnExcluirProva">Excluir</button>
+      <button class="btn-save" id="btnSalvarProva">Salvar prova</button>
+    </div>
+  </div>
+</div>
+
 <script src="../templates/assets/js/treinamento_funcionario-adm.js"></script>
+<script src="../templates/assets/js/provas-adm.js"></script>
 
 </body>
 </html>

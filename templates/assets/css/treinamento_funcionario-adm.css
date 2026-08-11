@@ -525,3 +525,114 @@
     .form-row{ flex-direction:column; align-items:stretch; }
     .toggle-group{ justify-content:flex-start; }
   }
+
+  /* ===== Modal: Provas ===== */
+.modal-prova{
+  max-width: 560px;
+}
+
+.questoes-vazio{
+  text-align:center;
+  color:var(--text-sub);
+  font-size:13px;
+  padding:16px 0;
+}
+
+.questao-card{
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-md);
+  padding:16px;
+  margin-bottom:14px;
+  background:#fafafa;
+}
+
+.questao-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.questao-numero{
+  font-size:13px;
+  font-weight:700;
+  color:var(--blue-dark);
+}
+
+.btn-remover-questao{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:none;
+  background:var(--red-bg);
+  color:var(--red-text);
+  cursor:pointer;
+  flex-shrink:0;
+}
+.btn-remover-questao:hover{ background:var(--red-chip-bg); }
+
+.alternativas-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.alternativa-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.alternativa-radio-wrap{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+}
+
+.alternativa-radio{
+  width:17px;
+  height:17px;
+  accent-color:var(--blue);
+  cursor:pointer;
+}
+
+.alternativa-letra{
+  flex-shrink:0;
+  width:20px;
+  height:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:700;
+  color:var(--blue-dark);
+  background:var(--blue-bg);
+  border-radius:50%;
+}
+
+.alternativa-row .alternativa-texto{
+  flex:1;
+  padding:8px 12px;
+  font-size:13px;
+}
+
+.btn-add-questao{
+  width:100%;
+  background:var(--blue-bg);
+  color:var(--blue-dark);
+  border:1.5px dashed var(--blue-border);
+  border-radius:var(--radius-sm);
+  padding:11px 0;
+  font-size:13.5px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:6px;
+}
+.btn-add-questao:hover{ background:var(--blue-border); }
+
+@media (max-width: 480px){
+  .modal-prova{ max-width:100%; }
+}
