@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestão de Incidentes – SISSEG SST</title>
+  <title>Incidentes – SISSEG SST</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,190 +12,150 @@
 </head>
 <body>
 
-<!-- ================================================================
-     PÁGINA 1 – LISTA DE INCIDENTES
-================================================================ -->
-<div id="page-list" class="page active">
-  <main class="page-wrapper">
+<div class="pagina-incidente">
 
-    <!-- Voltar ao Dashboard -->
-    <a href="#" class="back-link" aria-label="Voltar ao Dashboard">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/>
-      </svg>
-      Voltar ao Dashboard
-    </a>
-
-    <!-- Cabeçalho -->
-    <header class="page-header">
-      <div class="page-header__left">
-        <svg class="alert-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="44" height="44" rx="10" fill="#FEF0E0"/>
-          <path d="M22 10L38 36H6L22 10Z" fill="#F6A623" stroke="#E8940D" stroke-width="1"/>
-          <rect x="20.5" y="19" width="3" height="9" rx="1.5" fill="#fff"/>
-          <rect x="20.5" y="30" width="3" height="3" rx="1.5" fill="#fff"/>
-        </svg>
-        <div>
-          <h1 class="page-header__title">Gestão de Incidentes</h1>
-          <p class="page-header__sub">Registro, análise e acompanhamento de incidentes</p>
-        </div>
-      </div>
-      <button class="btn-register" onclick="window.location.href='../View/registrar-incidente.html'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
-        Registrar Incidente
-      </button>
-    </header>
-
-    <!-- Métricas -->
-    <section class="metrics-grid" aria-label="Resumo de incidentes">
-      <div class="metric-card">
-        <p class="metric-card__label">Total de Incidentes</p>
-        <p class="metric-card__value metric-card__value--total">4</p>
-      </div>
-      <div class="metric-card">
-        <p class="metric-card__label">Abertos</p>
-        <p class="metric-card__value metric-card__value--abertos">0</p>
-      </div>
-      <div class="metric-card">
-        <p class="metric-card__label">Em Investigação</p>
-        <p class="metric-card__value metric-card__value--invest">1</p>
-      </div>
-      <div class="metric-card">
-        <p class="metric-card__label">Concluídos</p>
-        <p class="metric-card__value metric-card__value--concl">3</p>
-      </div>
-    </section>
-
-    <!-- Filtros -->
-    <div class="filter-bar">
-      <div class="search-wrapper">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
-        <input id="searchInput" class="search-input" type="search"
-               placeholder="Buscar por descrição ou local..." aria-label="Buscar incidentes" />
-      </div>
-      <div class="status-wrapper">
-        <select id="statusFilter" class="status-select" aria-label="Filtrar por status">
-          <option value="">Todos os Status</option>
-          <option value="investigando">Investigando</option>
-          <option value="concluido">Concluído</option>
-        </select>
-        <svg class="select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 9l6 6 6-6"/>
-        </svg>
-      </div>
+  <div class="cabecalho-modulo">
+    <div>
+      <h1>Incidentes</h1>
+      <p>Registro e acompanhamento de incidentes de segurança</p>
     </div>
-
-    <!-- Lista -->
-    <section class="incidents-list" id="incidentsList" aria-label="Lista de incidentes"></section>
-
-    <div class="empty-state" id="emptyState">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-      </svg>
-      Nenhum incidente encontrado para os filtros aplicados.
-    </div>
-
-  </main>
-</div>
-
-
-<!-- ================================================================
-     PÁGINA 2 – DETALHE DO INCIDENTE
-================================================================ -->
-<div id="page-detail" class="page">
-  <main class="page-wrapper">
-
-    <!-- Voltar à Lista -->
-    <button class="back-link" id="btnBackToList" aria-label="Voltar à lista">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/>
-      </svg>
-      Voltar à Lista
+    <button class="btn-novo-incidente" onclick="location.href='registrar-incidente.php'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Registrar Incidente
     </button>
+  </div>
 
-    <!-- Card principal do detalhe -->
-    <div class="detail-card">
-
-      <!-- Topo: ID + badges + data -->
-      <div class="detail-header">
-        <div class="detail-header__top">
-          <span class="detail-id" id="detailId"></span>
-          <span class="badge" id="detailBadgeSev"></span>
-          <span class="badge" id="detailBadgeStatus"></span>
-        </div>
-        <p class="detail-date" id="detailDate"></p>
-      </div>
-
-      <!-- Grid de campos simples -->
-      <div class="detail-fields">
-        <div class="detail-field">
-          <p class="detail-field__label">Tipo</p>
-          <p class="detail-field__value" id="detailTipo"></p>
-        </div>
-        <div class="detail-field">
-          <p class="detail-field__label">Local</p>
-          <p class="detail-field__value" id="detailLocal"></p>
-        </div>
-        <div class="detail-field">
-          <p class="detail-field__label">Atividade</p>
-          <p class="detail-field__value" id="detailAtividade"></p>
-        </div>
-        <div class="detail-field">
-          <p class="detail-field__label">Responsável</p>
-          <p class="detail-field__value" id="detailResponsavel"></p>
-        </div>
-      </div>
-
-      <!-- Seção: Descrição -->
-      <div class="detail-section">
-        <p class="detail-section__title">Descrição do Incidente</p>
-        <p class="detail-section__text" id="detailDescricao"></p>
-      </div>
-
-      <!-- Seção: Testemunhas -->
-      <div class="detail-section">
-        <p class="detail-section__title">Testemunhas</p>
-        <p class="detail-section__text" id="detailTestemunhas"></p>
-      </div>
-
-      <!-- Seção: Ação Imediata -->
-      <div class="detail-section">
-        <p class="detail-section__title">Ação Imediata Tomada</p>
-        <p class="detail-section__text" id="detailAcao"></p>
-      </div>
-
-      <!-- Rodapé de ações -->
-      <div class="detail-actions">
-        <button class="btn-export" onclick="alert('Exportar PDF: ' + document.getElementById('detailId').textContent)">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="12" y1="18" x2="12" y2="12"/>
-            <line x1="9" y1="15" x2="15" y2="15"/>
-          </svg>
-          Exportar PDF
-        </button>
-        <button class="btn-update-status" onclick="alert('Atualizar status de: ' + document.getElementById('detailId').textContent)">
-          Atualizar Status
-        </button>
-      </div>
-
+  <!-- Contadores -->
+  <div class="contadores" id="contadores">
+    <div class="contador-card ativo" data-status="todos">
+      <div class="numero" id="contTodos">0</div>
+      <div class="rotulo"><span class="ponto"></span>Todos os Status</div>
     </div>
-  </main>
+    <div class="contador-card" data-status="Aberto">
+      <div class="numero" id="contAberto">0</div>
+      <div class="rotulo"><span class="ponto"></span>Aberto</div>
+    </div>
+    <div class="contador-card" data-status="Investigando">
+      <div class="numero" id="contInvestigando">0</div>
+      <div class="rotulo"><span class="ponto"></span>Investigando</div>
+    </div>
+    <div class="contador-card" data-status="Concluído">
+      <div class="numero" id="contConcluido">0</div>
+      <div class="rotulo"><span class="ponto"></span>Concluído</div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="barra-filtros">
+    <div class="campo-busca">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="inputBusca" placeholder="Buscar por descrição, local ou código (INC-001)...">
+    </div>
+    <div class="filtro-status" id="filtroStatus">
+      <button class="ativo" data-status="todos">Todos os Status</button>
+      <button data-status="Aberto">Aberto</button>
+      <button data-status="Investigando">Investigando</button>
+      <button data-status="Concluído">Concluído</button>
+    </div>
+  </div>
+
+  <!-- Grid de cards -->
+  <div class="grid-incidentes" id="gridIncidentes"></div>
+
+  <div class="estado-vazio" id="estadoVazio" style="display:none">
+    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L14.7 3.86a2 2 0 0 0-3.4 0z"/></svg>
+    <p>Nenhum incidente encontrado com esses filtros.</p>
+  </div>
+
 </div>
+
+<!-- Modal de edição -->
+<div class="modal-overlay" id="modalEditar" style="display:none;">
+  <div class="modal-editar">
+    <div class="modal-cabecalho">
+      <h2>Editar Incidente <span id="modalCodigo"></span></h2>
+      <button class="fechar-modal" onclick="fecharModalEdicao()">&times;</button>
+    </div>
+    <form id="formEditarIncidente">
+      <input type="hidden" name="id_incidente" id="editId">
+
+      <div class="campo-modal">
+        <label>Status</label>
+        <select name="status" id="editStatus">
+          <option value="Aberto">Aberto</option>
+          <option value="Investigando">Investigando</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+      </div>
+
+      <div class="linha-modal">
+        <div class="campo-modal">
+          <label>Tipo</label>
+          <select name="tipo" id="editTipo">
+            <option value="quase-acidente">Quase Acidente</option>
+            <option value="condicao-insegura">Condição Insegura</option>
+            <option value="acidente-lesao">Acidente com Lesão</option>
+            <option value="risco-eletrico">Risco Elétrico</option>
+            <option value="incendio">Incêndio / Explosão</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="campo-modal">
+          <label>Gravidade</label>
+          <select name="gravidade" id="editGravidade">
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="linha-modal">
+        <div class="campo-modal">
+          <label>Data</label>
+          <input type="date" name="data" id="editData">
+        </div>
+        <div class="campo-modal">
+          <label>Local</label>
+          <input type="text" name="local" id="editLocal">
+        </div>
+      </div>
+
+      <div class="campo-modal">
+        <label>Atividade</label>
+        <input type="text" name="atividade" id="editAtividade">
+      </div>
+
+      <div class="campo-modal">
+        <label>Descrição do Incidente</label>
+        <textarea name="descricao" id="editDescricao"></textarea>
+      </div>
+
+      <div class="campo-modal">
+        <label>Testemunhas</label>
+        <input type="text" name="testemunhas" id="editTestemunhas">
+      </div>
+
+      <div class="campo-modal">
+        <label>Ação Imediata Tomada</label>
+        <textarea name="acaoImediata" id="editAcao"></textarea>
+      </div>
+
+      <div class="campo-modal">
+        <label>Treinamento de Reciclagem Necessário</label>
+        <input type="text" name="treinamento" id="editTreinamento">
+      </div>
+
+      <div class="acoes-modal">
+        <button type="submit" class="btn-salvar">Salvar Alterações</button>
+        <button type="button" class="btn-cancelar" onclick="fecharModalEdicao()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script src="../templates/assets/js/modulo-incidente.js"></script>
-
 </body>
 </html>
