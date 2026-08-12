@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/vendor/autoload.php";
-require_once(__DIR__ . '/../Controller/ProvaController.php');
+
 use Controller\ProvaController;
 
 header('Content-Type: application/json; charset=utf-8');
@@ -11,6 +11,9 @@ $acao = $_GET['acao'] ?? null;
 $corpoBruto = file_get_contents('php://input');
 $corpo = json_decode($corpoBruto, true);
 $dados = is_array($corpo) ? $corpo : $_POST;
+
+// GET (ex.: acao=buscar&id_treinamento=5) não manda corpo — mescla a querystring.
+$dados = array_merge($_GET, $dados);
 
 $acao = $acao ?? ($dados['acao'] ?? null);
 
@@ -28,4 +31,3 @@ if (!($resultado['success'] ?? false)) {
 }
 
 echo json_encode($resultado);
-?>
