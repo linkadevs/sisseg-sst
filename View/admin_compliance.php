@@ -4,18 +4,35 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/FuncionarioController.php';
 require_once __DIR__ . '/../Controller/IncidenteController.php';
 require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
+require_once __DIR__ . '/../Controller/EpiController.php';
+require_once __DIR__ . '/../Controller/DocumentoController.php';
+require_once __DIR__ . '/../Controller/AuditoriaController.php';
 
 use Controller\FuncionarioController;
 use Controller\IncidenteController;
 use Controller\FuncionarioTreinamentoController;
+use Controller\EpiController;
+use Controller\DocumentoController;
+use Controller\AuditoriaController;
 
 $funcionario_controller = new FuncionarioController();
 $incidente_controller = new IncidenteController();
 $funcionario_treinamento_controller = new FuncionarioTreinamentoController();
+$epi_controller = new EpiController();
+$documento_controller = new DocumentoController();
+$auditoria_controller = new AuditoriaController();
 
 $funcionarios = $funcionario_controller->selecionarTodosOsFuncionarios();
 $incidentes = $incidente_controller->selecionarTodosOsIncidentes();
 $funcionarios_treinados = $funcionario_treinamento_controller->selecionarFuncionariosTreinados();
+$epis = $epi_controller->selecionarTodosOsEpis();
+$documentos = $documento_controller->selecionarTodosOsDocumentos();
+$auditorias = $auditoria_controller->selecionarTodasAsAuditorias();
+
+$qtd_epis = 0;
+foreach($epis as $epi) {
+    $qtd_epis += $epi['qtd_epi'];
+}
 
 $timezone = new DateTimeZone('America/Sao_Paulo');
 
@@ -31,6 +48,15 @@ foreach($incidentes as $incidente) {
 }
 
 $qtd_funcionarios = count($funcionarios);
+
+// if($_SERVER['REQUEST_METHOD'] == 'POST') {
+//     if(!empty($_POST['titulo']) && !empty($_POST['responsavel']) && !empty($_POST['data']) && !empty($_POST['status'])) {
+        
+//     }
+//     if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_POST['arquivo'])) {
+
+//     }
+// }
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +91,7 @@ $qtd_funcionarios = count($funcionarios);
                     <svg class="svg2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 text-blue-600" data-fg-bzec17="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:112:17:3257:43:e:Users::::::DV8M" data-fgid-bzec17=":rno:"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     <p>EPIs Ativos</p>
                 </div>
-                <h2>842</h2>
+                <h2><?= htmlspecialchars($qtd_epis)?></h2>
             </div>
             <div class="mini_card">
                 <div class="mini_card_title">
@@ -74,14 +100,6 @@ $qtd_funcionarios = count($funcionarios);
                 </div>
                 <h2><?= $incidentes_mes;?></h2>
                 <p class="green_p">Baixo</p>
-            </div>
-            <div class="mini_card">
-                <div class="mini_card_title">
-                    <svg class="svg4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 text-blue-600" data-fg-bzec17="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:112:17:3257:43:e:Users::::::DV8M" data-fgid-bzec17=":rno:"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    <p>Conformidade</p>
-                </div>
-                <h2>96%</h2>
-                <p class="green_p">Excelente</p>
             </div>
         </div>
         <div class="relatorios">
@@ -193,46 +211,154 @@ $qtd_funcionarios = count($funcionarios);
             </div>
         </div>
         <div class="proximas_auditorias">
-            <div class="title_auditorias">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-                <h3>Próximas auditorias</h3>
+            <div class="section-header">
+                <div class="title_auditorias">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                    <h3>Próximas auditorias</h3>
+                </div>
+                <button class="btn-action" onclick="abrirModal('modalAuditoria')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                    Criar Auditoria
+                </button>
             </div>
             <p class="auditorias_p">Agenda de auditorias internas e externas</p>
-            <div class="auditoria svg-verde auditoria_verde">
-                <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-                    <div class="text">
-                        <h3>Interna</h3>
-                        <p>19/12/2025 - Eng. Carlos Mendes</p>
+            <?php foreach($auditorias as $auditoria):?>
+                <?php if($auditoria['status_auditoria'] == 'Agendada'):?>
+                    <div class="auditoria svg-verde auditoria_verde">
+                        <div class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                            <div class="text">
+                                <h3><?= htmlspecialchars($auditoria['nome_auditoria'])?></h3>
+                                <p><?= htmlspecialchars($auditoria['auditor_auditoria'])?></p>
+                            </div>
+                        </div>
+                        <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
                     </div>
-                </div>
-                <p class="auditoria_p">Agendada</p>
-            </div>
-            <div class="auditoria svg-azul auditoria_azul">
-                <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-                    <div class="text">
-                        <h3>Externa - Ministério do Trabalho</h3>
-                        <p>14/01/2026 - Fiscal do MTE</p>
+                <?php elseif($auditoria['status_auditoria'] == 'Aguardando'):?>
+                    <div class="auditoria svg-azul auditoria_azul">
+                        <div class="left">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                            <div class="text">
+                                <h3><?= htmlspecialchars($auditoria['nome_auditoria'])?></h3>
+                                <p><?= htmlspecialchars($auditoria['auditor_auditoria'])?></p>
+                            </div>
+                        </div>
+                        <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
                     </div>
-                </div>
-                <p class="auditoria_p">Aguardando</p>
-            </div>
-            <div class="auditoria svg-azul auditoria_azul">
-                <div class="left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
-                    <div class="text">
-                        <h3>Certificação ISO 45001</h3>
-                        <p>09/02/2026 - Bureau Veritas</p>
-                    </div>
-                </div>
-                <p class="auditoria_p">Aguardando</p>
-            </div>
+                <?php endif;?>
+            <?php endforeach;?>
+            <?php if(empty($auditorias)):?>
+                <h2>Não há nenhuma auditoria agendada</h2>
+            <?php endif;?>
         </div>
         <div class="documentos_compliance">
-            <h3>Documentos de compliance</h3>
+            <div class="section-header">
+                <h3>Documentos de compliance</h3>
+                <button class="btn-action" onclick="abrirModal('modalDocumento')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                    Adicionar Documento
+                </button>
+            </div>
             <p class="documentos_p">Documentação obrigatória para auditorias</p>
-            <div class="documento">
+            <?php foreach($documentos as $documento):?>
+                <div class="documento">
+                    <div class="left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+                        <div class="text">
+                            <h3><?= htmlspecialchars($documento['nome_documento'])?></h3>
+                            <?php
+                                $data = new DateTime($documento['data_documento']);
+                            ?>
+                            <p>Última atualização: <?= $data->format('d/m/Y')?></p>
+                        </div>
+                    </div>
+                    <p class="<?= $documento['status_documento']?>"><?= ucfirst($documento['status_documento'])?></p>
+                </div>
+            <?php endforeach;?>
+            <?php if(empty($documentos)):?>
+                <h2>Não há documentos cadastrados</h2>
+            <?php endif;?>
+        </div>
+        <!-- MODAL: Criar Auditoria -->
+        <div class="modal-overlay" id="modalAuditoria">
+            <div class="modal-card">
+                <h3>Agendar Nova Auditoria</h3>
+                <form id="formAuditoria">
+                    <div class="form-group">
+                        <label for="auditoria_titulo">Tipo / Título da Auditoria</label>
+                        <input type="text" id="auditoria_titulo" name="titulo" placeholder="Ex: Interna, Externa MTE, ISO 45001" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="auditoria_responsavel">Auditor / Responsável</label>
+                        <input type="text" id="auditoria_responsavel" name="responsavel" placeholder="Ex: Eng. Carlos Mendes" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="auditoria_data">Data Prevista</label>
+                        <input type="date" id="auditoria_data" name="data" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="auditoria_status">Status</label>
+                        <select id="auditoria_status" name="status">
+                            <option value="Agendada">Agendada</option>
+                            <option value="Aguardando">Aguardando</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="fecharModal('modalAuditoria')">Cancelar</button>
+                        <button type="submit" class="btn-action">Salvar Auditoria</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: Adicionar Documento -->
+        <div class="modal-overlay" id="modalDocumento">
+            <div class="modal-card">
+                <h3>Adicionar Documento de Compliance</h3>
+                <form id="formDocumento">
+                    <div class="form-group">
+                        <label for="doc_nome">Nome do Documento</label>
+                        <input type="text" id="doc_nome" name="nome" placeholder="Ex: PGR, PCMSO, Ficha de EPIs" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc_data">Data de Atualização</label>
+                        <input type="date" id="doc_data" name="data_atualizacao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc_status">Status</label>
+                        <select id="doc_status" name="status_doc">
+                            <option value="Atualizado">Atualizado</option>
+                            <option value="Vencendo">Vencendo</option>
+                            <option value="Vencido">Vencido</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc_arquivo">Arquivo (PDF/DOC)</label>
+                        <input type="file" id="doc_arquivo" name="arquivo">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="fecharModal('modalDocumento')">Cancelar</button>
+                        <button type="submit" class="btn-action">Salvar Documento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="../templates/assets/js/admin_compliance.js"></script>
+    </body>
+</html>
+
+
+<!-- 
+<div class="documentos_compliance">
+            <div class="section-header">
+                <h3>Documentos de compliance</h3>
+                <button class="btn-action" onclick="abrirModal('modalDocumento')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                    Adicionar Documento
+                </button>
+            </div>
+            <p class="documentos_p">Documentação obrigatória para auditorias</p>
+                        <div class="documento">
                 <div class="left">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                     <div class="text">
@@ -302,6 +428,4 @@ $qtd_funcionarios = count($funcionarios);
                 </div>
                 <p class="vencendo">Vencendo</p>
             </div>
-        </div>
-    </body>
-</html>
+        </div> -->
