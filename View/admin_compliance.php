@@ -171,7 +171,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p>Incidentes (mês)</p>
                 </div>
                 <h2><?= $incidentes_mes;?></h2>
-                <p class="green_p">Baixo</p>
+                <?php if($incidentes_mes<=5):?>
+                    <p class="green_p">Baixo</p>
+                <?php endif;?>
             </div>
         </div>
         <div class="relatorios">
@@ -185,14 +187,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>Relatório de treinamentos</h3>
                     <p>Lista completa de treinamentos realizados e pendentes</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_relatorio_treinamentos.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_treinamentos.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card">
@@ -202,14 +204,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>Relatório de Acidentes</h3>
                     <p>Histórico de acidentes e análise de causas</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_relatorio_acidentes.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_acidentes.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card">
@@ -219,14 +221,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>Controle de EPIs</h3>
                     <p>Estoque, distribuição e trocas de EPIs</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_controle_epis.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_epis.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card">
@@ -236,14 +238,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>PGR Completo</h3>
                     <p>Programa de Gerenciamento de Riscos atualizado</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_pgr_completo.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_pgr.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card">
@@ -253,14 +255,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>Indicadores de Performance</h3>
                     <p>Taxas de frequência, gravidade e outros KPIs</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_indicadores_kpis.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_kpis.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card">
@@ -270,14 +272,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h3>Compliance e Auditoria</h3>
                     <p>Evidências para auditorias e fiscalizações</p>
                     <div class="buttons">
-                        <button>
+                        <a href="../Controller/gerar_compliance_auditoria.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             PDF
-                        </button>
-                        <button>
+                        </a>
+                        <a href="../Controller/gerar_csv_auditoria.php">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-down w-4 h-4 mr-1" data-fg-bzec77="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:185:27:6610:37:e:FileDown::::::EGMW" data-fgid-bzec77=":rpf:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M12 18v-6"></path><path d="m9 15 3 3 3-3"></path></svg>
                             Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
