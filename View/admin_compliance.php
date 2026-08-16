@@ -8,6 +8,15 @@ require_once __DIR__ . '/../Controller/EpiController.php';
 require_once __DIR__ . '/../Controller/DocumentoController.php';
 require_once __DIR__ . '/../Controller/AuditoriaController.php';
 
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if(!empty($_SESSION['message'])) {
+    echo '<script>alert("'. $_SESSION['message'] .'")</script>';
+    unset($_SESSION['message']);
+}
+  
 use Controller\FuncionarioController;
 use Controller\IncidenteController;
 use Controller\FuncionarioTreinamentoController;
@@ -49,15 +58,78 @@ foreach($incidentes as $incidente) {
 
 $qtd_funcionarios = count($funcionarios);
 
-// if($_SERVER['REQUEST_METHOD'] == 'POST') {
-//     if(!empty($_POST['titulo']) && !empty($_POST['responsavel']) && !empty($_POST['data']) && !empty($_POST['status'])) {
-        
-//     }
-//     if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_POST['arquivo'])) {
+if(!empty($_GET['download_id'])) {
+    foreach($documentos as $documento) {
+        if($documento['id_documento'] == $_GET['download_id']) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . rawurlencode($documento['nome_documento']) . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length: ' . strlen($documento['arquivo_documento']));
+            echo $documento['arquivo_documento'];
+            exit;
+        }
+    }
+}
 
-//     }
-// }
-
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!empty($_POST['titulo']) && !empty($_POST['responsavel']) && !empty($_POST['data']) && !empty($_POST['status']) && empty($_POST['id_auditoria'])) {
+        $auditoria_controller->criarNovaAuditoria(
+            $_POST['titulo'],
+            $_POST['responsavel'],
+            $_POST['data'],
+            $_POST['status']
+        );
+    }
+    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_FILES['arquivo']['tmp_name']) && empty($_POST['id_documento'])) {
+        $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
+        $documento_controller->criarNovoDocumento(
+            $_POST['nome'],
+            $_POST['data_atualizacao'],
+            $_POST['status_doc'],
+            $doc
+        );
+    }
+    if(!empty($_POST['titulo']) && !empty($_POST['responsavel']) && !empty($_POST['data']) && !empty($_POST['status']) && !empty($_POST['id_auditoria'])) {
+        $auditoria_controller->atualizarAuditoria(
+            $_POST['id_auditoria'],
+            $_POST['titulo'],
+            $_POST['responsavel'],
+            $_POST['data'],
+            $_POST['status']
+        );
+    }
+    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_POST['id_documento'])) {
+        if(!empty($_FILES['arquivo']['tmp_name'])) {
+            $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
+            $documento_controller->atualizarDocumento(
+                $_POST['id_documento'],
+                $_POST['nome'],
+                $_POST['data_atualizacao'],
+                $_POST['status_doc'],
+                $doc
+            );
+        } else {
+            $documento_controller->atualizarDocumentoSemArquivo(
+                $_POST['id_documento'],
+                $_POST['nome'],
+                $_POST['data_atualizacao'],
+                $_POST['status_doc']
+            );
+        }
+    }
+    if(!empty($_POST['delete_aud'])) {
+        $auditoria_controller->deletarAuditoria($_POST['delete_aud']);
+    }
+    if(!empty($_POST['delete_doc'])) {
+        $documento_controller->deletarDocumento($_POST['delete_doc']);
+    }
+    header('Location: admin_compliance.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -216,7 +288,7 @@ $qtd_funcionarios = count($funcionarios);
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                     <h3>Próximas auditorias</h3>
                 </div>
-                <button class="btn-action" onclick="abrirModal('modalAuditoria')">
+                <button class="btn-action" onclick="criarModalAuditoria()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                     Criar Auditoria
                 </button>
@@ -232,7 +304,29 @@ $qtd_funcionarios = count($funcionarios);
                                 <p><?= htmlspecialchars($auditoria['auditor_auditoria'])?></p>
                             </div>
                         </div>
-                        <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
+                        <div class="status">
+                            <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
+                            <div class="botoes_back">
+                                <button class="edit" id="<?= htmlspecialchars($auditoria['id_auditoria'])?>" data-nome="<?= htmlspecialchars($auditoria['nome_auditoria'])?>" data-auditor="<?= htmlspecialchars($auditoria['auditor_auditoria'])?>" data-date="<?= htmlspecialchars($auditoria['data_auditoria'])?>" data-status="<?= htmlspecialchars($auditoria['status_auditoria'])?>" onclick="editarModalAuditoria(this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20h9"></path>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                    </svg>
+                                </button>
+                                <form method="POST">
+                                    <button class="erase" type="submit" onclick="return confirm('Deseja mesmo deletar essa auditoria?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                    <input type="hidden" name="delete_aud" value="<?= htmlspecialchars($auditoria['id_auditoria'])?>">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 <?php elseif($auditoria['status_auditoria'] == 'Aguardando'):?>
                     <div class="auditoria svg-azul auditoria_azul">
@@ -243,7 +337,29 @@ $qtd_funcionarios = count($funcionarios);
                                 <p><?= htmlspecialchars($auditoria['auditor_auditoria'])?></p>
                             </div>
                         </div>
-                        <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
+                        <div class="status">
+                            <p class="auditoria_p"><?= htmlspecialchars($auditoria['status_auditoria'])?></p>
+                            <div class="botoes_back">
+                                <button class="edit" id="<?= htmlspecialchars($auditoria['id_auditoria'])?>" data-nome="<?= htmlspecialchars($auditoria['nome_auditoria'])?>" data-auditor="<?= htmlspecialchars($auditoria['auditor_auditoria'])?>" data-date="<?= htmlspecialchars($auditoria['data_auditoria'])?>" data-status="<?= htmlspecialchars($auditoria['status_auditoria'])?>" onclick="editarModalAuditoria(this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20h9"></path>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                    </svg>
+                                </button>
+                                <form method="POST">
+                                    <button type="submit" class="erase" onclick="return confirm('Deseja mesmo deletar essa auditoria?')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                    <input type="hidden" name="delete_aud" value="<?= htmlspecialchars($auditoria['id_auditoria'])?>">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 <?php endif;?>
             <?php endforeach;?>
@@ -254,7 +370,7 @@ $qtd_funcionarios = count($funcionarios);
         <div class="documentos_compliance">
             <div class="section-header">
                 <h3>Documentos de compliance</h3>
-                <button class="btn-action" onclick="abrirModal('modalDocumento')">
+                <button class="btn-action" onclick="criarModalDocumento()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                     Adicionar Documento
                 </button>
@@ -265,14 +381,36 @@ $qtd_funcionarios = count($funcionarios);
                     <div class="left">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-5 h-5 text-blue-600" data-fg-bzec117="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:276:21:10608:46:e:FileText::::::B1i5" data-fgid-bzec117=":rdu:"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                         <div class="text">
-                            <h3><?= htmlspecialchars($documento['nome_documento'])?></h3>
+                            <a href="?download_id=<?= $documento['id_documento']?>"><?= htmlspecialchars($documento['nome_documento'])?></a>
                             <?php
                                 $data = new DateTime($documento['data_documento']);
                             ?>
                             <p>Última atualização: <?= $data->format('d/m/Y')?></p>
                         </div>
                     </div>
-                    <p class="<?= $documento['status_documento']?>"><?= ucfirst($documento['status_documento'])?></p>
+                    <div class="status">
+                        <p class="<?= strtolower($documento['status_documento'])?>"><?= ucfirst($documento['status_documento'])?></p>
+                        <div class="botoes_back">
+                            <button class="edit" id="<?= htmlspecialchars($documento['id_documento'])?>" data-nome="<?= htmlspecialchars($documento['nome_documento'])?>" data-date="<?= htmlspecialchars($documento['data_documento'])?>" data-status="<?= htmlspecialchars(ucfirst($documento['status_documento']))?>" onclick="editarModalDocumento(this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                            </button>
+                            <form method="POST">
+                                <button type="submit" class="erase" onclick="return confirm('Deseja mesmo deletar esse documento?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                    <input type="hidden" name="delete_doc" value="<?= htmlspecialchars($documento['id_documento'])?>">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             <?php endforeach;?>
             <?php if(empty($documentos)):?>
@@ -283,7 +421,7 @@ $qtd_funcionarios = count($funcionarios);
         <div class="modal-overlay" id="modalAuditoria">
             <div class="modal-card">
                 <h3>Agendar Nova Auditoria</h3>
-                <form id="formAuditoria">
+                <form id="formAuditoria" method="POST">
                     <div class="form-group">
                         <label for="auditoria_titulo">Tipo / Título da Auditoria</label>
                         <input type="text" id="auditoria_titulo" name="titulo" placeholder="Ex: Interna, Externa MTE, ISO 45001" required>
@@ -299,14 +437,16 @@ $qtd_funcionarios = count($funcionarios);
                     <div class="form-group">
                         <label for="auditoria_status">Status</label>
                         <select id="auditoria_status" name="status">
-                            <option value="Agendada">Agendada</option>
-                            <option value="Aguardando">Aguardando</option>
+                            <option class="auditoria_placeholder" value="" selected disabled>Selecione o status da auditoria</option>
+                            <option class="auditoria_options" value="Agendada">Agendada</option>
+                            <option class="auditoria_options" value="Aguardando">Aguardando</option>
                         </select>
                     </div>
                     <div class="modal-actions">
                         <button type="button" class="btn-secondary" onclick="fecharModal('modalAuditoria')">Cancelar</button>
                         <button type="submit" class="btn-action">Salvar Auditoria</button>
                     </div>
+                    <input type="hidden" name="id_auditoria" id="id_auditoria" value="">
                 </form>
             </div>
         </div>
@@ -315,7 +455,7 @@ $qtd_funcionarios = count($funcionarios);
         <div class="modal-overlay" id="modalDocumento">
             <div class="modal-card">
                 <h3>Adicionar Documento de Compliance</h3>
-                <form id="formDocumento">
+                <form id="formDocumento" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="doc_nome">Nome do Documento</label>
                         <input type="text" id="doc_nome" name="nome" placeholder="Ex: PGR, PCMSO, Ficha de EPIs" required>
@@ -327,9 +467,10 @@ $qtd_funcionarios = count($funcionarios);
                     <div class="form-group">
                         <label for="doc_status">Status</label>
                         <select id="doc_status" name="status_doc">
-                            <option value="Atualizado">Atualizado</option>
-                            <option value="Vencendo">Vencendo</option>
-                            <option value="Vencido">Vencido</option>
+                            <option value="" selected disabled>Selecione o status do documento</option>
+                            <option class="doc_options" value="Atualizado">Atualizado</option>
+                            <option class="doc_options" value="Vencendo">Vencendo</option>
+                            <option class="doc_options" value="Vencido">Vencido</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -340,6 +481,7 @@ $qtd_funcionarios = count($funcionarios);
                         <button type="button" class="btn-secondary" onclick="fecharModal('modalDocumento')">Cancelar</button>
                         <button type="submit" class="btn-action">Salvar Documento</button>
                     </div>
+                    <input type="hidden" name="id_documento" id="id_documento" value="">
                 </form>
             </div>
         </div>

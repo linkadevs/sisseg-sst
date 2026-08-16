@@ -347,9 +347,19 @@ body {
     gap: 1rem;
 }
 
-.left h3 {
+.left a {
     font-size: 1.65rem;
     font-weight: 400;
+    text-decoration: none;
+    color: #000000;
+}
+
+.left a:hover {
+    text-decoration: underline;
+}
+
+.documento:hover .left a {
+    color: #1d4ed8;
 }
 
 .left p {
@@ -489,9 +499,55 @@ body {
     cursor: pointer;
 }
 
+.status {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.botoes_back {
+    display: flex;
+    gap: 1rem;
+}
+
+.botoes_back button {
+    padding: .5rem;
+    border-radius: 999rem;
+    border-style: none;
+    background-color: transparent;
+    color: #00000063;
+    display: none;
+}
+
+.documento:hover .botoes_back button, .auditoria:hover .botoes_back button {
+    display: block;
+}
+
+.edit:hover {
+    border-color: #ff6900;
+    background-color: #ffe9da;
+}
+
+.edit:hover svg {
+    color: #ff6900;
+}
+
+.erase:hover {
+    border-color: #e7000b;
+    background-color: #ffe2e3;
+}
+
+.erase:hover svg {
+    color: #e7000b;
+}
+
+.botoes_back svg {
+    display: block;
+}
+
 @media(max-width: 1300px) {
 
-    .left h3 {
+    .left a {
         font-size: 1.6rem;
         font-weight: 400;
     }
@@ -534,7 +590,7 @@ body {
         font-weight: 500;
     }
 
-    .left h3 {
+    .left a {
         font-size: 1.5rem;
         font-weight: 400;
     }
@@ -580,7 +636,7 @@ body {
         width: 100%;
     }
 
-    .left h3 {
+    .left a {
         font-size: 1.4rem;
     }
 
