@@ -116,6 +116,19 @@ class TreinamentoController{
         return $this->treinamentoModel->getAllTreinamento();
     }
 
+    /**
+     * Versão da listagem usada pela tela do funcionário: além dos dados do
+     * treinamento, traz a data de conclusão DELE (se houver) e um status
+     * calculado por funcionário — não é mais um status fixo do treinamento.
+     */
+    public function listForFuncionario($idFuncionario){
+        $cleanId = filter_var($idFuncionario, FILTER_VALIDATE_INT);
+        if (!$cleanId) {
+            return [];
+        }
+        return $this->treinamentoModel->getAllTreinamentoComStatusFuncionario($cleanId);
+    }
+
     public function findById($id){
         $cleanId = filter_var($id, FILTER_VALIDATE_INT);
         return $cleanId ? $this->treinamentoModel->getTreinamentoById($cleanId) : null;

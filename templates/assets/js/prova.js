@@ -1,29 +1,27 @@
 /* ==========================================================================
-   Simulador de Prova — NR-06 (EPIs)
-   Todo o HTML das 5 questões e dos 2 resultados já existe em index.html.
-   Este arquivo só faz 4 coisas:
-     1) mostrar/esconder telas e questões (classe "oculto" / "ativa")
-     2) validar se a questão atual foi respondida antes de avançar
-     3) calcular a nota comparando as respostas com o gabarito
-     4) exibir os toasts de aviso/erro
+   Simulador de Prova — busca a prova real (título + questões) cadastrada
+   no banco para o treinamento aberto e só faz:
+     1) montar as questões na tela (a partir dos dados vindos da API)
+     2) mostrar/esconder telas e questões (classe "oculto" / "ativa")
+     3) validar se a questão atual foi respondida antes de avançar
+     4) calcular a nota comparando as respostas com o gabarito do banco
+     5) enviar o resultado para a API (gera o certificado quando aprovado)
    ========================================================================== */
 
+const PROVA_API_URL = 'prova-api.php';
 const NOTA_MINIMA = 7.0;
-const PONTOS_POR_ACERTO = 2.0; // 5 questões x 2.0 = 10.0
+const LETRAS_ALTERNATIVAS = ['a', 'b', 'c', 'd', 'e'];
 
-/* Gabarito: índice (0 a 3) da alternativa correta de cada questão.
-   O texto das perguntas e alternativas fica só no HTML — aqui só
-   guardamos qual "name" de radio corresponde a qual resposta certa. */
-const GABARITO = {
-  'resposta-q1': 2, // 7.0
-  'resposta-q2': 1, // Empregador
-  'resposta-q3': 1, // Autorização do Ministério do Trabalho
-  'resposta-q4': 2, // Danificado, extraviado ou vencido
-  'resposta-q5': 2  // Diariamente antes do uso
-};
+const idTreinamento = document.body.dataset.idTreinamento;
+
+let questoes = [];   // vindas do banco: { id_questao, enunciado_questao, alt_a_questao..alt_e_questao, alternativa_questao }
+let idProva = null;
 
 const telaInstrucoes = document.getElementById('tela-instrucoes');
+const provaTitulo = document.getElementById('prova-titulo');
+const btnIniciar = document.getElementById('btnIniciar');
 const formQuiz = document.getElementById('form-quiz');
+const questoesProva = document.getElementById('questoesProva');
 const telaResultado = document.getElementById('tela-resultado');
 const resultadoAprovado = document.getElementById('resultado-aprovado');
 const resultadoReprovado = document.getElementById('resultado-reprovado');
@@ -33,37 +31,89 @@ const toastContainer = document.getElementById('toastContainer');
 function mostrarToast(mensagem, tipo, duracaoMs = 3500) {
   const toast = document.createElement('div');
   toast.className = `toast ${tipo === 'erro' ? 'toast-erro' : 'toast-aviso'}`;
-
-  const icone = tipo === 'erro'
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-
-  toast.innerHTML = `${icone}<span>${mensagem}</span>`;
+  toast.innerHTML = `<span>${mensagem}</span>`;
   toastContainer.appendChild(toast);
   setTimeout(() => toast.remove(), duracaoMs);
 }
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+/* ---------- Carregamento da prova ---------- */
+async function carregarProva() {
+  try {
+    const resp = await fetch(`${PROVA_API_URL}?acao=buscar&id_treinamento=${idTreinamento}`);
+    const json = await resp.json();
+    if (!json.success) throw new Error(json.message || 'Erro ao buscar a prova.');
+
+    if (!json.data) {
+      provaTitulo.textContent = 'Nenhuma prova cadastrada para este treinamento ainda.';
+      return;
+    }
+
+    idProva = json.data.prova.id_prova;
+    questoes = json.data.questoes;
+
+    provaTitulo.textContent = json.data.prova.nome_prova;
+    montarQuestoes();
+    btnIniciar.disabled = false;
+  } catch (err) {
+    console.error(err);
+    provaTitulo.textContent = 'Não foi possível carregar a prova.';
+    mostrarToast('Erro ao carregar a prova. Tente novamente.', 'erro');
+  }
+}
+
+/* ---------- Montagem das questões na tela ---------- */
+function montarQuestoes() {
+  questoesProva.innerHTML = questoes.map((q, index) => {
+    const alternativasHtml = LETRAS_ALTERNATIVAS.map(letra => `
+      <label class="alternativa-opcao">
+        <input type="radio" name="resposta-${q.id_questao}" value="${letra}">
+        <span>${escapeHtml(q[`alt_${letra}_questao`])}</span>
+      </label>
+    `).join('');
+
+    return `
+      <div class="questao ${index === 0 ? 'ativa' : ''}" id="questao-${index + 1}" data-id-questao="${q.id_questao}">
+        <span class="questao-numero">Questão ${index + 1} de ${questoes.length}</span>
+        <h3 class="questao-enunciado">${escapeHtml(q.enunciado_questao)}</h3>
+        <div class="alternativas-list">${alternativasHtml}</div>
+        <div class="questao-nav">
+          ${index > 0 ? `<button type="button" class="btn-anterior" data-destino="questao-${index}">Anterior</button>` : '<span></span>'}
+          ${index < questoes.length - 1
+            ? `<button type="button" class="btn-proxima" data-destino="questao-${index + 2}">Próxima</button>`
+            : `<button type="button" class="btn-primary" id="btnFinalizar">Finalizar prova</button>`}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.btn-anterior, .btn-proxima').forEach(botao => {
+    botao.addEventListener('click', () => irParaQuestao(botao));
+  });
+
+  const btnFinalizar = document.getElementById('btnFinalizar');
+  if (btnFinalizar) btnFinalizar.addEventListener('click', finalizarProva);
+}
+
 /* ---------- Início da prova ---------- */
-document.getElementById('btnIniciar').addEventListener('click', () => {
+btnIniciar.addEventListener('click', () => {
   telaInstrucoes.classList.add('oculto');
   formQuiz.classList.remove('oculto');
 });
 
 /* ---------- Navegação entre questões ---------- */
-// Botões "Anterior" (com data-destino) e "Próxima" já existem no HTML
-// de cada questão; aqui só ligamos o clique deles.
-document.querySelectorAll('.btn-anterior[data-destino], .btn-proxima').forEach(botao => {
-  botao.addEventListener('click', () => irParaQuestao(botao));
-});
-
 function irParaQuestao(botao) {
   const questaoAtual = botao.closest('.questao');
 
-  // Só valida quando está avançando (Próxima), não ao voltar.
   if (botao.classList.contains('btn-proxima')) {
     const respondida = questaoAtual.querySelector('input[type="radio"]:checked');
     if (!respondida) {
-      mostrarToast('Responda todas as questões antes de finalizar a prova.', 'aviso');
+      mostrarToast('Responda a questão antes de avançar.', 'aviso');
       return;
     }
   }
@@ -74,15 +124,15 @@ function irParaQuestao(botao) {
 }
 
 /* ---------- Finalizar prova ---------- */
-document.getElementById('btnFinalizar').addEventListener('click', () => {
-  const ultimaQuestao = document.getElementById('questao-5');
+async function finalizarProva() {
+  const ultimaQuestao = questoesProva.querySelector('.questao:last-child');
   const respondida = ultimaQuestao.querySelector('input[type="radio"]:checked');
   if (!respondida) {
-    mostrarToast('Responda todas as questões antes de finalizar a prova.', 'aviso');
+    mostrarToast('Responda a última questão antes de finalizar.', 'aviso');
     return;
   }
 
-  const { acertos, erros, nota } = calcularNota();
+  const { acertos, erros, nota, respostas } = calcularNota();
   const aprovado = nota >= NOTA_MINIMA;
 
   preencherResultado(aprovado ? resultadoAprovado : resultadoReprovado, acertos, erros, nota);
@@ -95,21 +145,29 @@ document.getElementById('btnFinalizar').addEventListener('click', () => {
   if (!aprovado) {
     mostrarToast('Você não atingiu a nota mínima. Tente novamente!', 'erro');
   }
-});
+
+  await enviarResultado(nota, aprovado, respostas);
+}
 
 function calcularNota() {
   let acertos = 0;
+  const respostas = [];
 
-  Object.entries(GABARITO).forEach(([nomeGrupo, indiceCorreto]) => {
-    const escolhida = formQuiz.querySelector(`input[name="${nomeGrupo}"]:checked`);
-    if (escolhida && Number(escolhida.value) === indiceCorreto) acertos++;
+  questoes.forEach(q => {
+    const escolhida = questoesProva.querySelector(`input[name="resposta-${q.id_questao}"]:checked`);
+    const letraEscolhida = escolhida ? escolhida.value : null;
+    if (letraEscolhida === q.alternativa_questao) acertos++;
+    respostas.push({ id_questao: q.id_questao, resposta: letraEscolhida });
   });
 
-  const totalQuestoes = Object.keys(GABARITO).length;
+  const total = questoes.length;
+  const pontosPorAcerto = 10 / total;
+
   return {
     acertos,
-    erros: totalQuestoes - acertos,
-    nota: acertos * PONTOS_POR_ACERTO
+    erros: total - acertos,
+    nota: Number((acertos * pontosPorAcerto).toFixed(1)),
+    respostas
   };
 }
 
@@ -123,21 +181,42 @@ function preencherResultado(bloco, acertos, erros, nota) {
   document.getElementById(`aproveitamento-${sufixo}`).textContent = `${aproveitamento}%`;
 }
 
-/* ---------- Refazer prova / Voltar ---------- */
-// "Refazer Prova": limpa as respostas e volta para a Tela 1.
-document.getElementById('btnRefazer').addEventListener('click', reiniciarProva);
+/* ---------- Envia o resultado para o backend ---------- */
+async function enviarResultado(nota, aprovado, respostas) {
+  try {
+    const resp = await fetch(PROVA_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        acao: 'registrarResultado',
+        id_prova: idProva,
+        id_treinamento: idTreinamento,
+        nota,
+        aprovado,
+        respostas
+      })
+    });
+    const json = await resp.json();
+    if (!json.success) {
+      console.error(json.message);
+      mostrarToast('Não foi possível salvar o resultado da prova.', 'erro');
+    }
+  } catch (err) {
+    console.error(err);
+    mostrarToast('Erro de conexão ao salvar o resultado da prova.', 'erro');
+  }
+}
 
-// "Voltar" (topo da página e nas duas telas de resultado).
+/* ---------- Refazer prova / Voltar ---------- */
+document.getElementById('btnRefazer').addEventListener('click', reiniciarProva);
 document.getElementById('btnVoltarTopo').addEventListener('click', reiniciarProva);
 document.querySelectorAll('.btn-voltar-inicio').forEach(botao => {
   botao.addEventListener('click', reiniciarProva);
 });
 
 function reiniciarProva() {
-  formQuiz.reset(); // desmarca todos os radios de uma vez
-
-  document.querySelectorAll('.questao').forEach(q => q.classList.remove('ativa'));
-  document.getElementById('questao-1').classList.add('ativa');
+  formQuiz.reset();
+  document.querySelectorAll('.questao').forEach((q, i) => q.classList.toggle('ativa', i === 0));
 
   telaResultado.classList.add('oculto');
   resultadoAprovado.classList.add('oculto');
@@ -146,3 +225,6 @@ function reiniciarProva() {
   formQuiz.classList.add('oculto');
   telaInstrucoes.classList.remove('oculto');
 }
+
+/* ---------- Inicialização ---------- */
+carregarProva();

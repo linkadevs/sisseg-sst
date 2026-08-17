@@ -171,6 +171,48 @@ class Treinamento{
     }
 
     /**
+     * Lista todos os treinamentos com status e data de conclusão calculados
+     * para UM funcionário específico (LEFT JOIN com funcionario_treinamento).
+     * Diferente de getAllTreinamento(): aqui o status leva em conta se ESSE
+     * funcionário concluiu o treinamento, não só a validade da data.
+     */
+    public function getAllTreinamentoComStatusFuncionario($idFuncionario){
+        try {
+            $sql = "SELECT t.*, ft.data_funcionario_treinamento AS data_conclusao
+                FROM treinamento t
+                LEFT JOIN funcionario_treinamento ft
+                       ON ft.id_treinamento_fk = t.id_treinamento
+                      AND ft.id_funcionario_fk = :id_funcionario
+                ORDER BY t.nome_treinamento ASC";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // NRs puramente informativas: sem prova, sem certificado.
+            $informativos = ['NR-01', 'PGR', 'PCMSO'];
+
+            return array_map(function($row) use ($informativos) {
+                $row = $this->formatarImagem($row);
+
+                $concluido = !empty($row['data_conclusao']);
+                $semValidade = empty($row['data_limite_treinamento']);
+                $dentroDoPrazo = $semValidade || $row['data_limite_treinamento'] >= date('Y-m-d');
+
+                $row['informativo'] = in_array($row['nr_treinamento'], $informativos, true);
+                $row['status'] = ($concluido && $dentroDoPrazo) ? 'valido' : 'invalido';
+
+                return $row;
+            }, $rows);
+
+        } catch (PDOException $e) {
+            error_log("Erro ao buscar treinamentos do funcionário: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
      * Converte o blob binário da imagem em data-URI base64, pronto pra ir
      * direto no atributo src de uma <img> no front-end.
      */

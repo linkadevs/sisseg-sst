@@ -25,20 +25,21 @@ class ProvaController
 
     /**
      * Ponto único de entrada usado pelo prova-api.php.
-     * $acao: criar | editar | excluir | criar_questao | editar_questao | excluir_questao | buscar
+     * $acao: criar | editar | excluir | criar_questao | editar_questao | excluir_questao | buscar | registrarResultado
      */
     public function handle(string $acao, array $dados): array
     {
         try {
             return match ($acao) {
-                'criar'            => $this->criarProva($dados),
-                'editar'           => $this->editarProva($dados),
-                'excluir'          => $this->excluirProva($dados),
-                'criar_questao'    => $this->criarQuestao($dados),
-                'editar_questao'   => $this->editarQuestao($dados),
-                'excluir_questao'  => $this->excluirQuestao($dados),
-                'buscar'           => $this->buscarPorTreinamento($dados),
-                default            => ['success' => false, 'message' => 'Ação inválida.'],
+                'criar'              => $this->criarProva($dados),
+                'editar'             => $this->editarProva($dados),
+                'excluir'            => $this->excluirProva($dados),
+                'criar_questao'      => $this->criarQuestao($dados),
+                'editar_questao'     => $this->editarQuestao($dados),
+                'excluir_questao'    => $this->excluirQuestao($dados),
+                'buscar'             => $this->buscarPorTreinamento($dados),
+                'registrarResultado' => $this->registrarResultado($dados),
+                default              => ['success' => false, 'message' => 'Ação inválida.'],
             };
         } catch (InvalidArgumentException $e) {
             return ['success' => false, 'message' => $e->getMessage()];
@@ -174,6 +175,45 @@ class ProvaController
         $questoes = $this->provaModel->getAllQuestion((int) $prova['id_prova']);
 
         return ['success' => true, 'data' => ['prova' => $prova, 'questoes' => $questoes]];
+    }
+
+    // ================= REGISTRAR RESULTADO (funcionário terminou a prova) =================
+
+    /**
+     * Chamada pelo prova.js do funcionário ao finalizar a prova.
+     * Reprovado: só confirma o recebimento, não mexe em progresso/certificado.
+     * Aprovado: gera o certificado sempre; só grava a conclusão em
+     * funcionario_treinamento na PRIMEIRA aprovação (regra de progressão
+     * do enunciado — refazer e passar de novo não conta progresso duas vezes).
+     */
+    public function registrarResultado(array $dados): array
+    {
+        $idProva = (int) ($dados['id_prova'] ?? 0);
+        $idTreinamento = (int) ($dados['id_treinamento'] ?? 0);
+        $idFuncionario = (int) ($dados['id_funcionario'] ?? 0);
+        $nota = (float) ($dados['nota'] ?? 0);
+        $aprovado = filter_var($dados['aprovado'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
+        if ($idProva <= 0 || $idTreinamento <= 0 || $idFuncionario <= 0) {
+            throw new InvalidArgumentException('Dados insuficientes para registrar o resultado da prova.');
+        }
+        if ($nota < 0 || $nota > 10) {
+            throw new InvalidArgumentException('Nota inválida.');
+        }
+
+        if (!$aprovado) {
+            return ['success' => true, 'aprovado' => false];
+        }
+
+        $primeiraAprovacao = !$this->provaModel->funcionarioJaConcluiuTreinamento($idFuncionario, $idTreinamento);
+
+        if ($primeiraAprovacao) {
+            $this->provaModel->registrarConclusaoTreinamento($idFuncionario, $idTreinamento);
+        }
+
+        $this->provaModel->registrarCertificado($idProva, $idFuncionario, $nota);
+
+        return ['success' => true, 'aprovado' => true, 'primeira_aprovacao' => $primeiraAprovacao];
     }
 
     // ================= Helpers internos =================

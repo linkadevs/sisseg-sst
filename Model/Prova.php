@@ -167,4 +167,61 @@ class Prova
         $stmt->bindParam(":id_questao", $idQuestao, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    // ================= RESULTADO (funcionário terminou a prova) =================
+
+    /**
+     * True se esse funcionário já tem uma conclusão registrada para esse
+     * treinamento. Usado pra só incrementar o progresso na 1ª aprovação
+     * (refazer e passar de novo não deve contar progresso duas vezes).
+     */
+    public function funcionarioJaConcluiuTreinamento(int $idFuncionario, int $idTreinamento): bool
+    {
+        $sql = "SELECT 1 FROM funcionario_treinamento
+                WHERE id_funcionario_fk = :id_funcionario
+                  AND id_treinamento_fk = :id_treinamento
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
+        $stmt->bindParam(":id_treinamento", $idTreinamento, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    /**
+     * Grava a conclusão do treinamento (só deve ser chamado na 1ª aprovação).
+     */
+    public function registrarConclusaoTreinamento(int $idFuncionario, int $idTreinamento): bool
+    {
+        $sql = "INSERT INTO funcionario_treinamento
+                    (data_funcionario_treinamento, id_funcionario_fk, id_treinamento_fk)
+                VALUES (CURDATE(), :id_funcionario, :id_treinamento)";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
+        $stmt->bindParam(":id_treinamento", $idTreinamento, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Gera um certificado para a aprovação (chamado toda vez que aprova,
+     * mesmo em refações — cada certificado é um registro histórico daquela
+     * tentativa, diferente da conclusão do treinamento em si).
+     */
+    public function registrarCertificado(int $idProva, int $idFuncionario, float $pontos): bool
+    {
+        $sql = "INSERT INTO certificado
+                    (data_certificado, pontos_certificado, id_prova_fk, id_funcionario_fk)
+                VALUES (CURDATE(), :pontos, :id_prova, :id_funcionario)";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":pontos", $pontos);
+        $stmt->bindParam(":id_prova", $idProva, PDO::PARAM_INT);
+        $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }
