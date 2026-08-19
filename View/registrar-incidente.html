@@ -40,12 +40,12 @@
             <div class="select-wrapper">
               <select id="fieldTipo" name="tipo" class="field-select" required>
                 <option value="">Selecione o tipo</option>
-                <option value="quase-acidente">Quase Acidente</option>
-                <option value="condicao-insegura">Condição Insegura</option>
-                <option value="acidente-lesao">Acidente com Lesão</option>
-                <option value="risco-eletrico">Risco Elétrico</option>
-                <option value="incendio">Incêndio / Explosão</option>
-                <option value="outro">Outro</option>
+                <option value="Quase Acidente">Quase Acidente</option>
+                <option value="Condição Insegura">Condição Insegura</option>
+                <option value="Acidente com Lesão">Acidente com Lesão</option>
+                <option value="Risco Elétrico">Risco Elétrico</option>
+                <option value="Incêndio / Explosão">Incêndio / Explosão</option>
+                <option value="Outro">Outro</option>
               </select>
               <svg class="select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -158,8 +158,10 @@
               </svg>
               Fazer Upload
             </button>
-            <input type="file" id="fieldFotos" name="fotos" accept="image/*" multiple style="display:none" />
+            <!-- name="fotos[]" (array): o backend hoje guarda só a 1ª imagem (fotos_incidente é 1 mediumblob) -->
+            <input type="file" id="fieldFotos" name="fotos[]" accept="image/*" multiple style="display:none" />
           </div>
+          <p class="field-hint">Apenas a primeira imagem selecionada é salva no momento.</p>
           <div class="upload-preview" id="uploadPreview"></div>
         </div>
 

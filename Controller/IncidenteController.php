@@ -147,7 +147,7 @@ class IncidenteController{
     }
 
     /**
-     * Valida o upload de foto (campo "fotos", aceita múltiplos no HTML).
+     * Valida o upload de foto (campo "fotos[]", aceita múltiplos no HTML).
      * Por ora, como `fotos_incidente` no banco é um único mediumblob,
      * guardamos apenas a primeira imagem enviada. Se quiser guardar
      * várias, o caminho é criar uma tabela `incidente_foto` separada.

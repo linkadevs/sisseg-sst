@@ -63,7 +63,12 @@ class Incidente{
             $stmt->bindParam(":acao", $acao, PDO::PARAM_STR);
             $stmt->bindParam(":gravidade", $gravidade, PDO::PARAM_STR);
             $stmt->bindParam(":treinamento", $treinamento, PDO::PARAM_STR);
-            $stmt->bindParam(":foto", $foto, PDO::PARAM_LOB);
+
+            if ($foto !== null && $foto !== '') {
+                $stmt->bindParam(":foto", $foto, PDO::PARAM_LOB);
+            } else {
+                $stmt->bindValue(":foto", null, PDO::PARAM_NULL);
+            }
 
             if ($stmt->execute()) {
                 return ['success' => true, 'id' => (int) $this->db->lastInsertId(), 'codigo' => $codigo];
@@ -91,7 +96,7 @@ class Incidente{
                     treinamento_reciclagem_incidente = :treinamento";
 
             // foto só entra no UPDATE se uma nova foi enviada; senão mantém a atual
-            if ($foto !== null) {
+            if ($foto !== null && $foto !== '') {
                 $sql .= ", fotos_incidente = :foto";
             }
 
@@ -110,7 +115,7 @@ class Incidente{
             $stmt->bindParam(":acao", $acao, PDO::PARAM_STR);
             $stmt->bindParam(":gravidade", $gravidade, PDO::PARAM_STR);
             $stmt->bindParam(":treinamento", $treinamento, PDO::PARAM_STR);
-            if ($foto !== null) {
+            if ($foto !== null && $foto !== '') {
                 $stmt->bindParam(":foto", $foto, PDO::PARAM_LOB);
             }
 
@@ -163,7 +168,8 @@ class Incidente{
 
     /**
      * Lista incidentes com filtro opcional de status e busca opcional
-     * por descrição, local ou código.
+     * por descrição, local ou código. Não traz o BLOB da foto (fica pesado
+     * pra listagem) — a foto só é buscada em getById, no detalhe.
      * $status = null | 'todos' | 'Aberto' | 'Investigando' | 'Concluído'
      */
     public function getAllFiltered($status = null, $busca = null){
@@ -171,6 +177,7 @@ class Incidente{
             $sql = "SELECT id_incidente, codigo_incidente, data_incidente, tipo_incidente, status_incidente,
                            local_incidente, atividade_incidente, descricao_incidente, gravidade_incidente,
                            testemunhas_incidente, acao_imediata_incidente, treinamento_reciclagem_incidente,
+                           (fotos_incidente IS NOT NULL) AS tem_foto,
                            criado_em
                     FROM incidente
                     WHERE 1=1";
