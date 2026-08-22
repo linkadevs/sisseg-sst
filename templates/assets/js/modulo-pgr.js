@@ -1,25 +1,27 @@
 // ==========================================================================
-// PGR — Gerador e Simulador de Cards de Risco
-// Estado em memória, cálculo de matriz de risco e renderização dinâmica
+// PGR — Gerador de Fichas de Risco
+// Consome a API PHP (ficha-risco-api.php) para CRUD real no MySQL.
+// Ajuste API_URL caso a posição do arquivo no projeto seja diferente.
 // ==========================================================================
+
+const API_URL = '../Controller/ficha-risco-api.php';
 
 document.addEventListener('DOMContentLoaded', () => {
 
   // ------------------------------------------------------------------
   // ESTADO DA APLICAÇÃO
   // ------------------------------------------------------------------
-  // activities: { [nomeAtividade]: { name, riscos: [], medidasColetivas: [], procedimentos: [] } }
+  // activities: { [id_atividade]: resumo retornado por listarTodas() }
   const state = {
     activities: {},
-    currentDetailActivity: null
+    currentDetailActivity: null // id_atividade
   };
 
-  // Estado do modal de edição (nulo quando fechado)
-  let editState = null;
+  let editState = null; // rascunho do modal de edição (nulo quando fechado)
 
-  // Estado do modal de criação: suporta múltiplos riscos por ficha
   function emptyRisk() {
     return {
+      id_risco: null,
       riskType: 'Acidente',
       severity: 4,
       probability: 4,
@@ -71,6 +73,85 @@ document.addEventListener('DOMContentLoaded', () => {
   const proceduresOutput = document.getElementById('proceduresOutput');
 
   // ------------------------------------------------------------------
+  // CAMADA DE API
+  // ------------------------------------------------------------------
+  async function apiRequest(action, { method = 'GET', params = {}, body = null } = {}) {
+    const query = new URLSearchParams({ action, ...params }).toString();
+    const options = { method, headers: {} };
+
+    if (body !== null) {
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(body);
+    }
+
+    let response, payload;
+    try {
+      response = await fetch(`${API_URL}?${query}`, options);
+      payload = await response.json();
+    } catch (err) {
+      throw new Error('Não foi possível se comunicar com o servidor.');
+    }
+
+    if (!payload.sucesso) {
+      throw new Error(payload.mensagem || 'Erro inesperado do servidor.');
+    }
+    return payload.dados;
+  }
+
+  // Converte o nível textual ("Crítico", "Alto"...) vindo do banco
+  // para o slug usado nas classes CSS já existentes.
+  function levelSlug(label) {
+    const map = { 'Crítico': 'critico', 'Alto': 'alto', 'Médio': 'medio', 'Baixo': 'baixo' };
+    return map[label] || 'baixo';
+  }
+
+  // Converte um risco no formato retornado pela API (buscarPorId)
+  // para o formato usado internamente pelas funções de render.
+  function mapRiscoFromServer(r) {
+    return {
+      id_risco: r.id_risco,
+      riskType: r.tipo_risco,
+      severity: parseInt(r.severidade_risco, 10),
+      probability: parseInt(r.probabilidade_risco, 10),
+      description: r.descricao_risco,
+      level: levelSlug(r.nivel_risco),
+      levelLabel: r.nivel_risco,
+      controlMeasures: r.medidas_controle_risco || [],
+      epis: r.epis_relacionados_risco || []
+    };
+  }
+
+  // Monta o payload que a API espera a partir de um risco no formato interno
+  function mapRiscoToPayload(r) {
+    return {
+      id_risco: r.id_risco || null,
+      tipo: r.riskType,
+      severidade: r.severity,
+      probabilidade: r.probability,
+      descricao: r.description,
+      medidasControle: r.controlMeasures,
+      epis: r.epis
+    };
+  }
+
+  // ------------------------------------------------------------------
+  // NORMAS REGULAMENTADORAS (NR) — popula o select do formulário
+  // ------------------------------------------------------------------
+  const activityNrSelect = document.getElementById('activityNr');
+
+  async function carregarNRs() {
+    let nrs;
+    try {
+      nrs = await apiRequest('listarNR');
+    } catch (err) {
+      alert(err.message);
+      return;
+    }
+    activityNrSelect.innerHTML = '<option value="">Selecione a NR...</option>' +
+      nrs.map(nr => `<option value="${nr.id_nr}">${escapeHTML(nr.nome_nr)}</option>`).join('');
+  }
+
+  // ------------------------------------------------------------------
   // MODAL: ABRIR / FECHAR
   // ------------------------------------------------------------------
   function openModal() {
@@ -86,12 +167,10 @@ document.addEventListener('DOMContentLoaded', () => {
   btnOpenModal.addEventListener('click', openModal);
   modalClose.addEventListener('click', closeModal);
 
-  // Fecha ao clicar fora do card do modal
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) closeModal();
   });
 
-  // Fecha com a tecla Esc (fecha o modal que estiver aberto)
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (editModalOverlay.classList.contains('open')) {
@@ -104,21 +183,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // ------------------------------------------------------------------
   // MODAL DE EDIÇÃO: ABRIR / FECHAR
   // ------------------------------------------------------------------
-  function openEditModal(activityName) {
-    const activity = state.activities[activityName];
-    if (!activity) return;
+  async function openEditModal(idAtividade) {
+    let ficha;
+    try {
+      ficha = await apiRequest('buscar', { params: { id_atividade: idAtividade } });
+    } catch (err) {
+      alert(err.message);
+      return;
+    }
 
-    // Clona os dados da atividade para um rascunho editável independente
     editState = {
-      originalName: activityName,
-      name: activity.name,
-      riscos: activity.riscos.map(r => ({
-        ...r,
-        controlMeasures: [...r.controlMeasures],
-        epis: [...r.epis]
-      })),
-      medidasColetivas: [...activity.medidasColetivas],
-      procedimentos: [...activity.procedimentos]
+      idAtividade: ficha.id_atividade,
+      originalName: ficha.nome,
+      name: ficha.nome,
+      riscos: ficha.riscos.map(mapRiscoFromServer),
+      medidasColetivas: [...ficha.medidasColetivas],
+      procedimentos: [...ficha.procedimentos]
     };
 
     renderEditModalBody();
@@ -137,9 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   editModalDelete.addEventListener('click', () => {
     if (!editState) return;
-    const nameToDelete = editState.originalName;
+    const idAtividade = editState.idAtividade;
     closeEditModal();
-    deleteActivity(nameToDelete);
+    deleteActivity(idAtividade);
   });
 
   editModalOverlay.addEventListener('click', (e) => {
@@ -267,11 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
       editState.name = nameInput.value;
     });
 
-    // Botão "Adicionar Risco": insere um novo bloco de risco em branco
     document.getElementById('btnAddEditRisk').addEventListener('click', () => {
       const { level, label } = calculateRiskLevel(4, 4);
       editState.riscos.push({
-        id: `risk-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        id_risco: null,
         riskType: 'Acidente',
         severity: 4,
         probability: 4,
@@ -284,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderEditModalBody();
     });
 
-    // Campos de cada bloco de risco (tipo, severidade, probabilidade, descrição)
     editModalBody.querySelectorAll('[data-risk-field]').forEach(el => {
       const eventName = el.tagName === 'TEXTAREA' ? 'input' : 'change';
       el.addEventListener(eventName, () => {
@@ -310,7 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Remover um risco inteiro do rascunho
     editModalBody.querySelectorAll('[data-remove-risk]').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-remove-risk'), 10);
@@ -319,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Adicionar item às listas de cada risco (medidas de controle / EPIs)
     editModalBody.querySelectorAll('[data-risk-add-btn]').forEach(btn => {
       const field = btn.getAttribute('data-risk-add-btn');
       const idx = parseInt(btn.getAttribute('data-risk-index'), 10);
@@ -336,7 +412,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Remover item das listas de cada risco
     editModalBody.querySelectorAll('[data-risk-remove-item]').forEach(btn => {
       btn.addEventListener('click', () => {
         const field = btn.getAttribute('data-risk-remove-item');
@@ -347,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Listas em nível de atividade: Medidas Coletivas
     const editCollectiveInput = document.getElementById('editCollectiveInput');
     const editAddCollective = document.getElementById('editAddCollective');
     const commitCollective = () => {
@@ -361,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Enter') { e.preventDefault(); commitCollective(); }
     });
 
-    // Listas em nível de atividade: Procedimentos Obrigatórios
     const editProcedureInput = document.getElementById('editProcedureInput');
     const editAddProcedure = document.getElementById('editAddProcedure');
     const commitProcedure = () => {
@@ -375,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Enter') { e.preventDefault(); commitProcedure(); }
     });
 
-    // Remover itens das listas em nível de atividade
     editModalBody.querySelectorAll('[data-edit-remove]').forEach(btn => {
       btn.addEventListener('click', () => {
         const field = btn.getAttribute('data-edit-remove');
@@ -387,9 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------
-  // MODAL DE EDIÇÃO: SALVAR ALTERAÇÕES
+  // MODAL DE EDIÇÃO: SALVAR ALTERAÇÕES (persiste no banco)
   // ------------------------------------------------------------------
-  editModalSave.addEventListener('click', () => {
+  editModalSave.addEventListener('click', async () => {
     if (!editState) return;
 
     const newName = editState.name.trim();
@@ -398,30 +470,40 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const renamed = newName !== editState.originalName;
-    if (renamed && state.activities[newName]) {
-      alert('Já existe uma atividade com esse nome. Escolha outro nome.');
+    const validRisks = editState.riscos.filter(r => r.description.trim());
+    if (validRisks.length === 0) {
+      alert('Adicione pelo menos um risco com a descrição preenchida.');
       return;
     }
 
-    const updatedActivity = {
-      name: newName,
-      riscos: editState.riscos,
+    const payload = {
+      nomeAtividade: newName,
+      riscos: validRisks.map(mapRiscoToPayload),
       medidasColetivas: editState.medidasColetivas,
       procedimentos: editState.procedimentos
     };
 
-    delete state.activities[editState.originalName];
-    state.activities[newName] = updatedActivity;
+    editModalSave.disabled = true;
+    try {
+      await apiRequest('atualizar', {
+        method: 'POST',
+        params: { id_atividade: editState.idAtividade },
+        body: payload
+      });
 
-    const wasViewingThis = state.currentDetailActivity === editState.originalName;
+      const wasViewingThis = state.currentDetailActivity === editState.idAtividade;
+      const idAtividade = editState.idAtividade;
 
-    closeEditModal();
-    renderDashboard();
+      closeEditModal();
+      await carregarFichas();
 
-    // Se o usuário estava vendo a ficha completa desta atividade, atualiza a view
-    if (wasViewingThis) {
-      showDetail(newName);
+      if (wasViewingThis) {
+        await showDetail(idAtividade);
+      }
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      editModalSave.disabled = false;
     }
   });
 
@@ -504,7 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function attachCreateRiskEvents() {
-    // Campos de cada bloco de risco (tipo, severidade, probabilidade, descrição)
     createRisksContainer.querySelectorAll('[data-create-field]').forEach(el => {
       const eventName = el.tagName === 'TEXTAREA' ? 'input' : 'change';
       el.addEventListener(eventName, () => {
@@ -528,7 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Remover um bloco de risco do rascunho de criação
     createRisksContainer.querySelectorAll('[data-create-remove-risk]').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-create-remove-risk'), 10);
@@ -537,7 +617,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Adicionar item às listas de cada risco (medidas de controle / EPIs)
     createRisksContainer.querySelectorAll('[data-create-add-btn]').forEach(btn => {
       const field = btn.getAttribute('data-create-add-btn');
       const idx = parseInt(btn.getAttribute('data-risk-index'), 10);
@@ -554,7 +633,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Remover item das listas de cada risco
     createRisksContainer.querySelectorAll('[data-create-remove-item]').forEach(btn => {
       btn.addEventListener('click', () => {
         const field = btn.getAttribute('data-create-remove-item');
@@ -566,7 +644,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Botão "Adicionar Risco" do modal de criação
   btnAddCreateRisk.addEventListener('click', () => {
     createDraft.risks.push(emptyRisk());
     renderCreateRisks();
@@ -623,7 +700,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ------------------------------------------------------------------
-  // CÁLCULO DA MATRIZ DE RISCO (Probabilidade x Severidade)
+  // CÁLCULO DA MATRIZ DE RISCO (preview no cliente; o valor salvo no
+  // banco é sempre recalculado no servidor, ver Model::calcularNivel)
   // ------------------------------------------------------------------
   function calculateRiskLevel(probability, severity) {
     const score = probability * severity;
@@ -634,9 +712,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------
-  // SUBMISSÃO DO FORMULÁRIO (CRIAÇÃO)
+  // SUBMISSÃO DO FORMULÁRIO (CRIAÇÃO — persiste no banco)
   // ------------------------------------------------------------------
-  riskForm.addEventListener('submit', (e) => {
+  riskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const activityName = document.getElementById('activityName').value.trim();
@@ -645,78 +723,77 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Apenas riscos com descrição preenchida são considerados válidos
+    const idNr = activityNrSelect.value;
+    if (!idNr) {
+      alert('Por favor, selecione a NR (Norma Regulamentadora) da atividade.');
+      return;
+    }
+
     const validRisks = createDraft.risks.filter(r => r.description.trim());
     if (validRisks.length === 0) {
       alert('Adicione pelo menos um risco com a descrição preenchida.');
       return;
     }
 
-    // Cria a atividade caso não exista, ou anexa a um registro existente
-    if (!state.activities[activityName]) {
-      state.activities[activityName] = {
-        name: activityName,
-        riscos: [],
-        medidasColetivas: [],
-        procedimentos: []
-      };
+    const payload = {
+      nomeAtividade: activityName,
+      idNr: parseInt(idNr, 10),
+      riscos: validRisks.map(mapRiscoToPayload),
+      medidasColetivas: createDraft.collective,
+      procedimentos: createDraft.procedures
+    };
+
+    const submitBtn = riskForm.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    try {
+      await apiRequest('criar', { method: 'POST', body: payload });
+
+      riskForm.reset();
+      createDraft.risks = [emptyRisk()];
+      createDraft.collective.length = 0;
+      createDraft.procedures.length = 0;
+      renderCreateRisks();
+      renderCreateSimpleList('collective');
+      renderCreateSimpleList('procedures');
+
+      await carregarFichas();
+      closeModal();
+      showDashboard();
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      submitBtn.disabled = false;
     }
-    const activity = state.activities[activityName];
-
-    validRisks.forEach(r => {
-      const { level, label } = calculateRiskLevel(r.probability, r.severity);
-      activity.riscos.push({
-        id: `risk-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-        riskType: r.riskType,
-        severity: r.severity,
-        probability: r.probability,
-        description: r.description.trim(),
-        level,
-        levelLabel: label,
-        controlMeasures: [...r.controlMeasures],
-        epis: [...r.epis]
-      });
-    });
-
-    // Anexa medidas coletivas e procedimentos (evitando duplicados exatos)
-    createDraft.collective.forEach(item => {
-      if (!activity.medidasColetivas.includes(item)) activity.medidasColetivas.push(item);
-    });
-    createDraft.procedures.forEach(item => {
-      if (!activity.procedimentos.includes(item)) activity.procedimentos.push(item);
-    });
-
-    // Reset do formulário e do rascunho de criação
-    riskForm.reset();
-    createDraft.risks = [emptyRisk()];
-    createDraft.collective.length = 0;
-    createDraft.procedures.length = 0;
-    renderCreateRisks();
-    renderCreateSimpleList('collective');
-    renderCreateSimpleList('procedures');
-
-    renderDashboard();
-
-    // Fecha o modal e mantém o usuário no dashboard para ver o novo card
-    closeModal();
-    showDashboard();
   });
 
   // ------------------------------------------------------------------
-  // RENDERIZAÇÃO: DASHBOARD (ÁREA A — Cards por Atividade)
+  // CARREGAMENTO E RENDERIZAÇÃO: DASHBOARD (ÁREA A — Cards por Atividade)
   // ------------------------------------------------------------------
+  async function carregarFichas() {
+    let fichas;
+    try {
+      fichas = await apiRequest('listar');
+    } catch (err) {
+      alert(err.message);
+      fichas = [];
+    }
+
+    state.activities = {};
+    fichas.forEach(f => { state.activities[f.id_atividade] = f; });
+    renderDashboard();
+  }
+
   function renderDashboard() {
-    const activityNames = Object.keys(state.activities);
+    const ids = Object.keys(state.activities);
     cardsGrid.innerHTML = '';
 
-    if (activityNames.length === 0) {
+    if (ids.length === 0) {
       cardsGrid.appendChild(emptyState);
       return;
     }
 
-    activityNames.forEach(name => {
-      const activity = state.activities[name];
-      cardsGrid.appendChild(buildActivityCard(activity));
+    ids.forEach(id => {
+      cardsGrid.appendChild(buildActivityCard(state.activities[id]));
     });
   }
 
@@ -724,27 +801,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('div');
     card.className = 'activity-card';
 
-    // Agrega contagem de riscos por nível
-    const levelCounts = { critico: 0, alto: 0, medio: 0, baixo: 0 };
-    activity.riscos.forEach(r => levelCounts[r.level]++);
-
-    const levelLabels = { critico: 'Crítico', alto: 'Alto', medio: 'Médio', baixo: 'Baixo' };
-    const levelOrder = ['critico', 'alto', 'medio', 'baixo'];
+    const levelOrder = [
+      ['Crítico', 'critico', 'Críticos'],
+      ['Alto', 'alto', 'Altos'],
+      ['Médio', 'medio', 'Médios'],
+      ['Baixo', 'baixo', 'Baixos']
+    ];
 
     let badgesHTML = '';
-    levelOrder.forEach(level => {
-      const count = levelCounts[level];
+    levelOrder.forEach(([label, slug, plural]) => {
+      const count = activity.niveis[label] || 0;
       if (count > 0) {
-        const plural = count > 1 ? (level === 'critico' ? 'Críticos' : level === 'alto' ? 'Altos' : level === 'medio' ? 'Médios' : 'Baixos') : levelLabels[level];
-        badgesHTML += `<span class="badge badge-${level}">${count} ${plural}</span>`;
+        badgesHTML += `<span class="badge badge-${slug}">${count} ${count > 1 ? plural : label}</span>`;
       }
     });
 
     card.innerHTML = `
       <div class="activity-card-header-row">
         <div class="activity-card-titles">
-          <h3 class="activity-card-title">${escapeHTML(activity.name)}</h3>
-          <p class="activity-card-subtitle">${activity.riscos.length} risco${activity.riscos.length !== 1 ? 's' : ''} identificado${activity.riscos.length !== 1 ? 's' : ''}</p>
+          <h3 class="activity-card-title">${escapeHTML(activity.nome)}</h3>
+          <p class="activity-card-subtitle">${activity.totalRiscos} risco${activity.totalRiscos !== 1 ? 's' : ''} identificado${activity.totalRiscos !== 1 ? 's' : ''}</p>
         </div>
         <div class="card-actions">
           <button type="button" class="edit-icon-btn" title="Editar ficha" aria-label="Editar informações da ficha">
@@ -766,11 +842,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="stats-row">
         <span class="stat-item">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          ${activity.medidasColetivas.length} Medidas Coletivas
+          ${activity.totalMedidas} Medidas Coletivas
         </span>
         <span class="stat-item">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"></rect><path d="M9 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-4"></path></svg>
-          ${activity.procedimentos.length} Procedimentos
+          ${activity.totalProcedimentos} Procedimentos
         </span>
       </div>
       <button type="button" class="btn-view-full">Ver Ficha Completa</button>
@@ -778,58 +854,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     card.querySelector('.edit-icon-btn').addEventListener('click', (e) => {
       e.stopPropagation();
-      openEditModal(activity.name);
+      openEditModal(activity.id_atividade);
     });
 
     card.querySelector('.delete-icon-btn').addEventListener('click', (e) => {
       e.stopPropagation();
-      deleteActivity(activity.name);
+      deleteActivity(activity.id_atividade);
     });
 
     card.querySelector('.btn-view-full').addEventListener('click', () => {
-      showDetail(activity.name);
+      showDetail(activity.id_atividade);
     });
 
     return card;
   }
 
   // ------------------------------------------------------------------
-  // EXCLUSÃO DE FICHA DE ATIVIDADE
+  // EXCLUSÃO DE FICHA DE ATIVIDADE (persiste no banco)
   // ------------------------------------------------------------------
-  function deleteActivity(activityName) {
-    const activity = state.activities[activityName];
-    if (!activity) return;
+  async function deleteActivity(idAtividade) {
+    const activity = state.activities[idAtividade];
+    const nome = activity ? activity.nome : 'esta ficha';
 
-    const confirmed = confirm(`Tem certeza que deseja excluir a ficha "${activityName}"? Esta ação não pode ser desfeita.`);
+    const confirmed = confirm(`Tem certeza que deseja excluir a ficha "${nome}"? Esta ação não pode ser desfeita.`);
     if (!confirmed) return;
 
-    delete state.activities[activityName];
+    try {
+      await apiRequest('excluir', { method: 'POST', params: { id_atividade: idAtividade } });
 
-    // Se o usuário estava visualizando a ficha completa desta atividade, volta ao dashboard
-    if (state.currentDetailActivity === activityName) {
-      showDashboard();
+      if (state.currentDetailActivity === idAtividade) {
+        showDashboard();
+      }
+      await carregarFichas();
+    } catch (err) {
+      alert(err.message);
     }
-
-    renderDashboard();
   }
 
   // ------------------------------------------------------------------
   // RENDERIZAÇÃO: DETALHAMENTO (ÁREA B — Ficha Completa)
   // ------------------------------------------------------------------
-  function showDetail(activityName) {
-    state.currentDetailActivity = activityName;
-    const activity = state.activities[activityName];
-    if (!activity) return;
+  async function showDetail(idAtividade) {
+    let ficha;
+    try {
+      ficha = await apiRequest('buscar', { params: { id_atividade: idAtividade } });
+    } catch (err) {
+      alert(err.message);
+      return;
+    }
 
-    detailActivityName.textContent = activity.name;
+    state.currentDetailActivity = idAtividade;
+
+    detailActivityName.textContent = ficha.nome;
     risksList.innerHTML = '';
 
-    activity.riscos.forEach((risk, idx) => {
+    ficha.riscos.map(mapRiscoFromServer).forEach((risk, idx) => {
       risksList.appendChild(buildRiskBlock(risk, idx));
     });
 
-    collectiveMeasuresOutput.innerHTML = buildSimpleList(activity.medidasColetivas, 'green');
-    proceduresOutput.innerHTML = buildSimpleList(activity.procedimentos, 'blue');
+    collectiveMeasuresOutput.innerHTML = buildSimpleList(ficha.medidasColetivas, 'green');
+    proceduresOutput.innerHTML = buildSimpleList(ficha.procedimentos, 'blue');
 
     dashboardView.classList.add('hidden');
     detailView.classList.remove('hidden');
@@ -855,7 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>Medidas de Controle (${risk.controlMeasures.length})</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div class="accordion-panel" id="panel-control-${idx}-${risk.id}">
+        <div class="accordion-panel" id="panel-control-${idx}-${risk.id_risco}">
           <ul>${risk.controlMeasures.length ? risk.controlMeasures.map(m => `<li>${escapeHTML(m)}</li>`).join('') : '<li>Nenhuma medida cadastrada</li>'}</ul>
         </div>
       </div>
@@ -864,13 +948,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>EPIs Relacionados (${risk.epis.length})</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div class="accordion-panel" id="panel-epi-${idx}-${risk.id}">
+        <div class="accordion-panel" id="panel-epi-${idx}-${risk.id_risco}">
           <ul>${risk.epis.length ? risk.epis.map(m => `<li>${escapeHTML(m)}</li>`).join('') : '<li>Nenhum EPI cadastrado</li>'}</ul>
         </div>
       </div>
     `;
 
-    // Liga eventos dos accordions deste bloco
     block.querySelectorAll('.accordion-header').forEach(header => {
       header.addEventListener('click', () => {
         const panel = header.nextElementSibling;
@@ -925,46 +1008,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------
-  // DADOS DE EXEMPLO (opcional — demonstra o funcionamento ao carregar)
-  // ------------------------------------------------------------------
-  function seedExample() {
-    state.activities['Trabalho em Altura'] = {
-      name: 'Trabalho em Altura',
-      riscos: [
-        {
-          id: 'seed-1',
-          riskType: 'Acidente',
-          severity: 5,
-          probability: 4,
-          description: 'Queda de altura com diferença de nível superior a 2 metros',
-          level: 'critico',
-          levelLabel: 'Crítico',
-          controlMeasures: ['Uso de cinto tipo paraquedista', 'Ancoragem em ponto fixo', 'Inspeção diária dos EPIs', 'Sinalização da área de risco'],
-          epis: ['Cinto de segurança tipo paraquedista', 'Capacete com jugular', 'Talabarte duplo com absorvedor']
-        },
-        {
-          id: 'seed-2',
-          riskType: 'Acidente',
-          severity: 4,
-          probability: 3,
-          description: 'Queda de materiais e ferramentas',
-          level: 'alto',
-          levelLabel: 'Alto',
-          controlMeasures: ['Uso de bolsa porta-ferramentas', 'Isolamento da área abaixo', 'Amarração de ferramentas', 'Tela de proteção'],
-          epis: ['Capacete com jugular']
-        }
-      ],
-      medidasColetivas: ['Guarda-corpo rígido nos perímetros', 'Tela de proteção em toda a fachada', 'Plataforma de proteção a cada 3 pavimentos', 'Sistema de ancoragem permanente'],
-      procedimentos: ['Análise Preliminar de Risco (APR) diária', 'Permissão de Trabalho (PT) assinada', 'Inspeção de EPIs antes do início', 'Treinamento NR-35 atualizado']
-    };
-    renderDashboard();
-  }
-
-  // ------------------------------------------------------------------
   // INICIALIZAÇÃO
   // ------------------------------------------------------------------
   renderCreateRisks();
-  renderDashboard();
-  seedExample(); // Remova esta chamada caso não deseje o exemplo pré-carregado
+  carregarNRs();     // popula o select de NR do formulário
+  carregarFichas();  // busca as fichas reais do banco via API
 
 });
