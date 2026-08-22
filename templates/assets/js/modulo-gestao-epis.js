@@ -1,5 +1,69 @@
 // ===== VARIÁVEIS GLOBAIS =====
 let editandoId = null;
+let atividadeAtualSlug = null;
+let streamCamera = null;
+let fotoCheckinBase64 = null;
+let arquivoCheckinFallback = null;
+
+const EPI_API = '../api/epi-api.php';
+const INSPECAO_API = '../api/inspecao-api.php';
+
+// ===== CARREGAMENTO INICIAL =====
+
+document.addEventListener('DOMContentLoaded', carregarEstoque);
+
+async function carregarEstoque() {
+  try {
+    const resposta = await fetch(`${EPI_API}?acao=listar`);
+    const dados = await resposta.json();
+    if (!dados.sucesso) throw new Error(dados.mensagem);
+
+    const stockList = document.getElementById('stock-list');
+    stockList.innerHTML = '';
+    dados.epis.forEach(epi => stockList.appendChild(criarLinhaEstoque(epi)));
+  } catch (erro) {
+    console.error('[Carregar Estoque] Falha ao buscar EPIs:', erro);
+  }
+}
+
+function criarLinhaEstoque(epi) {
+  const div = document.createElement('div');
+  div.className = `stock-row status-${epi.status_epi}`;
+  div.setAttribute('data-id', epi.id_epi);
+  div.innerHTML = `
+    <span class="stock-icon ${corDoStatus(epi.status_epi)}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
+    </span>
+    <div class="stock-info">
+      <p class="stock-name">${epi.nome_epi}</p>
+      <p class="stock-qty">Disponível: ${epi.qtd_epi} | Mínimo: ${epi.qtd_minima_epi}</p>
+    </div>
+    <span class="badge ${epi.status_epi}">${textoDoStatus(epi.status_epi)}</span>
+    <div class="stock-actions">
+      <button class="btn-icon" onclick="editarEPI(${epi.id_epi})" title="Editar EPI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+      </button>
+      <button class="btn-icon" onclick="aumentarQtd(${epi.id_epi})" title="Aumentar quantidade">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button class="btn-icon" onclick="diminuirQtd(${epi.id_epi})" title="Diminuir quantidade">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <button class="btn-icon btn-danger" onclick="excluirEPI(${epi.id_epi})" title="Excluir EPI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      </button>
+    </div>
+  `;
+  return div;
+}
+
+function corDoStatus(status) {
+  return status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red';
+}
+
+function textoDoStatus(status) {
+  return status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico';
+}
 
 // ===== FUNÇÕES DO MODAL EPI =====
 
@@ -44,7 +108,7 @@ function fecharModalEpi() {
   editandoId = null;
 }
 
-function salvarEPI(event) {
+async function salvarEPI(event) {
   event.preventDefault();
 
   const nome = document.getElementById('epiNome').value.trim();
@@ -58,133 +122,113 @@ function salvarEPI(event) {
     return;
   }
 
-  if (id) {
-    const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-    if (row) {
-      row.querySelector('.stock-name').textContent = nome;
-      row.querySelector('.stock-qty').textContent = `Disponível: ${quantidade} | Mínimo: ${minimo}`;
-      row.className = `stock-row status-${status}`;
+  const payload = { nome_epi: nome, qtd_epi: quantidade, qtd_minima_epi: minimo, status_epi: status };
 
-      const badge = row.querySelector('.badge');
-      badge.className = `badge ${status}`;
-      badge.textContent = status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico';
-
-      const icon = row.querySelector('.stock-icon');
-      icon.className = `stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}`;
+  try {
+    const resposta = await fetch(`${EPI_API}?acao=${id ? 'atualizar' : 'criar'}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(id ? { id_epi: id, ...payload } : payload),
+    });
+    const dados = await resposta.json();
+    if (!dados.sucesso) {
+      alert(dados.mensagem || 'Não foi possível salvar o EPI.');
+      return;
     }
-  } else {
+
     const stockList = document.getElementById('stock-list');
-    const newId = Date.now();
+    const linhaExistente = document.querySelector(`.stock-row[data-id="${dados.epi.id_epi}"]`);
+    const novaLinha = criarLinhaEstoque(dados.epi);
+    if (linhaExistente) {
+      linhaExistente.replaceWith(novaLinha);
+    } else {
+      stockList.appendChild(novaLinha);
+    }
 
-    const newRow = document.createElement('div');
-    newRow.className = `stock-row status-${status}`;
-    newRow.setAttribute('data-id', newId);
-    newRow.innerHTML = `
-            <span class="stock-icon ${status === 'ok' ? 'green' : status === 'alert' ? 'orange' : 'red'}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
-            </span>
-            <div class="stock-info">
-                <p class="stock-name">${nome}</p>
-                <p class="stock-qty">Disponível: ${quantidade} | Mínimo: ${minimo}</p>
-            </div>
-            <span class="badge ${status}">${status === 'ok' ? 'OK' : status === 'alert' ? 'Alerta' : 'Crítico'}</span>
-            <div class="stock-actions">
-                <button class="btn-icon" onclick="editarEPI(${newId})" title="Editar EPI">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                </button>
-                <button class="btn-icon" onclick="aumentarQtd(${newId})" title="Aumentar quantidade">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-                <button class="btn-icon" onclick="diminuirQtd(${newId})" title="Diminuir quantidade">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-                <button class="btn-icon btn-danger" onclick="excluirEPI(${newId})" title="Excluir EPI">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                </button>
-            </div>
-        `;
-    stockList.appendChild(newRow);
+    fecharModalEpi();
+  } catch (erro) {
+    console.error('[Salvar EPI] Erro:', erro);
+    alert('Erro de conexão ao salvar o EPI.');
   }
-
-  fecharModalEpi();
 }
 
-function excluirEPIModal() {
+async function excluirEPIModal() {
   const id = document.getElementById('epiId').value;
   if (id && confirm('Tem certeza que deseja excluir este EPI?')) {
-    excluirEPI(parseInt(id));
+    await excluirEPI(parseInt(id));
     fecharModalEpi();
   }
 }
 
 // ===== FUNÇÕES DE QUANTIDADE =====
 
-function aumentarQtd(id) {
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (!row) return;
-
-  const qtdText = row.querySelector('.stock-qty').textContent;
-  const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
-  const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
-  const novaQtd = disponivel + 1;
-
-  row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
-  atualizarStatus(row, novaQtd, minimo);
+async function aumentarQtd(id) {
+  await ajustarQuantidade(id, 1);
 }
 
-function diminuirQtd(id) {
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (!row) return;
-
-  const qtdText = row.querySelector('.stock-qty').textContent;
-  const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
-  const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
-  const novaQtd = Math.max(0, disponivel - 1);
-
-  row.querySelector('.stock-qty').textContent = `Disponível: ${novaQtd} | Mínimo: ${minimo}`;
-  atualizarStatus(row, novaQtd, minimo);
+async function diminuirQtd(id) {
+  await ajustarQuantidade(id, -1);
 }
 
-function atualizarStatus(row, disponivel, minimo) {
-  let status;
-  let statusText;
-  let iconClass;
+async function ajustarQuantidade(id, delta) {
+  try {
+    const resposta = await fetch(`${EPI_API}?acao=ajustar-quantidade`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_epi: id, delta }),
+    });
+    const dados = await resposta.json();
+    if (!dados.sucesso) {
+      alert(dados.mensagem || 'Não foi possível atualizar a quantidade.');
+      return;
+    }
 
-  if (disponivel >= minimo) {
-    status = 'ok';
-    statusText = 'OK';
-    iconClass = 'green';
-  } else if (disponivel >= minimo * 0.5) {
-    status = 'alert';
-    statusText = 'Alerta';
-    iconClass = 'orange';
-  } else {
-    status = 'critical';
-    statusText = 'Crítico';
-    iconClass = 'red';
+    const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+    if (!row) return;
+
+    const minimoAtual = parseInt(row.querySelector('.stock-qty').textContent.match(/Mínimo:\s*(\d+)/)[1]);
+    row.querySelector('.stock-qty').textContent = `Disponível: ${dados.qtd_epi} | Mínimo: ${minimoAtual}`;
+    row.className = `stock-row status-${dados.status_epi}`;
+    row.querySelector('.badge').className = `badge ${dados.status_epi}`;
+    row.querySelector('.badge').textContent = textoDoStatus(dados.status_epi);
+    row.querySelector('.stock-icon').className = `stock-icon ${corDoStatus(dados.status_epi)}`;
+  } catch (erro) {
+    console.error('[Ajustar Quantidade] Erro:', erro);
+    alert('Erro de conexão ao atualizar a quantidade.');
   }
-
-  row.className = `stock-row status-${status}`;
-  row.querySelector('.badge').className = `badge ${status}`;
-  row.querySelector('.badge').textContent = statusText;
-  row.querySelector('.stock-icon').className = `stock-icon ${iconClass}`;
 }
 
 // ===== FUNÇÃO DE EXCLUSÃO =====
 
-function excluirEPI(id) {
+async function excluirEPI(id) {
   if (!confirm('Tem certeza que deseja excluir este EPI permanentemente?')) return;
 
-  const row = document.querySelector(`.stock-row[data-id="${id}"]`);
-  if (row) {
-    row.style.transition = 'all 0.3s ease';
-    row.style.opacity = '0';
-    row.style.transform = 'translateX(-20px)';
-    setTimeout(() => row.remove(), 300);
+  try {
+    const resposta = await fetch(`${EPI_API}?acao=excluir`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_epi: id }),
+    });
+    const dados = await resposta.json();
+    if (!dados.sucesso) {
+      alert(dados.mensagem || 'Não foi possível excluir o EPI.');
+      return;
+    }
+
+    const row = document.querySelector(`.stock-row[data-id="${id}"]`);
+    if (row) {
+      row.style.transition = 'all 0.3s ease';
+      row.style.opacity = '0';
+      row.style.transform = 'translateX(-20px)';
+      setTimeout(() => row.remove(), 300);
+    }
+  } catch (erro) {
+    console.error('[Excluir EPI] Erro:', erro);
+    alert('Erro de conexão ao excluir o EPI.');
   }
 }
 
-// ===== FUNÇÕES EXISTENTES (Trocas e Check-in) =====
+// ===== FUNÇÕES EXISTENTES (Trocas) =====
 
 function agendarTroca(nome, epi) {
   console.log(`[Confirmar Troca] Colaborador: ${nome} | EPI: ${epi}`);
@@ -324,6 +368,7 @@ function verEpis(slug) {
     console.log(`[Ver EPIs] Atividade não encontrada: ${slug}`);
     return;
   }
+  atividadeAtualSlug = slug;
   console.log(`[Ver EPIs] Atividade selecionada: ${atividade.nome}`);
 
   document.getElementById('detail-emoji').textContent = atividade.emoji;
@@ -356,8 +401,128 @@ function voltarLista() {
   window.scrollTo(0, 0);
 }
 
-function realizarCheckin() {
-  const atividade = document.getElementById('detail-title').textContent;
-  console.log(`[Check-in com Selfie] Atividade: ${atividade}`);
-  alert(`Abrindo câmera para check-in de EPIs — ${atividade}`);
+// ===== CHECK-IN COM FOTO =====
+
+async function realizarCheckin() {
+  fotoCheckinBase64 = null;
+  arquivoCheckinFallback = null;
+  document.getElementById('checkinErro').style.display = 'none';
+  document.getElementById('checkinPreview').style.display = 'none';
+  document.getElementById('checkinUploadFallback').style.display = 'none';
+  document.getElementById('btnConfirmarCheckin').disabled = true;
+  document.getElementById('btnCapturarFoto').style.display = 'inline-block';
+
+  document.getElementById('modalCheckin').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const video = document.getElementById('checkinVideo');
+
+  try {
+    streamCamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    video.srcObject = streamCamera;
+    video.style.display = 'block';
+  } catch (erro) {
+    console.warn('[Check-in] Câmera indisponível, usando upload manual:', erro);
+    video.style.display = 'none';
+    document.getElementById('btnCapturarFoto').style.display = 'none';
+    document.getElementById('checkinUploadFallback').style.display = 'block';
+  }
+}
+
+function capturarFotoCheckin() {
+  const video = document.getElementById('checkinVideo');
+  const canvas = document.getElementById('checkinCanvas');
+  const preview = document.getElementById('checkinPreview');
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+
+  fotoCheckinBase64 = canvas.toDataURL('image/jpeg', 0.9);
+  preview.src = fotoCheckinBase64;
+  preview.style.display = 'block';
+
+  pararCamera();
+  video.style.display = 'none';
+  document.getElementById('btnCapturarFoto').style.display = 'none';
+  document.getElementById('btnConfirmarCheckin').disabled = false;
+}
+
+document.addEventListener('change', (evento) => {
+  if (evento.target && evento.target.id === 'checkinFotoInput') {
+    const arquivo = evento.target.files[0];
+    if (!arquivo) return;
+
+    arquivoCheckinFallback = arquivo;
+    const preview = document.getElementById('checkinPreview');
+    preview.src = URL.createObjectURL(arquivo);
+    preview.style.display = 'block';
+    document.getElementById('btnConfirmarCheckin').disabled = false;
+  }
+});
+
+function pararCamera() {
+  if (streamCamera) {
+    streamCamera.getTracks().forEach(track => track.stop());
+    streamCamera = null;
+  }
+}
+
+async function confirmarCheckin() {
+  const erroEl = document.getElementById('checkinErro');
+  erroEl.style.display = 'none';
+
+  const epis_verificados = atividadeAtualSlug && atividades[atividadeAtualSlug]
+    ? atividades[atividadeAtualSlug].epis.length
+    : 0;
+
+  try {
+    let resposta;
+
+    if (arquivoCheckinFallback) {
+      const formData = new FormData();
+      formData.append('foto', arquivoCheckinFallback);
+      formData.append('epis_verificados', epis_verificados);
+      resposta = await fetch(`${INSPECAO_API}?acao=checkin`, { method: 'POST', body: formData });
+    } else if (fotoCheckinBase64) {
+      resposta = await fetch(`${INSPECAO_API}?acao=checkin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ foto_base64: fotoCheckinBase64, epis_verificados }),
+      });
+    } else {
+      erroEl.textContent = 'Capture ou selecione uma foto antes de confirmar.';
+      erroEl.style.display = 'block';
+      return;
+    }
+
+    const dados = await resposta.json();
+    if (!dados.sucesso) {
+      erroEl.textContent = dados.mensagem || 'Não foi possível concluir o check-in.';
+      erroEl.style.display = 'block';
+      return;
+    }
+
+    fecharModalCheckin();
+
+    const alertaPendente = document.querySelector('.checkin-alert .title');
+    if (alertaPendente) alertaPendente.textContent = 'Check-in concluído';
+    const badgePendente = document.querySelector('.checkin-alert .badge');
+    if (badgePendente) {
+      badgePendente.className = 'badge ok';
+      badgePendente.textContent = 'Concluído';
+    }
+  } catch (erro) {
+    console.error('[Confirmar Check-in] Erro:', erro);
+    erroEl.textContent = 'Erro de conexão ao enviar o check-in.';
+    erroEl.style.display = 'block';
+  }
+}
+
+function fecharModalCheckin() {
+  pararCamera();
+  document.getElementById('modalCheckin').classList.remove('open');
+  document.body.style.overflow = 'auto';
+  fotoCheckinBase64 = null;
+  arquivoCheckinFallback = null;
 }

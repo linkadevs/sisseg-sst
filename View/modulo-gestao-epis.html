@@ -579,6 +579,41 @@
 
   </div>
 
+  <!-- Inserir logo após o </div> de fechamento do #modalEpi, antes da view-detail -->
+<div class="modal-overlay" id="modalCheckin">
+  <div class="modal">
+    <button class="modal-back" onclick="fecharModalCheckin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Voltar
+    </button>
+    <h2 class="modal-title">Check-in com Foto</h2>
+
+    <video id="checkinVideo" autoplay playsinline
+      style="width:100%;border-radius:8px;display:none;margin-bottom:12px;"></video>
+    <canvas id="checkinCanvas" style="display:none;"></canvas>
+    <img id="checkinPreview" style="width:100%;border-radius:8px;display:none;margin-bottom:12px;"
+      alt="Foto do check-in">
+
+    <div class="form-group" id="checkinUploadFallback" style="display:none;">
+      <label class="form-label" for="checkinFotoInput">A câmera não está disponível — selecione uma foto</label>
+      <input type="file" id="checkinFotoInput" class="form-input" accept="image/jpeg,image/png,image/webp">
+    </div>
+
+    <p id="checkinErro" style="color:#dc2626;display:none;margin-top:8px;"></p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-outline" id="btnCapturarFoto" onclick="capturarFotoCheckin()">Capturar
+        Foto</button>
+      <button type="button" class="btn-save" id="btnConfirmarCheckin" onclick="confirmarCheckin()" disabled>Confirmar
+        Check-in</button>
+    </div>
+  </div>
+</div>
+
   <script src="../templates/assets/js/modulo-gestao-epis.js"></script>
 
 </body>
