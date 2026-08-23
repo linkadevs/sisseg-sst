@@ -4,7 +4,7 @@
 // Ajuste API_URL caso a posição do arquivo no projeto seja diferente.
 // ==========================================================================
 
-const API_URL = '../Controller/ficha-risco-api.php';
+const API_URL = '../View/ficharisco-api.php';
 
 document.addEventListener('DOMContentLoaded', () => {
 

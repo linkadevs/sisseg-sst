@@ -4,8 +4,7 @@ require_once __DIR__ . "/../Model/Connection.php";
 require_once __DIR__ . '/../Model/FichaRisco.php';
 
 use Model\FichaRisco;
-use PDO;
-use PDOException;
+use Model\Connection;
 
 /**
  * Controller FichaRiscoController

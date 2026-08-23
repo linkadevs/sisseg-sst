@@ -17,7 +17,7 @@
  *   POST ?action=excluir&id_atividade=X
  */
 
-require_once __DIR__ . '/FichaRiscoController.php';
+require_once __DIR__ . '/../Controller/FichaRiscoController.php';
 
 $controller = new FichaRiscoController();
 
