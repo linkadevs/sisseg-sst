@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------
    CONFIG
 ------------------------------------------------------------------ */
-const API_URL = '../incidente-api.php';
+const API_URL = '../Controller/IncidenteApi.php';
 
 /* ------------------------------------------------------------------
    PREVIEW DAS IMAGENS SELECIONADAS
@@ -109,7 +109,7 @@ form.addEventListener('submit', async function (e) {
 
     showToast(resultado.message || 'Incidente registrado com sucesso!', true);
     setTimeout(() => {
-      window.location.href = 'gestao-incidentes.html';
+      window.location.href = 'modulo-incidente.html';
     }, 1200);
 
   } catch (err) {
