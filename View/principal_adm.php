@@ -1,189 +1,321 @@
-<?php
-
-session_start();
-
-// Garante que só um administrador autenticado acesse esta página.
-if (empty($_SESSION['id_adm']) || ($_SESSION['tipo_usuario'] ?? '') !== 'administrador') {
-    header('Location: /../View/login.php');
-    exit;
-}
-
-require_once __DIR__ . '/../Controller/AdministradorController.php';
-require_once __DIR__ . '/../vendor/autoload.php';
-
-$AdministradorController = new \Controller\AdministradorController();
-
-$administrador = $AdministradorController->selecionarAdministradorByID($_SESSION['id_adm']);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $id = $_SESSION['id_adm'];
-    if (
-        !empty($_POST['nome']) ||
-        !empty($_POST['cpf']) ||
-        !empty($_POST['cargo']) ||
-        !empty($_POST['setor'])
-    ) {
-        $cpf = preg_replace('/\D/', '', $_POST['cpf']);
-        $AdministradorController->updateAdministrador(
-            $id,
-            $_POST['nome'],
-            $cpf,
-            $_POST['setor'],
-            $_POST['cargo']
-        );
-    }
-
-    if (
-        !empty($_POST['senha_adm'])
-    ) {
-        $AdministradorController->updatePassword(
-            $id,
-            $_POST['senha_adm']
-        );
-    }
-
-    header('Location: perfil-administrador.php');
-    exit;
-}
-
-if (isset($_SESSION['success_message'])) {
-    $successMessage = $_SESSION['success_message'];
-    $_SESSION['success_message'] = null;
-}
-
-if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
-    $errorMessage = $_SESSION['error_message'];
-    $_SESSION['error_message'] = null;
-}
-
-$nome  = htmlspecialchars($administrador['nome_adm'] ?? '', ENT_QUOTES, 'UTF-8');
-$cpf   = htmlspecialchars($administrador['cpf_adm'] ?? '', ENT_QUOTES, 'UTF-8');
-$cargo = htmlspecialchars($administrador['cargo_adm'] ?? '', ENT_QUOTES, 'UTF-8');
-$setor = htmlspecialchars($administrador['setor_adm'] ?? '', ENT_QUOTES, 'UTF-8');
-?>
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil</title>
-<link rel="stylesheet" href="../templates/assets/css/perfil.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal do Administrador(a)</title>
+    <link rel="stylesheet" href="../templates/assets/css/principal_adm.css">
 </head>
+
 <body>
+    <main>
+        <div class="container">
 
-  <div class="bg-shape bg-shape--top" aria-hidden="true"></div>
-  <div class="bg-shape bg-shape--bottom" aria-hidden="true"></div>
+            <div class="linha1">
+                <div class="bloco1">
+                    <div class="bloco1-foto">
+                        <figure>
+                            <img src="../templates/assets/img/empresa.png" alt="empresa">
+                        </figure>
+                    </div>
 
-  <main class="page">
-    <section class="card" aria-labelledby="card-title">
+                    <div class="bloco1-texto">
+                        <p class="texto-titulo">SISSEG SST</p>
+                        <p class="texto-subtitulo">Sistema de Segurança do Trabalho</p>
+                    </div>
+                </div>
 
-      <a href="#" class="back-link" aria-label="Voltar para a página anterior">
-        <svg class="back-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M19 12H5"></path>
-          <path d="M12 19l-7-7 7-7"></path>
-        </svg>
-        <span>Voltar</span>
-      </a>
+                <div class="bloco2">
+                    <p class="titulo">Certificado</p>
+                    <p class="subtitulo">ISO 45001:2018</p>
+                </div>
+            </div>
 
-      <header class="card__header">
-        <h1 id="card-title" class="card__title">Suas informações Pessoais</h1>
-        <p class="card__subtitle">Visualize ou Edite seus dados</p>
-      </header>
+            <div class="linha2">
+                <div class="bloco3">
+                    <p class="titulo">Bem-vindo(a)</p>
+                    <p class="subtitulo">João Silva</p>
+                    <a href="#" class="perfil-link">
+                        Ver perfil
+                    </a>
+                </div>
 
-      <form class="profile-form" id="profileForm" method="POST" novalidate>
+                <div class="bloco7">
+                    <p class="titulo">Visualize e Gerencie os <br> funciónarios desse setor</p>
+                    <a href="gerenciamento_dos_funcionarios.php" class="funcionarios-link">
+                        Funcionários
+                    </a>
+                </div>
+            </div>
 
-        <div class="field">
-          <label for="nome" class="field__label">Nome</label>
-          <div class="field__control">
-            <input type="text" id="nome" name="nome" class="field__input" value="<?php echo $nome; ?>" readonly>
-            <button type="button" class="field__icon-btn" data-edit-target="nome" aria-label="Editar nome">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-          </div>
+            <div class="linha3">
+                <div class="bloco4">
+                    <p class="titulo">Sistema de Gestão SST</p>
+                    <p class="subtitulo">Conforme ISO 45001:2018</p>
+                </div>
+
+                <div class="bloco5">
+                    <p class="titulo">Normas Regulamentadoras</p>
+                    <p class="subtitulo">NR-01, 06, 10, 12, 18, 23, 33, 35</p>
+                </div>
+
+                <div class="bloco6">
+                    <p class="titulo">Compromisso</p>
+                    <p class="subtitulo">Zero Acidentes | Melhoria Contínua</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <section class="informacoes">
+
+        <div class="card-treinamento">
+            <div class="card-superior">
+                <p class="card-titulo">Treinamento</p>
+                <div class="card-subtitulo">
+                    <p class="card-infor">4/18</p>
+                </div>
+            </div>
+            <div class="card-inferior">
+                <div class="barra-progresso">
+                    <div class="barra-preenchida"></div>
+                </div>
+                <p class="card-treinamento-msg">
+                    22% concluídos
+                </p>
+            </div>
         </div>
 
-        <div class="field">
-          <label for="cpf" class="field__label">CPF</label>
-          <div class="field__control">
-            <input type="text" id="cpf" name="cpf" class="field__input" value="<?php echo $cpf; ?>" inputmode="numeric" readonly>
-            <button type="button" class="field__icon-btn" id="toggleCpf" aria-label="Mostrar CPF" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.42 19.42 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                <path d="M1 1l22 22"></path>
-              </svg>
-            </button>
-            <button type="button" class="field__icon-btn field__icon-btn--edit" data-edit-target="cpf" aria-label="Editar CPF">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-          </div>
+        <div class="card-acidentes">
+            <div class="card-superior">
+                <p class="card-titulo">Dias sem Acidentes</p>
+                <div class="card-subtitulo">
+                    <figure>
+                        <img src="../templates/assets/img/relogio.png" alt="sem acidentes">
+                    </figure>
+                    <p class="card-infor">45</p>
+                </div>
+            </div>
+            <div class="card-inferior">
+                <p class="card-acidentes-msg">
+                    Excelente!
+                </p>
+            </div>
         </div>
 
-        <div class="field">
-          <label for="senha" class="field__label">Senha</label>
-          <div class="field__control">
-            <!-- Por segurança, a senha real (hash) nunca é enviada ao front.
-                 O campo fica vazio; o usuário digita uma nova senha só se quiser alterá-la. -->
-            <input type="password" id="senha" name="senha_adm" class="field__input" value="" placeholder="••••••••" readonly>
-            <button type="button" class="field__icon-btn" id="toggleSenha" aria-label="Mostrar senha" aria-pressed="false">
-              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.42 19.42 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                <path d="M1 1l22 22"></path>
-              </svg>
-            </button>
-            <button type="button" class="field__icon-btn field__icon-btn--edit" data-edit-target="senha" aria-label="Editar senha">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-          </div>
+        <div class="card-epis">
+            <div class="card-superior">
+                <p class="card-titulo">Conformidade EPIs</p>
+                <div class="card-subtitulo">
+                    <figure>
+                        <img src="../templates/assets/img/elevacao.png" alt="elevação">
+                    </figure>
+                    <p class="card-infor">96%</p>
+                </div>
+            </div>
+            <div class="card-inferior">
+                <p class="card-epis-msg">
+                    Meta: 95%
+                </p>
+            </div>
         </div>
 
-        <div class="field">
-          <label for="cargo" class="field__label">Cargo</label>
-          <div class="field__control">
-            <input type="text" id="cargo" name="cargo" class="field__input" value="<?php echo $cargo; ?>" readonly>
-            <button type="button" class="field__icon-btn" data-edit-target="cargo" aria-label="Editar cargo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-          </div>
+        <div class="card-incidentes">
+            <div class="card-superior">
+                <p class="card-titulo">Incidentes Abertos</p>
+                <div class="card-subtitulo">
+                    <figure>
+                        <img src="../templates/assets/img/risco-vermelho.png" alt="risco vermelho">
+                    </figure>
+                    <p class="card-infor">2</p>
+                </div>
+            </div>
+            <div class="card-inferior">
+                <p class="card-incidentes-msg">
+                    Requer atenção
+                </p>
+            </div>
         </div>
-
-        <div class="field">
-          <label for="setor" class="field__label">Setor</label>
-          <div class="field__control">
-            <input type="text" id="setor" name="setor" class="field__input" value="<?php echo $setor; ?>" readonly>
-            <button type="button" class="field__icon-btn" data-edit-target="setor" aria-label="Editar setor">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <p class="status-msg" id="statusMsg" role="status" aria-live="polite"><?php echo isset($successMessage) ? $successMessage : (isset($errorMessage) ? $errorMessage : ''); ?></p>
-
-        <div class="actions">
-          <button type="submit" class="btn btn--save" id="saveBtn">Salvar Alterações</button>
-          <button type="button" class="btn btn--logout" id="logoutBtn">Fazer Logout</button>
-        </div>
-
-      </form>
     </section>
-  </main>
 
-<script src="../templates/assets/js/perfil.js"></script>
+    <section class="alertas">
+        <h2>Alertas e Notificações</h2>
+
+        <div class="notificacao">
+            <div class="notificacao-infor">
+                <figure>
+                    <img src="../templates/assets/img/risco-azul.png" alt="alerta">
+                </figure>
+                <p>Auditoria Interna</p>
+            </div>
+            <div class="notificacao-informacao">
+                <p>Info</p>
+            </div>
+        </div>
+
+        <div class="notificacao-aviso">
+            <div class="notificacao-infor">
+                <figure>
+                    <img src="../templates/assets/img/risco-azul.png" alt="alerta">
+                </figure>
+                <p>Auditoria Externa</p>
+            </div>
+            <div class="notificacao-informacao">
+                <p>Info</p>
+            </div>
+        </div>
+
+        <div class="notificacao">
+            <div class="notificacao-infor">
+                <figure>
+                    <img src="../templates/assets/img/risco-vermelho.png" alt="alerta">
+                </figure>
+                <p>2 incidentes aguardando análise</p>
+            </div>
+            <div class="notificacao-atencao">
+                <p>Atenção</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="modulos-do-sistema">
+        <h1>Módulos do Sistema</h1>
+        <div class="todos-os-modulos">
+
+            <div class="modulo">
+                <div class="modulo-verificacao-img">
+                    <figure>
+                        <img src="../templates/assets/img/marca-de-verificacao.png" alt="Verificação">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Verificação & EPIs</p>
+                    <p class="modulo-descricao">Verificar aptidão e liberar trabalho</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+            <div class="modulo">
+                <div class="modulo-treinamento-img">
+                    <figure>
+                        <img src="../templates/assets/img/treinamento.png" alt="Treinamento">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Treinamentos</p>
+                    <p class="modulo-descricao">Cursos e certificações</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+            <div class="modulo">
+                <div class="modulo-inspecao-img">
+                    <figure>
+                        <img src="../templates/assets/img/marca-de-inspecao.png" alt="Inspeção">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Inspeção de EPIs</p>
+                    <p class="modulo-descricao">Inspeção diária por função</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+            <div class="modulo">
+                <div class="modulo-checklistnr18-img">
+                    <figure>
+                        <img src="../templates/assets/img/verificacao_nr.png" alt="Verificação">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Checklist NR-18</p>
+                    <p class="modulo-descricao">Inspeção do canteiro de obras</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+            <div class="modulo">
+                <div class="modulo-capacete-img">
+                    <figure>
+                        <img src="../templates/assets/img/capacete.png" alt="Capacete">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Gestão de EPIs</p>
+                    <p class="modulo-descricao">Controle e Check-in diário</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+
+            <div class="modulo">
+                <div class="modulo-pgr-img">
+                    <figure>
+                        <img src="../templates/assets/img/pgr.png" alt="Pgr">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">PGR/ Riscos</p>
+                    <p class="modulo-descricao">Programa de gerenciamento</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+
+            <div class="modulo">
+                <div class="modulo-atencao-img">
+                    <figure>
+                        <img src="../templates/assets/img/atencao.png" alt="Atenção">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Incidentes</p>
+                    <p class="modulo-descricao">Registro e Análise</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+
+            <div class="modulo">
+                <div class="modulo-grafico-img">
+                    <figure>
+                        <img src="../templates/assets/img/grafico-de-barras.png" alt="graficos">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Indicadores</p>
+                    <p class="modulo-descricao">Métricas e Gamificação</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+
+            <div class="modulo">
+                <div class="modulo-configuracao-img">
+                    <figure>
+                        <img src="../templates/assets/img/configuracao.png" alt="configuração">
+                    </figure>
+                </div>
+                <div class="modulo-textos">
+                    <p class="modulo-titulo">Admin / Compliance</p>
+                    <p class="modulo-descricao">Relatórios e auditoria</p>
+                </div>
+                <button class="modulo-botao">Acessar</button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer-simples">
+        <div class="footer-conteudo">
+            <p class="footer2026">&copy; 2026 SISSEG SST - Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../templates/assets/js/principal_adm.js"></script>
+
 </body>
+
 </html>
