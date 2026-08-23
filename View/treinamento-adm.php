@@ -221,7 +221,7 @@ if (!isset($_SESSION['id_adm'])) {
   </div>
 </div>
 
-<script src="../templates/assets/js/treinamento_funcionario-adm.js"></script>
+<script src="../templates/assets/js/treinamento-adm.js"></script>
 <script src="../templates/assets/js/provas-adm.js"></script>
 
 </body>

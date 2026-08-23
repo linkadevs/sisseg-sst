@@ -5,7 +5,7 @@
    para as ações (assistir, fazer prova, ver certificado).
    ========================================================================== */
 
-const API_URL = 'treinamento-funcionario-api.php';
+const API_URL = '../View/treinamento-funcionario-api.php';
 const IMG_PADRAO = 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=340&fit=crop';
 
 let treinamentos = [];   // dados vindos do banco, já com status/data_conclusao do funcionário logado
