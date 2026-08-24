@@ -1,3 +1,52 @@
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/InspecaoController.php';
+require_once __DIR__ . '/../Controller/ReposicaoController.php';
+
+use Controller\InspecaoController;
+use Controller\ReposicaoController;
+
+$inspecao_controller = new InspecaoController();
+$reposicao_controller = new ReposicaoController();
+
+session_start();
+
+$epis = $_SESSION['epis'];
+
+$funcionario = $_SESSION['funcionario'];
+
+$estado_epis = [];
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach($epis as $epi) {
+        if(!empty($_POST[str_replace(' ', '', htmlspecialchars($epi)).'estado'])){
+            $estado_epis[$epi] = $_POST[str_replace(' ', '', htmlspecialchars($epi)).'estado'];
+        } else {
+            $estado_epis[$epi] = 'Não entregue';
+        }
+    }
+    $_SESSION['estados'] = $estado_epis;
+    $foto = $_FILES['foto_inspecao'];
+    $_SESSION['inspecao_id'] = $inspecao_controller->criarInspecao(
+        $_POST['qtd_bons'],
+        $funcionario['id_funcionario'],
+        $_SESSION['id_funcao'],
+        file_get_contents($foto['tmp_name'])
+    );
+    foreach($epis as $index => $epi) {
+        if($estado_epis[$epi] == 'reposicao') {
+            $reposicao_controller->criarReposicao(
+                $index,
+                $funcionario['id_funcionario']
+            );
+        }
+    }
+    header('Location: resultado_inspecao.php');
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -32,18 +81,21 @@
         <main>
             <div class="containerSuperior">
                 <h2>Inspeção de EPI – Diário</h2>
-                <h4><strong>João</strong> | Pedreiro | Setor 3</h4>
+                <h4><strong><?= htmlspecialchars($funcionario['nome_funcionario'])?></strong> | <?= htmlspecialchars($_SESSION['funcao'])?> | <?= htmlspecialchars($_SESSION['setor'])?></h4>
             </div>
-            <form>
+            <form method="POST" enctype=multipart/form-data>
                 <div class="container">
                     <h3 class="margin">EPIs Obrigatórios da Função</h3>
-                    <div class="input" onclick="event.stopPropagation()">
-                        <input type="checkbox" name="Capacete com jugular" id="Capacete com jugular">
-                        <label for="Capacete com jugular">Capacete com jugular <span>*</span></label>
-                        <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
-                    </div>
+                    
+                    <?php foreach($epis as $index => $epi):?>
+                        <div class="input" onclick="event.stopPropagation()">
+                            <input class="checkboxes" type="checkbox" data-check="<?= 'epi'.strval($index);?>" name="<?= htmlspecialchars($epi)?>" id="<?= htmlspecialchars($epi)?>">
+                            <label for="<?= htmlspecialchars($epi)?>"><?= htmlspecialchars($epi)?> <span>*</span></label>
+                            <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
+                        </div>
+                    <?php endforeach;?>
 
-                    <div class="input" onclick="event.stopPropagation()">
+                    <!-- <div class="input" onclick="event.stopPropagation()">
                         <input type="checkbox" name="Óculos anti-impacto" id="Óculos anti-impacto">
                         <label for="Óculos anti-impacto">Óculos anti-impacto <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
@@ -83,11 +135,34 @@
                         <input type="checkbox" name="Cinturão (altura)" id="Cinturão (altura)">
                         <label for="Cinturão (altura)">Cinturão (altura) <span>*</span></label>
                         <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="container">
                     <h3>Condição dos EPIs</h3>
                     <h4 class="condicoes">Marque as condições encontradas (pode marcar mais de uma)</h4>
+                    <?php foreach($epis as $index => $epi):?>
+                        <div class="item <?= 'epi'.strval($index)?>">
+                            <p><?= htmlspecialchars($epi)?></p>
+                            <div class="organizer">
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="bom_estado" class="bom_estado">
+                                    <label for="Bom estado">Bom estado</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="desgastado" class="desgastado">
+                                    <label for="Desgastado">Desgastado</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="vencido" class="vencido">
+                                    <label for="Vencido (CA)">Vencido (CA)</label>
+                                </div>
+                                <div class="input2" onclick="event.stopPropagation()">
+                                    <input type="radio" name="<?= str_replace(' ', '', htmlspecialchars($epi))?>estado" value="reposicao" class="reposicao">
+                                    <label for="Solicitar reposição">Solicitar reposição</label>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
                     <div class="item">
                         <p>Capacete com Jugular</p>
                         <div class="organizer">
@@ -137,9 +212,11 @@
                         </button>
                         <button type="button" class="cancel">Cancelar</button>
                     </div>
+                    <input type="file" class="foto_inspecao" name="foto_inspecao" accept="image/*" style="display: none;">
                 </div>
                 <input type="hidden" id="assinaturaColaborador" name="assinatura_colaborador">
                 <input type="hidden" id="assinaturaSupervisor" name="assinatura_supervisor">
+                <input type="hidden" id="qtd_bons" name="qtd_bons">
             </form>
         </main>
         <script src="../templates/assets/js/salvar_inspecao.js"></script>
