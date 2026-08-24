@@ -4,7 +4,7 @@
 // Ajuste API_URL caso a posição do arquivo no projeto seja diferente.
 // ==========================================================================
 
-const API_URL = '../View/ficharisco-api.php';
+const API_URL = '../View/ficha-risco-api.php';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -135,20 +135,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ------------------------------------------------------------------
-  // NORMAS REGULAMENTADORAS (NR) — popula o select do formulário
+  // NORMAS REGULAMENTADORAS (NR) — popula os selects do formulário de
+  // criação e do modal de edição
   // ------------------------------------------------------------------
   const activityNrSelect = document.getElementById('activityNr');
+  let nrList = [];
 
   async function carregarNRs() {
-    let nrs;
     try {
-      nrs = await apiRequest('listarNR');
+      nrList = await apiRequest('listarNR');
     } catch (err) {
       alert(err.message);
       return;
     }
     activityNrSelect.innerHTML = '<option value="">Selecione a NR...</option>' +
-      nrs.map(nr => `<option value="${nr.id_nr}">${escapeHTML(nr.nome_nr)}</option>`).join('');
+      nrList.map(nr => `<option value="${nr.id_nr}">${escapeHTML(nr.nome_nr)}</option>`).join('');
+  }
+
+  function buildNrOptions(selectedId) {
+    return nrList.map(nr =>
+      `<option value="${nr.id_nr}" ${Number(nr.id_nr) === Number(selectedId) ? 'selected' : ''}>${escapeHTML(nr.nome_nr)}</option>`
+    ).join('');
   }
 
   // ------------------------------------------------------------------
@@ -196,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       idAtividade: ficha.id_atividade,
       originalName: ficha.nome,
       name: ficha.nome,
+      idNr: ficha.id_nr,
       riscos: ficha.riscos.map(mapRiscoFromServer),
       medidasColetivas: [...ficha.medidasColetivas],
       procedimentos: [...ficha.procedimentos]
@@ -302,6 +310,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <label for="editActivityName">Nome da Atividade</label>
         <input type="text" id="editActivityName" value="${escapeHTML(editState.name)}">
       </div>
+      <div class="field">
+        <label for="editActivityNr">Norma Regulamentadora (NR)</label>
+        <select id="editActivityNr">
+          <option value="">Selecione a NR...</option>
+          ${buildNrOptions(editState.idNr)}
+        </select>
+      </div>
 
       <hr class="edit-divider">
       <h3 class="edit-section-title">Riscos Identificados</h3>
@@ -345,6 +360,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('editActivityName');
     nameInput.addEventListener('input', () => {
       editState.name = nameInput.value;
+    });
+
+    const nrSelect = document.getElementById('editActivityNr');
+    nrSelect.addEventListener('change', () => {
+      editState.idNr = nrSelect.value ? parseInt(nrSelect.value, 10) : null;
     });
 
     document.getElementById('btnAddEditRisk').addEventListener('click', () => {
@@ -470,6 +490,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    if (!editState.idNr) {
+      alert('Por favor, selecione a NR (Norma Regulamentadora) da atividade.');
+      return;
+    }
+
     const validRisks = editState.riscos.filter(r => r.description.trim());
     if (validRisks.length === 0) {
       alert('Adicione pelo menos um risco com a descrição preenchida.');
@@ -478,6 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const payload = {
       nomeAtividade: newName,
+      idNr: editState.idNr,
       riscos: validRisks.map(mapRiscoToPayload),
       medidasColetivas: editState.medidasColetivas,
       procedimentos: editState.procedimentos
