@@ -5,8 +5,8 @@ let streamCamera = null;
 let fotoCheckinBase64 = null;
 let arquivoCheckinFallback = null;
 
-const EPI_API = '../api/epi-api.php';
-const INSPECAO_API = '../api/inspecao-api.php';
+const EPI_API = '../View/epi-api.php';
+const INSPECAO_API = '../View/inspecao-api.php';
 
 // ===== CARREGAMENTO INICIAL =====
 
@@ -26,10 +26,29 @@ async function carregarEstoque() {
   }
 }
 
+function calcularStatusFront(qtd, minimo) {
+  if (isNaN(qtd) || isNaN(minimo) || minimo <= 0) return 'ok';
+  if (qtd >= minimo) return 'ok';
+  if (qtd >= minimo * 0.5) return 'alert';
+  return 'critical';
+}
+
+function atualizarStatusPreview() {
+  const qtd = parseInt(document.getElementById('epiQuantidade').value);
+  const minimo = parseInt(document.getElementById('epiMinimo').value);
+  const status = calcularStatusFront(qtd, minimo);
+  const badge = document.getElementById('epiStatusBadge');
+  badge.className = `badge ${status}`;
+  badge.textContent = textoDoStatus(status);
+}
+
 function criarLinhaEstoque(epi) {
   const div = document.createElement('div');
   div.className = `stock-row status-${epi.status_epi}`;
   div.setAttribute('data-id', epi.id_epi);
+  div.setAttribute('data-descricao', epi.descricao_epi || '');
+  div.setAttribute('data-funcao', epi.funcao_epi || '');
+  div.setAttribute('data-ca', epi.ca_epi || '');
   div.innerHTML = `
     <span class="stock-icon ${corDoStatus(epi.status_epi)}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="18" width="18" height="3" rx="1"></rect><line x1="12" y1="4" x2="12" y2="7"></line></svg>
@@ -72,9 +91,28 @@ function abrirModalNovoEPI() {
   document.getElementById('modalEpiTitle').textContent = 'Novo EPI';
   document.getElementById('epiId').value = '';
   document.getElementById('epiNome').value = '';
+  document.getElementById('epiDescricao').value = '';
+  document.getElementById('epiFuncao').value = '';
+  document.getElementById('epiCa').value = '';
   document.getElementById('epiQuantidade').value = '';
   document.getElementById('epiMinimo').value = '';
   document.getElementById('epiStatus').value = 'ok';
+  document.getElementById('btnExcluirModal').style.display = 'none';
+  document.getElementById('modalEpi').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function abrirModalNovoEPI() {
+  editandoId = null;
+  document.getElementById('modalEpiTitle').textContent = 'Novo EPI';
+  document.getElementById('epiId').value = '';
+  document.getElementById('epiNome').value = '';
+  document.getElementById('epiDescricao').value = '';
+  document.getElementById('epiFuncao').value = '';
+  document.getElementById('epiCa').value = '';
+  document.getElementById('epiQuantidade').value = '';
+  document.getElementById('epiMinimo').value = '';
+  atualizarStatusPreview();
   document.getElementById('btnExcluirModal').style.display = 'none';
   document.getElementById('modalEpi').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -89,14 +127,16 @@ function editarEPI(id) {
   const qtdText = row.querySelector('.stock-qty').textContent;
   const disponivel = parseInt(qtdText.match(/Disponível:\s*(\d+)/)[1]);
   const minimo = parseInt(qtdText.match(/Mínimo:\s*(\d+)/)[1]);
-  const statusClass = row.className.match(/status-(\w+)/)[1];
 
   document.getElementById('modalEpiTitle').textContent = 'Editar EPI';
   document.getElementById('epiId').value = id;
   document.getElementById('epiNome').value = nome;
+  document.getElementById('epiDescricao').value = row.getAttribute('data-descricao') || '';
+  document.getElementById('epiFuncao').value = row.getAttribute('data-funcao') || '';
+  document.getElementById('epiCa').value = row.getAttribute('data-ca') || '';
   document.getElementById('epiQuantidade').value = disponivel;
   document.getElementById('epiMinimo').value = minimo;
-  document.getElementById('epiStatus').value = statusClass;
+  atualizarStatusPreview();
   document.getElementById('btnExcluirModal').style.display = 'block';
   document.getElementById('modalEpi').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -112,9 +152,11 @@ async function salvarEPI(event) {
   event.preventDefault();
 
   const nome = document.getElementById('epiNome').value.trim();
+  const descricao = document.getElementById('epiDescricao').value.trim();
+  const funcao = document.getElementById('epiFuncao').value.trim();
+  const ca = document.getElementById('epiCa').value.trim();
   const quantidade = parseInt(document.getElementById('epiQuantidade').value);
   const minimo = parseInt(document.getElementById('epiMinimo').value);
-  const status = document.getElementById('epiStatus').value;
   const id = document.getElementById('epiId').value;
 
   if (!nome || isNaN(quantidade) || isNaN(minimo)) {
@@ -122,7 +164,14 @@ async function salvarEPI(event) {
     return;
   }
 
-  const payload = { nome_epi: nome, qtd_epi: quantidade, qtd_minima_epi: minimo, status_epi: status };
+  const payload = {
+    nome_epi: nome,
+    descricao_epi: descricao,
+    funcao_epi: funcao,
+    ca_epi: ca,
+    qtd_epi: quantidade,
+    qtd_minima_epi: minimo,
+  };
 
   try {
     const resposta = await fetch(`${EPI_API}?acao=${id ? 'atualizar' : 'criar'}`, {

@@ -494,21 +494,34 @@
 
         <div class="form-group">
           <label class="form-label" for="epiQuantidade">Quantidade Disponível</label>
-          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0" required>
+          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0"  required oninput="atualizarStatusPreview()">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiMinimo">Quantidade Mínima</label>
-          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0" required>
+          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0"  required oninput="atualizarStatusPreview()">
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="epiStatus">Status</label>
-          <select id="epiStatus" class="form-select">
-            <option value="ok">OK</option>
-            <option value="alert">Alerta</option>
-            <option value="critical">Crítico</option>
-          </select>
+          <label class="form-label" for="epiDescricao">Descrição</label>
+          <textarea id="epiDescricao" class="form-input" placeholder="Ex: Proteção da cabeça contra impactos" rows="2"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="epiFuncao">Função</label>
+          <input type="text" id="epiFuncao" class="form-input" placeholder="Ex: Proteção da cabeça">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="epiCa">CA (Certificado de Aprovação)</label>
+          <input type="text" id="epiCa" class="form-input" placeholder="Ex: CA 31.469">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <div class="status-preview">
+            <span class="badge ok" id="epiStatusBadge">OK</span>
+          </div>
         </div>
 
         <div class="modal-actions">
