@@ -2,14 +2,18 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/InspecaoController.php';
+require_once __DIR__ . '/../Controller/ReposicaoController.php';
 
 use Controller\InspecaoController;
+use Controller\ReposicaoController;
 
 $inspecao_controller = new InspecaoController();
+$reposicao_controller = new ReposicaoController();
 
 session_start();
 
 $epis = $_SESSION['epis'];
+
 $funcionario = $_SESSION['funcionario'];
 
 $estado_epis = [];
@@ -30,6 +34,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['id_funcao'],
         file_get_contents($foto['tmp_name'])
     );
+    foreach($epis as $index => $epi) {
+        if($estado_epis[$epi] == 'reposicao') {
+            $reposicao_controller->criarReposicao(
+                $index,
+                $funcionario['id_funcionario']
+            );
+        }
+    }
     header('Location: resultado_inspecao.php');
     exit;
 }

@@ -25,12 +25,19 @@ $funcao = $funcaoController->selecionarFuncaoPorId($id_funcao);
 $funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
 
 $epis = explode(', ', $funcao['nome_epi']);
+$id_epis = explode(', ', $funcao['id_epi']);
+
+$epis_array = [];
+
+foreach($epis as $index => $epi) {
+    $epis_array[$id_epis[$index]] = $epi;
+}
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(!empty($_POST['nome']) && !empty($_POST['setor'])) {
         $_SESSION['funcionario'] = $funcionarioController->selecionarFuncionarioPorId($_POST['nome']);
         $_SESSION['setor'] = $_POST['setor'];
-        $_SESSION['epis'] = $epis;
+        $_SESSION['epis'] = $epis_array;
         $_SESSION['funcao'] = $funcao['nome_funcao'];
         $_SESSION['id_funcao'] = $id_funcao;
         header('Location: salvar_inspecao.php');

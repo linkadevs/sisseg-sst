@@ -45,7 +45,8 @@ class Funcao {
         try {
             $sql = "SELECT 
             f.nome_funcao,
-            GROUP_CONCAT(e.nome_epi SEPARATOR ', ') AS nome_epi
+            GROUP_CONCAT(e.nome_epi SEPARATOR ', ') AS nome_epi,
+            GROUP_CONCAT(e.id_epi SEPARATOR ', ') AS id_epi
             FROM funcao f 
             LEFT JOIN epi_funcao ef ON ef.id_funcao_fk = f.id_funcao
             LEFT JOIN epi e ON e.id_epi = ef.id_epi_fk
