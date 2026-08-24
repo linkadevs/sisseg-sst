@@ -1,3 +1,12 @@
+<?php
+
+session_start();
+
+$_SESSION['id_funcionario'] = 6;
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 

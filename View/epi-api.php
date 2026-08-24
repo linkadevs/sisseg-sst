@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 
-require_once __DIR__ . '/Controller/EpiController.php';
+require_once __DIR__ . '/../Controller/EpiController.php';
 
 use Controller\EpiController;
 

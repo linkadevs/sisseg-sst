@@ -3,7 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 
-require_once __DIR__ . '/Controller/InspecaoController.php';
+require_once __DIR__ . '/../Controller/InspecaoController.php';
 
 use Controller\InspecaoController;
 
