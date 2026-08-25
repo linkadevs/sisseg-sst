@@ -222,7 +222,7 @@ class Funcionario {
         }
     }
 
-    public function updateFuncionario($id_funcionario, $nome_funcionario, $cpf_funcionario, $setor_funcionario, $cargo_funcionario){
+    public function updateFuncionario($id_funcionario, $nome_funcionario, $cpf_funcionario, $setor_funcionario, $cargo_funcionario) :bool {
         try{
             $sql = 'UPDATE funcionario SET nome_funcionario = :nome_funcionario, cpf_funcionario = :cpf_funcionario, setor_funcionario = :setor_funcionario, cargo_funcionario = :cargo_funcionario WHERE id_funcionario = :id_funcionario';
 
