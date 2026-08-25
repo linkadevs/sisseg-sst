@@ -66,6 +66,7 @@ main {
     border-radius: .5rem;
     font-size: .8rem;
     font-weight: 700;
+    letter-spacing: .1rem;
 }
 
 .dados_resultado p {
@@ -202,7 +203,7 @@ main {
     width: 0%;
     height: 100%;
     border-radius: 99.9rem;
-    background: #DC2626;
+    background: #16A34A;
     transition: .3s;
 }
 
@@ -264,7 +265,6 @@ main {
 ========================= */
 
 .container_parcialmente_conforme {
-    display: none;
     background: #FFF8E8;
     border: 1px solid #F59E0B;
     border-radius: 1rem;
@@ -279,6 +279,7 @@ main {
     border-radius: .5rem;
     font-size: .8rem;
     font-weight: 700;
+    letter-spacing: .1rem;
 }
 
 .titulo_parcialmente_conforme {
@@ -861,6 +862,7 @@ main {
     border-radius: .5rem;
     font-size: .8rem;
     font-weight: 700;
+    letter-spacing: .1rem;
 }
 
 
@@ -870,7 +872,6 @@ main {
 ========================= */
 
 .container_conforme_wrapper {
-    display: none;
     width: 100%;
     margin: 0 auto 1.8rem auto;
 }

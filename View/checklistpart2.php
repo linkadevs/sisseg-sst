@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (!isset($_SESSION["checagem"])) {
+    header("Location: checklistpart1.php");
+    exit;
+}
+
+$dados = $_SESSION["checagem"];
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,22 +29,27 @@
 
     <main>
 
-        <form id="formChecklist" method="POST">
-
+        <form id="formChecklist" method="POST" action="../Controller/ChecklistController.php?acao=salvar">
             <div class="container_topo">
                 <div class="dados">
                     <h1>Checklist em Andamento</h1>
                     <p>
                         Responsável:
-                        <strong id="responsavel">---</strong>
+                        <strong
+                            id="responsavel"><?= htmlspecialchars($dados["responsavel"], ENT_QUOTES, "UTF-8") ?></strong>
                     </p>
 
                     <p>
                         Turno:
-                        <strong id="turno">---</strong>
+                        <strong id="turno"><?= htmlspecialchars($dados["turno"], ENT_QUOTES, "UTF-8"); ?></strong>
                     </p>
 
-                    <p>Data: <strong id="data">--/--/----</strong></p>
+                    <p>
+                        Data e Hora:
+
+                        <strong id="data"></strong>
+
+                    </p>
                 </div>
 
                 <div class="progresso">
@@ -149,13 +164,13 @@
                 </label>
 
                 <label class="item_check">
-                    <input type="checkbox" name="maquinas[]" value="Guincho/guindaste inspecionado">
-                    <span>Guincho/guindaste inspecionado</span>
+                    <input type="checkbox" name="maquinas[]" value="Guincho/Guindaste inspecionado">
+                    <span>Guincho/Guindaste inspecionado</span>
                 </label>
 
                 <label class="item_check">
-                    <input type="checkbox" name="maquinas[]" value="Retroescavadeira/empilhadeira OK">
-                    <span>Retroescavadeira/empilhadeira OK</span>
+                    <input type="checkbox" name="maquinas[]" value="Retroescavadeira/Empilhadeira OK">
+                    <span>Retroescavadeira/Empilhadeira OK</span>
                 </label>
 
             </div>
@@ -212,8 +227,8 @@
                         value="Cinturões revisados"><span>Cinturões revisados</span></label>
                 <label class="item_check"><input type="checkbox" name="nr35[]"
                         value="Ancoragens certificadas"><span>Ancoragens certificadas</span></label>
-                <label class="item_check"><input type="checkbox" name="nr35[]" value="PT emitida"><span>PT emitida
-                        (Quando necessário)</span></label>
+                <label class="item_check"><input type="checkbox" name="nr35[]"
+                        value="PT emitida (quando necessário)"><span>PT emitida (quando necessário)</span></label>
 
             </div>
 
@@ -366,7 +381,7 @@
 
             <div class="btn_finalizar">
 
-                <button class="btn_finalizar_checklist" type="button" id="btnFinalizarChecklist">
+                <button class="btn_finalizar_checklist" type="submit" id="btnFinalizarChecklist">
 
                     <img class="icone_finalizar" src="../templates/assets/img/finalizarChecklist.png" alt="Finalizar">
 
@@ -381,7 +396,33 @@
         </form>
 
     </main>
+    <script>
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+        const agora = new Date().toLocaleString('pt-BR', { 
+            timeZone: userTimeZone,
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+
+        document.getElementById('data').textContent = `${agora}`;
+
+        // Detecta a timezone do navegador (ex: "America/Bahia" ou "America/Sao_Paulo")
+        const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Verifica se o cookie já existe ou se precisa atualizar
+        if (!document.cookie.includes('user_tz=' + encodeURIComponent(userTz))) {
+        // Salva no cookie por 7 dias
+        document.cookie = `user_tz=${encodeURIComponent(userTz)}; max-age=${7 * 86400}; path=/; SameSite=Lax`;
+        
+        // Recarrega a página apenas na primeira vez para o PHP pegar o cookie imediatamente
+        location.reload();
+        }
+    </script>
     <script src="../templates/assets/js/checklistpart2.js"></script>
 
 </body>

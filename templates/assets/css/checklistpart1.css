@@ -125,7 +125,7 @@ main {
 form {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
 }
 
 .input_nome,
@@ -475,6 +475,12 @@ option {
     main {
         max-width: 42rem;
     }
+
+    .total_itens {
+    margin-top: 1.75rem;
+    font-size: 1rem;
+    color: rgb(100, 116, 139);
+}
 
     .container_diario,
     .container_dados {

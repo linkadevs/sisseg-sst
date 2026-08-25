@@ -125,6 +125,10 @@ main {
     width: fit-content;
 }
 
+#btnLimpar {
+    background-color: #dd1925 !important;
+}
+
 .search_div button figure img {
     width: 2rem;
 }
@@ -169,7 +173,7 @@ main {
     gap: 1rem;
 }
 
-.nao_conforme {
+.não_conforme {
     color: #ffffff;
     background-color: #dd1925;
 }
@@ -234,7 +238,7 @@ li span {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-form {
+.form{
     position: fixed;
     left: 50%;
     top: 50%;
@@ -249,14 +253,14 @@ form {
     border-radius: 1rem;
 }
 
-form figure img {
+.formfigure img {
     position: absolute;
     left: 2rem;
     top: 2rem;
     width: 2rem;
 }
 
-form h2 {
+.formh2 {
     width: 100%;
     text-align: center;
     font-size: 2rem;
@@ -290,7 +294,7 @@ form h2 {
     overflow-y: scroll;
 }
 
-form button {
+.formbutton {
     font-size: 1.4rem;
     font-weight: 500;
     box-shadow: 0 .1rem .4rem 0 rgba(0, 0, 0, 0.4);
@@ -416,7 +420,7 @@ form button {
         font-size: 1.1rem;
     }
 
-    form {
+    .form{
         width: calc(100vw - 3rem);
         max-width: 40rem;
     }
@@ -424,6 +428,10 @@ form button {
     .status_header {
         font-size: 1.2rem;
         font-weight: 800;
+    }
+
+    .nenhum_checklist {
+        font-size: 1.3rem;
     }
 }
 
@@ -495,6 +503,10 @@ form button {
         max-width: 34rem;
     }
 
+    .nenhum_checklist {
+        font-size: 1.2rem;
+    }
+
     .search_div {
         flex-direction: column;
         gap: 1rem;
@@ -525,7 +537,7 @@ form button {
         font-size: 1rem;
     }
 
-    form {
+    .form{
         width: calc(100vw - 2rem);
         padding: 1.5rem;
     }
@@ -557,6 +569,9 @@ form button {
 
 
 @media (max-width:400px) {
+    .nenhum_checklist {
+        font-size: 1rem;
+    }
 
     .search_div button,
     .buttons button {
@@ -613,7 +628,7 @@ form button {
         width: 1.6rem;
     }
 
-    form {
+    .form{
         width: calc(100vw - 1.5rem);
         padding: 1.2rem;
     }
