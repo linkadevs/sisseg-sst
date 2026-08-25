@@ -1,3 +1,42 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/AtividadeController.php';
+
+use Controller\AtividadeController;
+
+$atividadeController = new AtividadeController();
+
+$atividades = $atividadeController->selecionarTodasAsAtividades();
+
+$icons = [
+    'chave_inglesa' => '🔧️',
+    'guindaste' => '🏗️',
+    'ferramentas' => '🛠️',
+    'alta_tensao' => '⚡️',
+    'engrenagem' => '⚙️',
+    'fogo' => '🔥',
+    'escada' => '🪜',
+    'trator' => '🚜',
+    'caixa_pacote' => '📦',
+    'caminhao' => '🚛',
+    'deposito_galpao' => '🏬',
+    'etiqueta' => '🏷️',
+    'colete_seguranca' => '🦺',
+    'bota_protecao' => '🥾',
+    'oculos_protecao' => '🥽',
+    'protetor_auricular' => '🎧',
+    'luvas' => '🧤',
+    'mascara_protecao' => '😷',
+    'corda_no' => '🪢',
+    'capacete_obras' => '👷‍♀️',
+    'capacete_obras_sol' => '👷‍♂️'
+];
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -388,84 +427,20 @@
     <section>
       <h2 class="section-title">Check-in por Atividade</h2>
       <div class="activity-grid">
-
-        <div class="activity-card">
-          <div class="activity-emoji">🪜</div>
-          <p class="activity-name">Trabalho em Altura</p>
-          <p class="activity-count">5 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('altura')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🧱</div>
-          <p class="activity-name">Alvenaria</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('alvenaria')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🪚</div>
-          <p class="activity-name">Carpintaria</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('carpintaria')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🎨</div>
-          <p class="activity-name">Pintura</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('pintura')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🔥</div>
-          <p class="activity-name">Soldagem</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('soldagem')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">⚡</div>
-          <p class="activity-name">Eletricidade</p>
-          <p class="activity-count">7 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('eletricidade')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🔒</div>
-          <p class="activity-name">Espaço Confinado</p>
-          <p class="activity-count">8 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('confinado')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🔨</div>
-          <p class="activity-name">Demolição</p>
-          <p class="activity-count">7 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('demolicao')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🔩</div>
-          <p class="activity-name">Armador de Ferro</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('armador')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🏗️</div>
-          <p class="activity-name">Concretagem</p>
-          <p class="activity-count">6 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('concretagem')">Ver EPIs</button>
-        </div>
-
-        <div class="activity-card">
-          <div class="activity-emoji">🚜</div>
-          <p class="activity-name">Operador de Máquinas</p>
-          <p class="activity-count">5 EPIs obrigatórios</p>
-          <button class="btn-full" onclick="verEpis('operador')">Ver EPIs</button>
-        </div>
-
+        <?php foreach($atividades as $atividade):?>
+          <div class="activity-card">
+            <div class="activity-emoji"><?= $icons[htmlspecialchars($atividade['icone_atividade'])]?></div>
+            <p class="activity-name"><?= htmlspecialchars($atividade['nome_atividade'])?></p>
+            <p class="activity-count"><?= $atividade['epis']?> EPIs obrigatórios</p>
+            <button class="btn-full" onclick="verEpis(
+              <?= htmlspecialchars($atividade['id_atividade'])?>,
+              '<?= htmlspecialchars($atividade['nome_atividade'])?>',
+              '<?= htmlspecialchars($atividade['nome_nr'])?>',
+              <?= $atividade['epis']?>,
+              <?= $atividade['id_nr_fk']?>
+            )">Ver EPIs</button>
+          </div>
+        <?php endforeach;?>
       </div>
     </section>
 
@@ -494,21 +469,34 @@
 
         <div class="form-group">
           <label class="form-label" for="epiQuantidade">Quantidade Disponível</label>
-          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0" required>
+          <input type="number" id="epiQuantidade" class="form-input" placeholder="Ex: 20" min="0"  required oninput="atualizarStatusPreview()">
         </div>
 
         <div class="form-group">
           <label class="form-label" for="epiMinimo">Quantidade Mínima</label>
-          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0" required>
+          <input type="number" id="epiMinimo" class="form-input" placeholder="Ex: 10" min="0"  required oninput="atualizarStatusPreview()">
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="epiStatus">Status</label>
-          <select id="epiStatus" class="form-select">
-            <option value="ok">OK</option>
-            <option value="alert">Alerta</option>
-            <option value="critical">Crítico</option>
-          </select>
+          <label class="form-label" for="epiDescricao">Descrição</label>
+          <textarea id="epiDescricao" class="form-input" placeholder="Ex: Proteção da cabeça contra impactos" rows="2"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="epiFuncao">Função</label>
+          <input type="text" id="epiFuncao" class="form-input" placeholder="Ex: Proteção da cabeça">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="epiCa">CA (Certificado de Aprovação)</label>
+          <input type="text" id="epiCa" class="form-input" placeholder="Ex: CA 31.469">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <div class="status-preview">
+            <span class="badge ok" id="epiStatusBadge">OK</span>
+          </div>
         </div>
 
         <div class="modal-actions">
@@ -578,6 +566,41 @@
     </section>
 
   </div>
+
+  <!-- Inserir logo após o </div> de fechamento do #modalEpi, antes da view-detail -->
+<div class="modal-overlay" id="modalCheckin">
+  <div class="modal">
+    <button class="modal-back" onclick="fecharModalCheckin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Voltar
+    </button>
+    <h2 class="modal-title">Check-in com Foto</h2>
+
+    <video id="checkinVideo" autoplay playsinline
+      style="width:100%;border-radius:8px;display:none;margin-bottom:12px;"></video>
+    <canvas id="checkinCanvas" style="display:none;"></canvas>
+    <img id="checkinPreview" style="width:100%;border-radius:8px;display:none;margin-bottom:12px;"
+      alt="Foto do check-in">
+
+    <div class="form-group" id="checkinUploadFallback" style="display:none;">
+      <label class="form-label" for="checkinFotoInput">A câmera não está disponível — selecione uma foto</label>
+      <input type="file" id="checkinFotoInput" class="form-input" accept="image/jpeg,image/png,image/webp">
+    </div>
+
+    <p id="checkinErro" style="color:#dc2626;display:none;margin-top:8px;"></p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-outline" id="btnCapturarFoto" onclick="capturarFotoCheckin()">Capturar
+        Foto</button>
+      <button type="button" class="btn-save" id="btnConfirmarCheckin" onclick="confirmarCheckin()" disabled>Confirmar
+        Check-in</button>
+    </div>
+  </div>
+</div>
 
   <script src="../templates/assets/js/modulo-gestao-epis.js"></script>
 

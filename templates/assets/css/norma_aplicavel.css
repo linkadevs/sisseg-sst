@@ -14,7 +14,6 @@ body {
     flex-direction: column;
     gap: 2rem;
     width: 100%;
-    max-width: 800px; 
 }
 
 main {
@@ -71,8 +70,8 @@ main {
     background-color: #FFFFFF;
     border-radius: 1.3rem;
     box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.04);
-    padding: 4rem 3rem;
-    width: 55%;
+    padding: 8rem 3rem;
+    width: 35%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,6 +104,13 @@ main {
 /* ============================================ */
 /* RESPONSIVIDADE                               */
 /* ============================================ */
+
+@media (max-width: 1024px) {
+        .card-detalhe {
+        width: 50%;
+    }
+
+}
 
 @media (max-width: 768px) {
     body {

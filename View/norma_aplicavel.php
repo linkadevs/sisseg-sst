@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once __DIR__ . '/../Controller/ModuloVerificacaoeEpiController.php';
+$id_norma = $_SESSION['idnr_atividade_modulo'] ?? '';
+$conexao = new Controller\ModuloVerificacaoeEpiController;
+$informacao = $conexao->exibirNorma($id_norma);
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,12 +28,10 @@
 
         <main>
             <div class="card-detalhe">
-                <h2>NR - 35</h2>
-                
+                <h2> <?php  echo htmlspecialchars($informacao['nome_nr'] ?? 'Não encontrada')?></h2>
+
                 <div class="texto-explicativo">
-                    <p>Estabelece os requisitos mínimos de proteção para trabalhos realizados acima de 2 metros do nível inferior, onde haja risco de queda. Ela abrange planejamento, organização e execução, visando a segurança dos trabalhadores, incluindo capacitação obrigatória, Análise de Risco (AR) e Permissão de Trabalho (PT).</p>
-                    
-                    <p>A norma visa reduzir o alto índice de acidentes e quedas, que representam cerca de das ocorrências de trabalho no país.</p>
+                    <p><?php echo htmlspecialchars($informacao['descricao_nr'] ?? 'Não encontrada')?></p>
                 </div>
             </div>
         </main>
