@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+require_once __DIR__ . '/../Controller/PrincipalAdminController.php';
+
+use Controller\PrincipalAdminController;
+
+$controller = new PrincipalAdminController();
+
+$idAdm = $_SESSION['id_adm'];
+
+$admin = $controller->buscarAdmin($idAdm);
+
+$totalTreinamentos = $controller->totalTreinamentos();
+
+$diasSemAcidentes = $controller->diasSemIncidentes();
+
+$incidentes = $controller->incidentesqtd();
+
+$notificacoes = $controller->notificacoes();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -9,11 +31,13 @@
 </head>
 
 <body>
+
     <main>
         <div class="container">
 
             <div class="linha1">
                 <div class="bloco1">
+
                     <div class="bloco1-foto">
                         <figure>
                             <img src="../templates/assets/img/empresa.png" alt="empresa">
@@ -24,6 +48,7 @@
                         <p class="texto-titulo">SISSEG SST</p>
                         <p class="texto-subtitulo">Sistema de Segurança do Trabalho</p>
                     </div>
+
                 </div>
 
                 <div class="bloco2">
@@ -33,23 +58,33 @@
             </div>
 
             <div class="linha2">
+
                 <div class="bloco3">
                     <p class="titulo">Bem-vindo(a)</p>
-                    <p class="subtitulo">João Silva</p>
+
+                    <p class="subtitulo">
+                        <?= htmlspecialchars($admin['nome_adm']) ?>
+                    </p>
+
                     <a href="#" class="perfil-link">
                         Ver perfil
                     </a>
                 </div>
 
                 <div class="bloco7">
-                    <p class="titulo">Visualize e Gerencie os <br> funciónarios desse setor</p>
+                    <p class="titulo">
+                        Visualize e Gerencie os <br> funcionários desse setor
+                    </p>
+
                     <a href="gerenciamento_dos_funcionarios.php" class="funcionarios-link">
                         Funcionários
                     </a>
                 </div>
+
             </div>
 
             <div class="linha3">
+
                 <div class="bloco4">
                     <p class="titulo">Sistema de Gestão SST</p>
                     <p class="subtitulo">Conforme ISO 45001:2018</p>
@@ -64,6 +99,7 @@
                     <p class="titulo">Compromisso</p>
                     <p class="subtitulo">Zero Acidentes | Melhoria Contínua</p>
                 </div>
+
             </div>
 
         </div>
@@ -72,116 +108,139 @@
     <section class="informacoes">
 
         <div class="card-treinamento">
+
             <div class="card-superior">
-                <p class="card-titulo">Treinamento</p>
+
+                <p class="card-titulo">Total de Treinamento</p>
+
                 <div class="card-subtitulo">
-                    <p class="card-infor">4/18</p>
+                    <p class="card-infor">
+                        <?= $totalTreinamentos ?>
+                    </p>
                 </div>
+
             </div>
-            <div class="card-inferior">
-                <div class="barra-progresso">
-                    <div class="barra-preenchida"></div>
-                </div>
-                <p class="card-treinamento-msg">
-                    22% concluídos
-                </p>
-            </div>
+
+    
+
         </div>
 
         <div class="card-acidentes">
+
             <div class="card-superior">
-                <p class="card-titulo">Dias sem Acidentes</p>
+
+                <p class="card-titulo">Dias sem Incidentes</p>
+
                 <div class="card-subtitulo">
+
                     <figure>
                         <img src="../templates/assets/img/relogio.png" alt="sem acidentes">
                     </figure>
-                    <p class="card-infor">45</p>
+
+                    <p class="card-infor">
+                        <?= $diasSemAcidentes ?>
+                    </p>
+
                 </div>
+
             </div>
+
             <div class="card-inferior">
                 <p class="card-acidentes-msg">
                     Excelente!
                 </p>
             </div>
+
         </div>
 
-        <div class="card-epis">
-            <div class="card-superior">
-                <p class="card-titulo">Conformidade EPIs</p>
-                <div class="card-subtitulo">
-                    <figure>
-                        <img src="../templates/assets/img/elevacao.png" alt="elevação">
-                    </figure>
-                    <p class="card-infor">96%</p>
-                </div>
-            </div>
-            <div class="card-inferior">
-                <p class="card-epis-msg">
-                    Meta: 95%
-                </p>
-            </div>
-        </div>
+       
 
         <div class="card-incidentes">
+
             <div class="card-superior">
-                <p class="card-titulo">Incidentes Abertos</p>
+
+                <p class="card-titulo"> Total de Incidentes </p>
+
                 <div class="card-subtitulo">
+
                     <figure>
                         <img src="../templates/assets/img/risco-vermelho.png" alt="risco vermelho">
                     </figure>
-                    <p class="card-infor">2</p>
+
+                    <p class="card-infor">
+                        <?= $incidentes ?>
+                    </p>
+
                 </div>
+
             </div>
+
             <div class="card-inferior">
                 <p class="card-incidentes-msg">
                     Requer atenção
                 </p>
             </div>
+
         </div>
+
     </section>
 
     <section class="alertas">
+
         <h2>Alertas e Notificações</h2>
 
-        <div class="notificacao">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-azul.png" alt="alerta">
-                </figure>
-                <p>Auditoria Interna</p>
-            </div>
-            <div class="notificacao-informacao">
-                <p>Info</p>
-            </div>
-        </div>
+        <?php if (!empty($notificacoes)): ?>
 
-        <div class="notificacao-aviso">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-azul.png" alt="alerta">
-                </figure>
-                <p>Auditoria Externa</p>
-            </div>
-            <div class="notificacao-informacao">
-                <p>Info</p>
-            </div>
-        </div>
+            <?php foreach ($notificacoes as $notificacao): ?>
 
-        <div class="notificacao">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-vermelho.png" alt="alerta">
-                </figure>
-                <p>2 incidentes aguardando análise</p>
+                <div class="notificacao">
+
+                    <div class="notificacao-infor">
+
+                        <figure>
+                            <img src="../templates/assets/img/<?= htmlspecialchars($notificacao['icone']) ?>" alt="Notificação">
+                        </figure>
+
+                        <p><?= htmlspecialchars($notificacao['mensagem']) ?></p>
+
+                    </div>
+
+                    <div class="<?= htmlspecialchars($notificacao['classe']) ?>">
+                        <p><?= htmlspecialchars($notificacao['label']) ?></p>
+                    </div>
+
+                </div>
+
+            <?php endforeach; ?>
+
+        <?php else: ?>
+
+            <div class="notificacao">
+
+                <div class="notificacao-infor">
+
+                    <figure>
+                        <img src="../templates/assets/img/risco-azul.png" alt="Notificação">
+                    </figure>
+
+                    <p>Nenhuma notificação disponível.</p>
+
+                </div>
+
+                <div class="notificacao-informacao">
+                    <p>Info</p>
+                </div>
+
             </div>
-            <div class="notificacao-atencao">
-                <p>Atenção</p>
-            </div>
-        </div>
+
+        <?php endif; ?>
+
     </section>
 
     <section class="modulos-do-sistema">
+
         <h1>Módulos do Sistema</h1>
+
         <div class="todos-os-modulos">
 
             <div class="modulo">
@@ -190,11 +249,15 @@
                         <img src="../templates/assets/img/marca-de-verificacao.png" alt="Verificação">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Verificação & EPIs</p>
                     <p class="modulo-descricao">Verificar aptidão e liberar trabalho</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+
+                <a href="verificacao_epi.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
             </div>
 
             <div class="modulo">
@@ -203,11 +266,15 @@
                         <img src="../templates/assets/img/treinamento.png" alt="Treinamento">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Treinamentos</p>
                     <p class="modulo-descricao">Cursos e certificações</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+
+                <a href="treinamentos.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
             </div>
 
             <div class="modulo">
@@ -216,24 +283,32 @@
                         <img src="../templates/assets/img/marca-de-inspecao.png" alt="Inspeção">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Inspeção de EPIs</p>
                     <p class="modulo-descricao">Inspeção diária por função</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+
+                <a href="inspecao_epi.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
             </div>
 
             <div class="modulo">
                 <div class="modulo-checklistnr18-img">
                     <figure>
-                        <img src="../templates/assets/img/verificacao_nr.png" alt="Verificação">
+                        <img src="../templates/assets/img/verificacao_nr.png" alt="Checklist">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Checklist NR-18</p>
                     <p class="modulo-descricao">Inspeção do canteiro de obras</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+
+                <a href="checklistpart1.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
             </div>
 
             <div class="modulo">
@@ -242,70 +317,87 @@
                         <img src="../templates/assets/img/capacete.png" alt="Capacete">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Gestão de EPIs</p>
                     <p class="modulo-descricao">Controle e Check-in diário</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
-            </div>
 
+                <a href="gestao_epi.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
+            </div>
 
             <div class="modulo">
                 <div class="modulo-pgr-img">
                     <figure>
-                        <img src="../templates/assets/img/pgr.png" alt="Pgr">
+                        <img src="../templates/assets/img/pgr.png" alt="PGR">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
-                    <p class="modulo-titulo">PGR/ Riscos</p>
+                    <p class="modulo-titulo">PGR / Riscos</p>
                     <p class="modulo-descricao">Programa de gerenciamento</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
-            </div>
 
+                <a href="pgr.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
+            </div>
 
             <div class="modulo">
                 <div class="modulo-atencao-img">
                     <figure>
-                        <img src="../templates/assets/img/atencao.png" alt="Atenção">
+                        <img src="../templates/assets/img/atencao.png" alt="Incidentes">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Incidentes</p>
                     <p class="modulo-descricao">Registro e Análise</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
-            </div>
 
+                <a href="incidentes.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
+            </div>
 
             <div class="modulo">
                 <div class="modulo-grafico-img">
                     <figure>
-                        <img src="../templates/assets/img/grafico-de-barras.png" alt="graficos">
+                        <img src="../templates/assets/img/grafico-de-barras.png" alt="Indicadores">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Indicadores</p>
                     <p class="modulo-descricao">Métricas e Gamificação</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
-            </div>
 
+                <a href="indicadores.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
+            </div>
 
             <div class="modulo">
                 <div class="modulo-configuracao-img">
                     <figure>
-                        <img src="../templates/assets/img/configuracao.png" alt="configuração">
+                        <img src="../templates/assets/img/configuracao.png" alt="Admin">
                     </figure>
                 </div>
+
                 <div class="modulo-textos">
                     <p class="modulo-titulo">Admin / Compliance</p>
                     <p class="modulo-descricao">Relatórios e auditoria</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+
+                <a href="admin.php">
+                    <button class="modulo-botao">Acessar</button>
+                </a>
             </div>
 
         </div>
+
     </section>
 
     <footer class="footer-simples">
