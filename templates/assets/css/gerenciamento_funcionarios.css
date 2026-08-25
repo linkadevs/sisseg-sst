@@ -139,9 +139,35 @@ body {
     white-space: nowrap;
 }
 
+.btn-perigo {
+    padding: 1.2rem 2.2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: none;
+    background-color: #DC2626;
+    color: #FFFFFF;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
 .btn-principal:hover {
     background-color: #2563EB;
     transform: translateY(-1px);
+}
+
+.btn-perigo:hover {
+    background-color: #b11d1d;
+    transform: translateY(-1px);
+}
+
+.botoes-grupo {
+    display: flex;
+    gap: 1rem;
 }
 
 /* Tabela Dinâmica */
@@ -318,6 +344,146 @@ body {
     box-shadow: 0 2px 6px rgba(220, 38, 38, 0.25);
 }
 
+
+/* ============================================
+   ESTILIZAÇÃO DO MODAL DE CADASTRO
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+    padding: 1rem;
+}
+
+/* Classe de ativação (Adicionar via JS) */
+.modal-overlay.ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 580px;
+    border-radius: 0.8rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    transform: translateY(-15px);
+    transition: transform 0.25s ease-in-out;
+}
+
+.modal-overlay.ativo .modal-card {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1.8rem 2rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.modal-header h2 {
+    font-size: 1.6rem;
+    color: #111827;
+    margin: 0;
+    font-weight: 700;
+}
+
+.btn-fechar-modal {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #9CA3AF;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.btn-fechar-modal:hover {
+    color: #111827;
+}
+
+.form-modal {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.form-linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-grupo label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-grupo input,
+.form-grupo select {
+    padding: 0.9rem 1rem;
+    font-size: 1.05rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.6rem;
+    outline: none;
+    background-color: #FFFFFF;
+    color: #1F2937;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.modal-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 0.8rem;
+}
+
+.btn-secundario {
+    padding: 0.9rem 1.6rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    border: 1px solid #D1D5DB;
+    background-color: #FFFFFF;
+    color: #374151;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-secundario:hover {
+    background-color: #F3F4F6;
+    color: #111827;
+}
+
+
 /* ============================================
    RESPONSIVIDADE COMPLETA
    ============================================ */
@@ -440,7 +606,7 @@ body {
         left: 1.2rem;
     }
 
-    .btn-principal {
+    .btn-principal, .btn-perigo {
         padding: 0.8rem 1.5rem;
         font-size: 1rem;
         justify-content: center;
@@ -497,6 +663,12 @@ body {
     }
 }
 
+@media (max-width: 640px) {
+    .form-linha {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Telas muito pequenas (celulares em modo retrato) */
 @media (max-width: 480px) {
     body {
@@ -537,7 +709,7 @@ body {
         left: 1rem;
     }
 
-    .btn-principal {
+    .btn-principal, .btn-perigo {
         padding: 0.6rem 1.2rem;
         font-size: 0.85rem;
         border-radius: 0.5rem;

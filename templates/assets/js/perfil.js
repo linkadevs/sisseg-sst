@@ -1,28 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-
-  const profileForm = document.getElementById('profileForm');
-  const allInputs = Array.from(profileForm.querySelectorAll('.field__input'));
-  const editButtons = document.querySelectorAll('[data-edit-target]');
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('profileForm');
   const statusMsg = document.getElementById('statusMsg');
+  const editButtons = document.querySelectorAll('[data-edit-target]');
+  const allInputs = form ? Array.from(form.querySelectorAll('.field__input')) : [];
 
+  // Mapeamento para controle de valores originais do 1º código
   const originalValues = new Map();
   allInputs.forEach((input) => originalValues.set(input.id, input.value));
 
-  const fieldsBeingEdited = new Set();
-
+  // Helper para exibir mensagens de status (do 1º código)
   let statusTimeout;
   function showStatus(text) {
+    if (!statusMsg) return;
     statusMsg.textContent = text;
     statusMsg.classList.add('is-visible');
+
     clearTimeout(statusTimeout);
     statusTimeout = setTimeout(() => {
       statusMsg.classList.remove('is-visible');
     }, 2500);
   }
 
-  /* Alternar visibilidade da senha */
-  const toggleSenhaBtn = document.getElementById('toggleSenha');
+  // ---------- Mascaramento do CPF (do 2º código) ----------
+  const cpfInput = document.getElementById('cpf');
+  const toggleCpfBtn = document.getElementById('toggleCpf');
+
+  function maskCpf(value) {
+    return value.replace(/\d/g, '•');
+  }
+
+  if (cpfInput) {
+    cpfInput.dataset.real = cpfInput.value;
+    cpfInput.value = maskCpf(cpfInput.dataset.real);
+  }
+
+  if (toggleCpfBtn && cpfInput) {
+    toggleCpfBtn.addEventListener('click', function () {
+      const isMasked = toggleCpfBtn.getAttribute('aria-pressed') !== 'true';
+      cpfInput.value = isMasked ? cpfInput.dataset.real : maskCpf(cpfInput.dataset.real);
+      toggleCpfBtn.setAttribute('aria-pressed', isMasked ? 'true' : 'false');
+      toggleCpfBtn.setAttribute('aria-label', isMasked ? 'Ocultar CPF' : 'Mostrar CPF');
+    });
+  }
+
+  // ---------- Mostrar/ocultar senha (do 2º código, com SVG dinâmico do 1º) ----------
   const senhaInput = document.getElementById('senha');
+  const toggleSenhaBtn = document.getElementById('toggleSenha');
   const eyeIcon = document.getElementById('eyeIcon');
 
   const eyeOpenPath = `
@@ -34,63 +57,95 @@ document.addEventListener('DOMContentLoaded', () => {
     <path d="M1 1l22 22"></path>
   `;
 
-  toggleSenhaBtn.addEventListener('click', () => {
-    const isPassword = senhaInput.type === 'password';
-    senhaInput.type = isPassword ? 'text' : 'password';
-    eyeIcon.innerHTML = isPassword ? eyeOpenPath : eyeClosedPath;
-    toggleSenhaBtn.setAttribute('aria-pressed', String(isPassword));
-    toggleSenhaBtn.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
-  });
+  if (toggleSenhaBtn && senhaInput) {
+    toggleSenhaBtn.addEventListener('click', function () {
+      const isHidden = senhaInput.type === 'password';
+      senhaInput.type = isHidden ? 'text' : 'password';
+      
+      if (eyeIcon) {
+        eyeIcon.innerHTML = isHidden ? eyeOpenPath : eyeClosedPath;
+      }
+      toggleSenhaBtn.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+      toggleSenhaBtn.setAttribute('aria-label', isHidden ? 'Ocultar senha' : 'Mostrar senha');
+    });
+  }
 
-  /* Habilitar edição de campo ao clicar no lápis */
-  editButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
+  // ---------- Edição dos campos ----------
+  editButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
       const targetId = btn.getAttribute('data-edit-target');
       const input = document.getElementById(targetId);
       if (!input) return;
 
-      input.removeAttribute('readonly');
+      // Se for o CPF, revela o número real ao editar
+      if (targetId === 'cpf' && input.dataset.real) {
+        input.value = input.dataset.real;
+        if (toggleCpfBtn) {
+          toggleCpfBtn.setAttribute('aria-pressed', 'true');
+          toggleCpfBtn.setAttribute('aria-label', 'Ocultar CPF');
+        }
+      }
+
+      // Se for a senha, limpa para digitar uma nova
+      if (targetId === 'senha') {
+        input.value = '';
+        input.type = 'text';
+        input.placeholder = 'Digite a nova senha';
+        if (toggleSenhaBtn) {
+          toggleSenhaBtn.setAttribute('aria-pressed', 'true');
+          toggleSenhaBtn.setAttribute('aria-label', 'Ocultar senha');
+          if (eyeIcon) eyeIcon.innerHTML = eyeOpenPath;
+        }
+      }
+
+      input.readOnly = false;
       input.classList.remove('is-saved');
-      input.classList.add('is-editing');
+      input.classList.add('is-editing', 'field__input--editing');
       btn.classList.add('is-active');
 
-      fieldsBeingEdited.add(targetId);
-
       input.focus();
-      const value = input.value;
-      input.setSelectionRange(value.length, value.length);
+      const valLength = input.value.length;
+      input.setSelectionRange(valLength, valLength); // Move o cursor para o final (do 1º código)
     });
   });
 
-  /* Salvar Alterações: grava os valores digitados e trava os campos */
-  profileForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  // ---------- Envio do formulário ----------
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      // Garante envio correto dos dados mascarados ao backend
+      if (cpfInput && cpfInput.readOnly) {
+        cpfInput.value = cpfInput.dataset.real;
+      }
+      if (senhaInput && senhaInput.readOnly) {
+        senhaInput.value = ''; // Não envia hash ou placeholder se não mudou
+      }
 
-    allInputs.forEach((input) => {
-      originalValues.set(input.id, input.value);
-      input.setAttribute('readonly', '');
-      input.classList.remove('is-editing');
-      input.classList.add('is-saved');
+      // Estilização visual pós-salvar (do 1º código)
+      allInputs.forEach((input) => {
+        originalValues.set(input.id, input.value);
+        input.setAttribute('readonly', 'true');
+        input.classList.remove('is-editing', 'field__input--editing');
+        input.classList.add('is-saved');
+      });
+
+      editButtons.forEach((btn) => btn.classList.remove('is-active'));
+
+      setTimeout(() => {
+        allInputs.forEach((input) => input.classList.remove('is-saved'));
+      }, 1200);
+
+      showStatus('Alterações salvas com sucesso!');
     });
+  }
 
-    editButtons.forEach((btn) => btn.classList.remove('is-active'));
-    fieldsBeingEdited.clear();
-
-    setTimeout(() => {
-      allInputs.forEach((input) => input.classList.remove('is-saved'));
-    }, 1200);
-
-    showStatus('Alterações salvas com sucesso!');
-    alert('Alterações salvas com sucesso!');
-  });
-
-  /* Fazer Logout */
+  // ---------- Logout (do 2º código com confirmação do 1º) ----------
   const logoutBtn = document.getElementById('logoutBtn');
-  logoutBtn.addEventListener('click', () => {
-    const confirmado = confirm('Tem certeza que deseja sair da sua conta?');
-    if (confirmado) {
-      alert('Logout realizado com sucesso!');
-    }
-  });
-
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function () {
+      const confirmado = confirm('Tem certeza que deseja sair da sua conta?');
+      if (confirmado) {
+        window.location.href = 'logout.php';
+      }
+    });
+  }
 });

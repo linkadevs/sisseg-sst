@@ -259,7 +259,7 @@ body {
     gap: 1rem;
 }
 
-.buttons button {
+.buttons a {
     width: 100%;
     display: flex;
     gap: 1rem;
@@ -274,14 +274,16 @@ body {
     border-color: #e5e5e5;
     padding: .5rem;
     transition: 300ms;
+    color: #000000;
+    text-decoration: none;
 }
 
-.buttons button:hover {
+.buttons a:hover {
     transition: 300ms;
     background-color: #e5e5e5;
 }
 
-.buttons button svg {
+.buttons a svg {
     width: 2rem;
 }
 
@@ -347,13 +349,23 @@ body {
     gap: 1rem;
 }
 
-.left h3 {
-    font-size: 1.65 rem;
+.left a {
+    font-size: 1.65rem;
     font-weight: 400;
+    text-decoration: none;
+    color: #000000;
+}
+
+.left a:hover {
+    text-decoration: underline;
+}
+
+.documento:hover .left a {
+    color: #1d4ed8;
 }
 
 .left p {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #4b505b;
 }
 
@@ -396,9 +408,148 @@ body {
     background-color: var(--laranja);
 }
 
+.vencido {
+    color: #ffffff;
+    height: fit-content;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    background-color: var(--vermelho);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    padding: .8rem 1.4rem;
+    border-radius: .6rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-action:hover {
+    background-color: #1d4ed8;
+}
+/* Modais */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-overlay.active {
+    display: flex;
+}
+.modal-card {
+    background: #fff;
+    width: 100%;
+    max-width: 44rem;
+    padding: 2.4rem;
+    border-radius: .8rem;
+    box-shadow: 0 .4rem 2rem rgba(0, 0, 0, 0.15);
+}
+.modal-card h3 {
+    margin-top: 0;
+    margin-bottom: 1.6rem;
+    font-size: 2rem;
+}
+.form-group {
+    margin-bottom: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.form-group label {
+    font-size: 1.4rem;
+    color: #374151;
+}
+.form-group input, .form-group select {
+    padding: .8rem 1.2rem;
+    border: .1rem solid #d1d5db;
+    border-radius: .6rem;
+    font-size: 1.4rem;
+}
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+    border: none;
+    padding: .8rem 1.4rem;
+    border-radius: .6rem;
+    cursor: pointer;
+}
+
+.status {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.botoes_back {
+    display: flex;
+    gap: 1rem;
+}
+
+.botoes_back button {
+    padding: .5rem;
+    border-radius: 999rem;
+    border-style: none;
+    background-color: transparent;
+    color: #00000063;
+    display: none;
+}
+
+.documento:hover .botoes_back button, .auditoria:hover .botoes_back button {
+    display: block;
+}
+
+.edit:hover {
+    border-color: #ff6900;
+    background-color: #ffe9da;
+}
+
+.edit:hover svg {
+    color: #ff6900;
+}
+
+.erase:hover {
+    border-color: #e7000b;
+    background-color: #ffe2e3;
+}
+
+.erase:hover svg {
+    color: #e7000b;
+}
+
+.botoes_back svg {
+    display: block;
+}
+
 @media(max-width: 1300px) {
 
-    .left h3 {
+    .left a {
         font-size: 1.6rem;
         font-weight: 400;
     }
@@ -441,7 +592,7 @@ body {
         font-weight: 500;
     }
 
-    .left h3 {
+    .left a {
         font-size: 1.5rem;
         font-weight: 400;
     }
@@ -487,7 +638,7 @@ body {
         width: 100%;
     }
 
-    .left h3 {
+    .left a {
         font-size: 1.4rem;
     }
 

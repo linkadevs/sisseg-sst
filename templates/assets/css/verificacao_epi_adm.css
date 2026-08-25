@@ -85,11 +85,17 @@ h1 {
 }
 
 .search_input {
+    display: flex;
     position: relative;
     box-shadow: 0 0 .4rem .4rem rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     border-radius: 1rem;
-    flex: 1;
+    flex-grow: 1;
+}
+
+.search_form {
+    display: flex;
+    flex-grow: 1;
 }
 
 .search_input figure {
@@ -104,6 +110,7 @@ h1 {
 }
 
 .search_input input {
+    flex-grow: 1;
     height: 100%;
     padding: 1.2rem 0 1.2rem 4rem;
     border-radius: 1rem;
@@ -150,16 +157,15 @@ h1 {
     gap: 1rem;
     width: fit-content;
     border-radius: 1.4rem;
-    padding: 10rem 1rem 1rem 1rem;
+    padding: 1rem;
     box-shadow: .1rem .1rem .4rem 0 rgba(0, 0, 0, 0.3);
     position: relative;
     width: 25rem;
+    background-color: #ffffff;
 }
 
-.card figure {
-    position: absolute;
-    top: 0;
-    left: 0;
+.card span {
+    font-size: 3rem;
 }
 
 .title {
@@ -177,10 +183,6 @@ h1 {
 
 .nEPIs {
     color: #64748b;
-}
-
-.card figure img {
-    width: 25rem;
 }
 
 .card button {
@@ -209,7 +211,7 @@ h1 {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-form {
+.form {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -224,10 +226,14 @@ form {
     border-radius: 1rem;
 }
 
-form figure img {
+form figure {
     position: absolute;
     left: 2rem;
     top: 2rem;
+    cursor: pointer;
+}
+
+form figure img {
     width: 2rem;
 }
 
@@ -250,11 +256,35 @@ form h2 {
     color: #5d359c;
 }
 
-.input input {
+.input input, .input select {
     border-style: none;
     border-radius: 1rem;
     padding: .8rem 0 .8rem 2rem;
     background-color: #f4f6f5;
+}
+
+.icones {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.icone {
+    display: flex;
+    padding: .5rem;
+    border-radius: 999rem;
+    border: none;
+    width: fit-content;
+    background-color: transparent;
+}
+
+.icone.active {
+    border: .2rem solid #6d2dd4;
+    padding: .3rem;
+}
+
+.input select {
+    color: #707170;
 }
 
 .inputs {
@@ -265,7 +295,7 @@ form h2 {
     overflow-y: scroll;
 }
 
-form button {
+.form_button {
     font-size: 1.4rem;
     font-weight: 500;
     box-shadow: 0 .1rem .4rem 0 rgba(0, 0, 0, 0.4);
@@ -356,7 +386,7 @@ form button {
 
     .card {
         width: 30rem;
-        padding: 12rem 1rem 1rem 1rem;
+        padding: 1rem;
     }
 
     .card figure img {
@@ -545,7 +575,7 @@ form button {
     .card {
         width: 100%;
         max-width: 28rem;
-        padding: 14rem 1rem 1rem;
+        padding: 1rem;
     }
 
     .card figure {
@@ -569,7 +599,7 @@ form button {
         flex: 1;
     }
 
-    form {
+    .form {
         width: calc(100vw - 3rem);
         max-width: 40rem;
     }
@@ -628,7 +658,7 @@ form button {
         font-size: 1.1rem;
     }
 
-    form {
+    .form {
         width: calc(100vw - 2rem);
         padding: 1.5rem;
     }
@@ -709,7 +739,7 @@ form button {
     }
 
     .card {
-        padding: 60% .8rem .8rem;
+        padding: .8rem;
     }
 
     .trabalho {
@@ -730,7 +760,7 @@ form button {
         height: 2.4rem;
     }
 
-    form {
+    .form {
         width: calc(100vw - 1.6rem);
         padding: 1.2rem;
     }

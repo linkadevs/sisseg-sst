@@ -1,3 +1,68 @@
+<?php
+
+session_start();
+
+// Garante que só um administrador autenticado acesse esta página.
+if (empty($_SESSION['id_adm']) || ($_SESSION['tipo_usuario'] ?? '') !== 'administrador') {
+    header('Location: /../View/login.php');
+    exit;
+}
+
+require_once __DIR__ . '/../Controller/AdministradorController.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$AdministradorController = new \Controller\AdministradorController();
+
+$administrador = $AdministradorController->selecionarAdministradorByID($_SESSION['id_adm']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $id = $_SESSION['id_adm'];
+    if (
+        !empty($_POST['nome']) ||
+        !empty($_POST['cpf']) ||
+        !empty($_POST['cargo']) ||
+        !empty($_POST['setor'])
+    ) {
+        $cpf = preg_replace('/\D/', '', $_POST['cpf']);
+        $AdministradorController->updateAdministrador(
+            $id,
+            $_POST['nome'],
+            $cpf,
+            $_POST['setor'],
+            $_POST['cargo']
+        );
+    }
+
+    if (
+        !empty($_POST['senha_adm'])
+    ) {
+        $AdministradorController->updatePassword(
+            $id,
+            $_POST['senha_adm']
+        );
+    }
+
+    header('Location: perfil-administrador.php');
+    exit;
+}
+
+if (isset($_SESSION['success_message'])) {
+    $successMessage = $_SESSION['success_message'];
+    $_SESSION['success_message'] = null;
+}
+
+if (isset($_SESSION['error_message']) && !empty($_SESSION['error_message'])) {
+    $errorMessage = $_SESSION['error_message'];
+    $_SESSION['error_message'] = null;
+}
+
+$nome  = htmlspecialchars($administrador['nome_adm'] ?? '', ENT_QUOTES, 'UTF-8');
+$cpf   = htmlspecialchars($administrador['cpf_adm'] ?? '', ENT_QUOTES, 'UTF-8');
+$cargo = htmlspecialchars($administrador['cargo_adm'] ?? '', ENT_QUOTES, 'UTF-8');
+$setor = htmlspecialchars($administrador['setor_adm'] ?? '', ENT_QUOTES, 'UTF-8');
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,12 +92,12 @@
         <p class="card__subtitle">Visualize ou Edite seus dados</p>
       </header>
 
-      <form class="profile-form" id="profileForm" novalidate>
+      <form class="profile-form" id="profileForm" method="POST" novalidate>
 
         <div class="field">
           <label for="nome" class="field__label">Nome</label>
           <div class="field__control">
-            <input type="text" id="nome" name="nome" class="field__input" value="Usuário_1234" readonly>
+            <input type="text" id="nome" name="nome" class="field__input" value="<?php echo $nome; ?>" readonly>
             <button type="button" class="field__icon-btn" data-edit-target="nome" aria-label="Editar nome">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -45,8 +110,14 @@
         <div class="field">
           <label for="cpf" class="field__label">CPF</label>
           <div class="field__control">
-            <input type="text" id="cpf" name="cpf" class="field__input" value="12345678910" inputmode="numeric" readonly>
-            <button type="button" class="field__icon-btn" data-edit-target="cpf" aria-label="Editar CPF">
+            <input type="text" id="cpf" name="cpf" class="field__input" value="<?php echo $cpf; ?>" inputmode="numeric" readonly>
+            <button type="button" class="field__icon-btn" id="toggleCpf" aria-label="Mostrar CPF" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.42 19.42 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <path d="M1 1l22 22"></path>
+              </svg>
+            </button>
+            <button type="button" class="field__icon-btn field__icon-btn--edit" data-edit-target="cpf" aria-label="Editar CPF">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -58,7 +129,9 @@
         <div class="field">
           <label for="senha" class="field__label">Senha</label>
           <div class="field__control">
-            <input type="password" id="senha" name="senha" class="field__input" value="12345678" readonly>
+            <!-- Por segurança, a senha real (hash) nunca é enviada ao front.
+                 O campo fica vazio; o usuário digita uma nova senha só se quiser alterá-la. -->
+            <input type="password" id="senha" name="senha_adm" class="field__input" value="" placeholder="••••••••" readonly>
             <button type="button" class="field__icon-btn" id="toggleSenha" aria-label="Mostrar senha" aria-pressed="false">
               <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a19.42 19.42 0 0 1 5.06-6.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a19.5 19.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
@@ -77,7 +150,7 @@
         <div class="field">
           <label for="cargo" class="field__label">Cargo</label>
           <div class="field__control">
-            <input type="text" id="cargo" name="cargo" class="field__input" value="Encarregado" readonly>
+            <input type="text" id="cargo" name="cargo" class="field__input" value="<?php echo $cargo; ?>" readonly>
             <button type="button" class="field__icon-btn" data-edit-target="cargo" aria-label="Editar cargo">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -90,7 +163,7 @@
         <div class="field">
           <label for="setor" class="field__label">Setor</label>
           <div class="field__control">
-            <input type="text" id="setor" name="setor" class="field__input" value="Alvenaria" readonly>
+            <input type="text" id="setor" name="setor" class="field__input" value="<?php echo $setor; ?>" readonly>
             <button type="button" class="field__icon-btn" data-edit-target="setor" aria-label="Editar setor">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -100,7 +173,7 @@
           </div>
         </div>
 
-        <p class="status-msg" id="statusMsg" role="status" aria-live="polite"></p>
+        <p class="status-msg" id="statusMsg" role="status" aria-live="polite"><?php echo isset($successMessage) ? $successMessage : (isset($errorMessage) ? $errorMessage : ''); ?></p>
 
         <div class="actions">
           <button type="submit" class="btn btn--save" id="saveBtn">Salvar Alterações</button>

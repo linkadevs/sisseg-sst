@@ -1,3 +1,16 @@
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/IndicadoresController.php';
+
+use Controller\IndicadoresController;
+
+$indicadoresController = new IndicadoresController();
+
+$indicadores = $indicadoresController->selecionarTodosIndicadores();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -141,147 +154,52 @@
     </div>
 
     <ol class="ranking-list" style="list-style:none;">
-
-      <!-- 1º -->
-      <li>
-        <article class="rank-card rank-card--gold">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--gold" aria-label="1º lugar">🏆</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Altura - Torre A</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>985 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>100%</strong></span>
-                <span class="rank-stat">EPIs: <strong>98%</strong></span>
-                <span class="rank-stat"><strong>120 dias</strong> sem acidentes</span>
+      
+      <?php 
+      $maior_pontuacao = 0;
+      foreach($indicadores as $indicador){
+        if($indicador['pontos_indicadores'] > $maior_pontuacao) {
+          $maior_pontuacao = $indicador['pontos_indicadores'];
+        }
+      }?>
+      <?php foreach($indicadores as $index => $indicador):?>
+        <li>
+          <article class="rank-card">
+            <div class="rank-card-top">
+              <?php if($index+1 == 1):?>
+                <div class="pos-badge pos-badge--gold" aria-label="1º lugar">🏆</div>
+              <?php elseif($index+1 == 2):?>
+                <div class="pos-badge pos-badge--silver" aria-label="2º lugar">2º</div>
+              <?php elseif($index+1 == 3):?>
+                <div class="pos-badge pos-badge--bronze" aria-label="3º lugar">3º</div>
+              <?php else:?>
+                <div class="pos-badge pos-badge--plain" aria-label="<?= $index+1?>º lugar"><?= $index+1?>º</div>
+              <?php endif;?>
+              <div class="rank-info">
+                <p class="rank-name"><?= htmlspecialchars($indicador['nome_equipe_indicadores'])?></p>
+                <div class="rank-stats">
+                  <span class="rank-stat">@ <strong><?= htmlspecialchars($indicador['pontos_indicadores'])?> pts</strong></span>
+                  <span class="rank-stat">Treinamentos: <strong><?= htmlspecialchars($indicador['treinamento_percentual_indicadores'])?>%</strong></span>
+                  <span class="rank-stat">EPIs: <strong><?= htmlspecialchars($indicador['epi_percentual_indicadores'])?>%</strong></span>
+                  <span class="rank-stat"><strong><?= htmlspecialchars($indicador['dias_sem_acidentes_indicadores'])?> dias</strong> sem acidentes</span>
+                </div>
+              </div>
+              <?php if($index+1 == 1):?>
+                <span class="rank-badge rank-badge--gold" aria-label="Campeão">🏅 Campeão</span>
+              <?php elseif($index+1 == 2):?>
+                <span class="rank-badge rank-badge--blue" aria-label="Vice-campeão">🥈 Vice</span>
+              <?php elseif($index+1 == 3):?>
+                <span class="rank-badge rank-badge--orange" aria-label="3º Lugar">🥉 3º Lugar</span>
+              <?php endif;?>
+            </div>
+            <div class="rank-progress">
+              <div class="progress-track" role="progressbar" aria-valuenow="<?= round((htmlspecialchars($indicador['pontos_indicadores'])/$maior_pontuacao)*100);?>" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" style="width: <?= round((htmlspecialchars($indicador['pontos_indicadores'])/$maior_pontuacao)*100);?>%;"></div>
               </div>
             </div>
-            <span class="rank-badge rank-badge--gold" aria-label="Campeão">🏅 Campeão</span>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 98%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
-
-      <!-- 2º -->
-      <li>
-        <article class="rank-card">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--silver" aria-label="2º lugar">2º</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Elétrica</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>920 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>100%</strong></span>
-                <span class="rank-stat">EPIs: <strong>96%</strong></span>
-                <span class="rank-stat"><strong>95 dias</strong> sem acidentes</span>
-              </div>
-            </div>
-            <span class="rank-badge rank-badge--blue" aria-label="Vice-campeão">🥈 Vice</span>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 93%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
-
-      <!-- 3º -->
-      <li>
-        <article class="rank-card rank-card--orange">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--bronze" aria-label="3º lugar">3º</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Carpintaria</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>875 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>95%</strong></span>
-                <span class="rank-stat">EPIs: <strong>94%</strong></span>
-                <span class="rank-stat"><strong>88 dias</strong> sem acidentes</span>
-              </div>
-            </div>
-            <span class="rank-badge rank-badge--orange" aria-label="3º Lugar">🥉 3º Lugar</span>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 89%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
-
-      <!-- 4º -->
-      <li>
-        <article class="rank-card">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--plain" aria-label="4º lugar">4º</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Alvenaria - Bloco B</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>840 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>90%</strong></span>
-                <span class="rank-stat">EPIs: <strong>92%</strong></span>
-                <span class="rank-stat"><strong>75 dias</strong> sem acidentes</span>
-              </div>
-            </div>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 85%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
-
-      <!-- 5º -->
-      <li>
-        <article class="rank-card">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--plain" aria-label="5º lugar">5º</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Soldagem</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>810 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>100%</strong></span>
-                <span class="rank-stat">EPIs: <strong>90%</strong></span>
-                <span class="rank-stat"><strong>60 dias</strong> sem acidentes</span>
-              </div>
-            </div>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 82%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
-
-      <!-- 6º -->
-      <li>
-        <article class="rank-card">
-          <div class="rank-card-top">
-            <div class="pos-badge pos-badge--plain" aria-label="6º lugar">6º</div>
-            <div class="rank-info">
-              <p class="rank-name">Equipe Demolição</p>
-              <div class="rank-stats">
-                <span class="rank-stat">@ <strong>755 pts</strong></span>
-                <span class="rank-stat">Treinamentos: <strong>85%</strong></span>
-                <span class="rank-stat">EPIs: <strong>88%</strong></span>
-                <span class="rank-stat"><strong>45 dias</strong> sem acidentes</span>
-              </div>
-            </div>
-          </div>
-          <div class="rank-progress">
-            <div class="progress-track" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-fill" style="width: 76%;"></div>
-            </div>
-          </div>
-        </article>
-      </li>
+          </article>
+        </li>
+      <?php endforeach;?>
 
     </ol>
 

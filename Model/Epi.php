@@ -87,8 +87,8 @@ class Epi {
                     ORDER BY nome_epi ASC";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             error_log('[Model\Epi::listar] ' . $e->getMessage());
             throw $e;
         }
@@ -101,10 +101,10 @@ class Epi {
                     FROM epi
                     WHERE id_epi = :id_epi";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_epi', $id_epi, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_epi', $id_epi, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             error_log('[Model\Epi::buscarPorId] ' . $e->getMessage());
             throw $e;
         }
@@ -122,13 +122,13 @@ class Epi {
             $stmt->bindParam(':descricao_epi', $dados['descricao_epi']);
             $stmt->bindParam(':funcao_epi', $dados['funcao_epi']);
             $stmt->bindParam(':ca_epi', $dados['ca_epi']);
-            $stmt->bindParam(':qtd_minima_epi', $dados['qtd_minima_epi'], \PDO::PARAM_INT);
-            $stmt->bindParam(':qtd_epi', $dados['qtd_epi'], \PDO::PARAM_INT);
+            $stmt->bindParam(':qtd_minima_epi', $dados['qtd_minima_epi'], PDO::PARAM_INT);
+            $stmt->bindParam(':qtd_epi', $dados['qtd_epi'], PDO::PARAM_INT);
             $stmt->bindParam(':status_epi', $dados['status_epi']);
             $stmt->execute();
 
             return (int) $this->db->lastInsertId();
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             error_log('[Model\Epi::criar] ' . $e->getMessage());
             throw $e;
         }
@@ -151,13 +151,13 @@ class Epi {
             $stmt->bindParam(':descricao_epi', $dados['descricao_epi']);
             $stmt->bindParam(':funcao_epi', $dados['funcao_epi']);
             $stmt->bindParam(':ca_epi', $dados['ca_epi']);
-            $stmt->bindParam(':qtd_minima_epi', $dados['qtd_minima_epi'], \PDO::PARAM_INT);
-            $stmt->bindParam(':qtd_epi', $dados['qtd_epi'], \PDO::PARAM_INT);
+            $stmt->bindParam(':qtd_minima_epi', $dados['qtd_minima_epi'], PDO::PARAM_INT);
+            $stmt->bindParam(':qtd_epi', $dados['qtd_epi'], PDO::PARAM_INT);
             $stmt->bindParam(':status_epi', $dados['status_epi']);
-            $stmt->bindParam(':id_epi', $id_epi, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_epi', $id_epi, PDO::PARAM_INT);
 
             return $stmt->execute();
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             error_log('[Model\Epi::atualizar] ' . $e->getMessage());
             throw $e;
         }
@@ -168,12 +168,12 @@ class Epi {
         try {
             $sql = "UPDATE epi SET qtd_epi = :qtd_epi, status_epi = :status_epi WHERE id_epi = :id_epi";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':qtd_epi', $qtd_epi, \PDO::PARAM_INT);
+            $stmt->bindParam(':qtd_epi', $qtd_epi, PDO::PARAM_INT);
             $stmt->bindParam(':status_epi', $status_epi);
-            $stmt->bindParam(':id_epi', $id_epi, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_epi', $id_epi, PDO::PARAM_INT);
 
             return $stmt->execute();
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             error_log('[Model\Epi::atualizarQuantidade] ' . $e->getMessage());
             throw $e;
         }
@@ -184,10 +184,10 @@ class Epi {
         try {
             $sql = "DELETE FROM epi WHERE id_epi = :id_epi";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id_epi', $id_epi, \PDO::PARAM_INT);
+            $stmt->bindParam(':id_epi', $id_epi, PDO::PARAM_INT);
 
             return $stmt->execute();
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             error_log('[Model\Epi::excluir] ' . $e->getMessage());
             throw $e;
         }
@@ -205,6 +205,20 @@ class Epi {
             return 'alert';
         }
         return 'critical';
+    }
+
+    public function selecionarTodosOsEpis() :array {
+        try {
+            $sql = 'SELECT * FROM epi';
+            $stmt = $this->db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar todos os epis',
+                0,
+                $e
+            );
+        }
     }
 }
 

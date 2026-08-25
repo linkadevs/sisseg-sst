@@ -30,6 +30,12 @@
               <label for="activityName">Nome da Atividade</label>
               <input type="text" id="activityName" name="activityName" placeholder="Ex: Trabalho em Altura" required>
             </div>
+            <div class="field">
+              <label for="activityNr">Norma Regulamentadora (NR)</label>
+              <select id="activityNr" name="activityNr" required>
+                <option value="">Selecione a NR...</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-section">

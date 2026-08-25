@@ -209,6 +209,18 @@ class EpiController {
 
         return [true, $nome, $qtd, $minimo, null];
     }
+
+    public function selecionarTodosOsEpis() :array {
+        try {
+            return $this->epiModel->selecionarTodosOsEpis();
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar todos os epis',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>
