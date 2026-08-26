@@ -36,4 +36,30 @@ class ReposicaoController {
             );
         }
     }
+
+    public function selecionarTodasAsReposicoes() :array {
+        try {
+            return $this->reposicaoModel->selecionarTodasAsReposicoes();
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar todas as reposições',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function deletarReposicaoPorId(
+        int $id_reposicao
+    ) :bool {
+        try {
+            return $this->reposicaoModel->deletarReposicaoPorId($id_reposicao);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao deletar reposição por id',
+                0,
+                $e
+            );
+        }
+    }
 }

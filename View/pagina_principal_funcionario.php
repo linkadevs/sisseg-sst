@@ -13,6 +13,8 @@ $controller = new Controller\PrincipalFuncionarioController();
 
 $funcionario = $controller->buscarFuncionario($id_funcionario);
 
+$_SESSION['setor_funcionario'] = $funcionario['setor_funcionario'];
+
 // Progresso de treinamentos
 $progresso = $controller->progressoTreinamentos($id_funcionario);
 
@@ -217,7 +219,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-titulo">Inspeção de EPIs</p>
                     <p class="modulo-descricao">Inspeção diária por função</p>
                 </div>
-                <button class="modulo-botao" onclick="window.location.href='modulo_funcoes.php'">Acessar</button>
+                <button class="modulo-botao" onclick="window.location.href='selecao_funcao_colaborador.php'">Acessar</button>
             </div>
 
         </div>

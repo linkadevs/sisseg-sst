@@ -23,7 +23,7 @@ $checklists = $_SESSION['checklists'];
 <body>
     <div class="sombra"></div>
     <header>
-        <button class="voltar" onclick="window.location.href='paginainicial.php'">
+        <button class="voltar" onclick="window.location.href='../View/principal_adm.php'">
             <figure><img src="../templates/assets/img/seta_esquerda.png" alt=""></figure>
             Voltar
         </button>

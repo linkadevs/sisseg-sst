@@ -47,7 +47,7 @@ $atividades = $conexao->obteratividade();
 
 <body>
     <header>
-        <button onclick="window.history.back()">
+        <button onclick="window.location.href = 'pagina_principal_funcionario.php'">
             <figure>
                 <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar">
             </figure>

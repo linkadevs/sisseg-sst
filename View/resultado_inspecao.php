@@ -14,8 +14,7 @@ use Controller\FuncaoController;
 $inspecao_controller = new InspecaoController();
 $funcionario_controller = new FuncionarioController();
 $funcao_controller = new FuncaoController();
-
-if(!empty($_SESSION['inspecao_id'])) {
+if(empty($_SESSION['inspecao_id'])) {
     header('Location: selecao_funcao_colaborador.php');
     exit;
 }
@@ -123,7 +122,7 @@ $porcentagem = (round(($qtd_inspecionado/$qtd_funcao)*100));
             })
 
             voltar.addEventListener('click', () => {
-                window.location.href = ''
+                window.location.href = 'pagina_principal_funcionario.php'
             })
         </script>
     </body>

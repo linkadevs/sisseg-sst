@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="sombra"></div>
         <header>
-            <button class="voltarBtn">
+            <button class="voltarBtn" onclick="window.location.href = 'selecao_funcao_colaborador.php'">
                 <figure>
                     <img src="../templates/assets/img/seta_esquerda.png" alt="Black left-pointing arrow on white background, indicating a back or previous navigation action">
                 </figure>

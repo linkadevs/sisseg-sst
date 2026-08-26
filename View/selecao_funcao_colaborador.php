@@ -26,7 +26,7 @@ $_SESSION['id_funcionario'] = 6;
     </head>
     <body>
         <header>
-            <button class="voltarBtn">
+            <button class="voltarBtn" onclick="window.location.href = 'pagina_principal_funcionario.php'">
                 <figure>
                     <img src="../templates/assets/img/seta_esquerda.png" alt="Black left-pointing arrow on white background, indicating a back or previous navigation action">
                 </figure>

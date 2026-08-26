@@ -13,7 +13,7 @@ $funcaoController = new FuncaoController();
 $funcionarioController = new FuncionarioController();
 
 if(empty($_GET['id_funcao']) || !is_numeric($_GET['id_funcao'])) {
-    header('Location: selecao_funcao_colaborador');
+    header('Location: selecao_funcao_colaborador.php');
     exit;
 }
 
@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
     <body>
         <header>
-            <button class="voltarBtn">
+            <button class="voltarBtn" onclick="window.location.href = 'selecao_funcao_colaborador.php'">
                 <figure>
                     <img src="../templates/assets/img/seta_esquerda.png" alt="Black left-pointing arrow on white background, indicating a back or previous navigation action">
                 </figure>

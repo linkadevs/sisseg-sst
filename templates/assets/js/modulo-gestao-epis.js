@@ -277,13 +277,6 @@ async function excluirEPI(id) {
   }
 }
 
-// ===== FUNÇÕES EXISTENTES (Trocas) =====
-
-function agendarTroca(nome, epi) {
-  console.log(`[Confirmar Troca] Colaborador: ${nome} | EPI: ${epi}`);
-  alert(`Troca confirmada para ${nome} (${epi}).`);
-}
-
 // ===== Base de dados dos EPIs obrigatórios por atividade ====
 
 function verEpis(id, nome, nr, qtd, idNr) {

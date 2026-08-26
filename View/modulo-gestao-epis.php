@@ -4,12 +4,22 @@ session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/AtividadeController.php';
+require_once __DIR__ . '/../Controller/ReposicaoController.php';
 
 use Controller\AtividadeController;
+use Controller\ReposicaoController;
 
 $atividadeController = new AtividadeController();
+$reposicaoController = new ReposicaoController();
 
 $atividades = $atividadeController->selecionarTodasAsAtividades();
+$reposicoes = $reposicaoController->selecionarTodasAsReposicoes();
+
+$cores = [
+  1 => 'red',
+  2 => 'orange',
+  3 => 'blue'
+];
 
 $icons = [
     'chave_inglesa' => '🔧️',
@@ -34,6 +44,14 @@ $icons = [
     'capacete_obras' => '👷‍♀️',
     'capacete_obras_sol' => '👷‍♂️'
 ];
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if(!empty($_POST['id_reposicao'])) {
+    $reposicaoController->deletarReposicaoPorId($_POST['id_reposicao']);
+    header('Location: modulo-gestao-epis.php');
+    exit;
+  }
+}
 
 ?>
 
@@ -368,7 +386,7 @@ $icons = [
       <p class="panel-subtitle">EPIs que precisam ser substituídos</p>
 
       <div class="swap-list">
-        <div class="swap-card orange">
+        <!-- <div class="swap-card orange">
           <span class="swap-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round">
@@ -419,7 +437,32 @@ $icons = [
           </div>
           <button class="btn-outline" onclick="agendarTroca('Pedro Costa', 'Botas de Segurança')">Confirmar
             Troca</button>
-        </div>
+        </div> -->
+        <?php $numero = 1?>
+        <?php foreach($reposicoes as $reposicao):?>
+          <div class="swap-card <?= $cores[$numero]?>">
+            <span class="swap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </span>
+            <div class="swap-info">
+              <p class="swap-name"><?= htmlspecialchars($reposicao['nome_funcionario'])?> - <?= htmlspecialchars($reposicao['nome_epi'])?></p>
+            </div>
+            <form method="POST">
+              <button type="submit" name="id_reposicao" value="<?= htmlspecialchars($reposicao['id_reposicao'])?>" class="btn-outline" onclick="return confirm('Você deseja mesmo marcar essa reposição como concluída? (Essa ação é irreversível)')">Confirmar
+                Troca</button>
+            </form>
+          </div>
+          <?php $numero ++?>
+          <?php if($numero === 4):?>
+            <?php $numero = 1?>
+          <?php endif;?>
+        <?php endforeach;?>
       </div>
     </section>
 

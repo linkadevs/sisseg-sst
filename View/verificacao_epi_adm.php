@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $icons = [
+    '' => '🔧️',
     'chave_inglesa' => '🔧️',
     'guindaste' => '🏗️',
     'ferramentas' => '🛠️',
@@ -193,7 +194,11 @@ $icons = [
                             <h3 class="trabalho"><?= htmlspecialchars($atividade['nome_atividade'])?></h3>
                             <p><?= htmlspecialchars($atividade['nome_nr'])?></p>
                         </div>
-                        <?php $nomes_epi = explode(', ',$atividade['nome_epi']);?>
+                        <?php if(empty($atividade['nome_epi'])):?>
+                            <?php $nomes_epi = [];?>
+                        <?php else:?>
+                            <?php $nomes_epi = explode(', ',$atividade['nome_epi']);?>
+                        <?php endif;?>
                         <p class="nEPIs">Nº de EPIs: <?= htmlspecialchars(count($nomes_epi))?></p>
                         <button class="edit" data-id="<?= htmlspecialchars($atividade['id_atividade'])?>" data-name="<?= htmlspecialchars($atividade['nome_atividade'])?>" data-nr="<?= htmlspecialchars($atividade['id_nr'])?>" data-icone="<?= htmlspecialchars($atividade['icone_atividade'])?>" data-epis="<?= htmlspecialchars($atividade['id_epi'])?>">Editar atividade</button>
                     </div>
