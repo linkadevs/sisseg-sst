@@ -2,11 +2,12 @@
 
 session_start();
 
-require_once __DIR__ . '/../Controller/AuthController.php';
+unset($_SESSION['id_funcionario']);
+unset($_SESSION['id_adm']);
+unset($_SESSION['nome']);
+unset($_SESSION['setor']);
+unset($_SESSION['tipo']);
 
-$AuthController = new \Controller\AuthController();
-$AuthController->logout();
-
-header('Location: /../View/login.php');
+header('Location: login.php');
 exit;
 ?>

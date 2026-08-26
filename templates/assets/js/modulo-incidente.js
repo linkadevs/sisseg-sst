@@ -235,7 +235,7 @@ document.getElementById('btnBackToList').addEventListener('click', () => {
 ------------------------------------------------------------------ */
 document.getElementById('btnExportPdf').addEventListener('click', () => {
   if (!incidenteSelecionadoId) return;
-  window.open(`../incidente-pdf.php?id=${encodeURIComponent(incidenteSelecionadoId)}`, '_blank');
+  window.open(`../Controller/IncidentePdf.php?id=${encodeURIComponent(incidenteSelecionadoId)}`, '_blank');
 });
 
 /* ------------------------------------------------------------------

@@ -66,7 +66,7 @@ $notificacoes = $controller->notificacoes();
                         <?= htmlspecialchars($admin['nome_adm']) ?>
                     </p>
 
-                    <a href="#" class="perfil-link">
+                    <a href="perfil-adm.php" class="perfil-link">
                         Ver perfil
                     </a>
                 </div>
@@ -76,7 +76,7 @@ $notificacoes = $controller->notificacoes();
                         Visualize e Gerencie os <br> funcionários desse setor
                     </p>
 
-                    <a href="gerenciamento_dos_funcionarios.php" class="funcionarios-link">
+                    <a href="gerenciamento_funcionarios.php" class="funcionarios-link">
                         Funcionários
                     </a>
                 </div>
@@ -255,7 +255,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Verificar aptidão e liberar trabalho</p>
                 </div>
 
-                <a href="verificacao_epi.php">
+                <a href="verificacao_epi_adm.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -272,7 +272,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Cursos e certificações</p>
                 </div>
 
-                <a href="treinamentos.php">
+                <a href="treinamento-adm.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -289,7 +289,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Inspeção diária por função</p>
                 </div>
 
-                <a href="inspecao_epi.php">
+                <a href="modulo_funcoes.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -323,7 +323,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Controle e Check-in diário</p>
                 </div>
 
-                <a href="gestao_epi.php">
+                <a href="modulo-gestao-epis.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -340,7 +340,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Programa de gerenciamento</p>
                 </div>
 
-                <a href="pgr.php">
+                <a href="modulo-pgr.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -357,7 +357,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Registro e Análise</p>
                 </div>
 
-                <a href="incidentes.php">
+                <a href="modulo-incidente.html">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -374,7 +374,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Métricas e Gamificação</p>
                 </div>
 
-                <a href="indicadores.php">
+                <a href="modulo-indicadores.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>
@@ -391,7 +391,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-descricao">Relatórios e auditoria</p>
                 </div>
 
-                <a href="admin.php">
+                <a href="admin_compliance.php">
                     <button class="modulo-botao">Acessar</button>
                 </a>
             </div>

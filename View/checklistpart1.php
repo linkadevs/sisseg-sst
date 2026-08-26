@@ -26,7 +26,7 @@ $checklistController->carregarChecklist();
 
 <body>
 
-    <button class="setavoltarpreta" type="button" onclick="window.location.href='paginainicial.php'">
+    <button class="setavoltarpreta" type="button" onclick="window.location.href='principal_adm.php'">
 
         <figure>
             <img src="../templates/assets/img/seta_esquerda.png" alt="Seta Voltar">

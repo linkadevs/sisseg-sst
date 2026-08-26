@@ -12,6 +12,7 @@ $funcionarioController = new FuncionarioController();
 if(!empty($_SESSION['erro'])) {
     $erro = $_SESSION['erro'];
     echo "<script>alert('$erro')</script>";
+    unset($_SESSION['erro']);
 }
 
 $todos_funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
@@ -130,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
         <div class="nav-interna">
-            <a href="Modulo_funcoes.html" class="btn-voltar">
+            <a href="principal_adm.php" class="btn-voltar">
                 <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar"> Voltar ao Painel
             </a>
         </div>

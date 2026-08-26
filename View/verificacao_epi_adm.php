@@ -155,7 +155,7 @@ $icons = [
             <button type="submit" class="salvar form_button">Salvar</button>
         </form>
         <header>
-            <button class="voltar">
+            <button class="voltar" onclick="window.location.href = 'principal_adm.php'">
                 <figure><img src="../templates/assets/img/seta_esquerda.png" alt=""></figure>
                 Voltar
             </button>

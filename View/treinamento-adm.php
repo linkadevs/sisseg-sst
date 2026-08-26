@@ -28,7 +28,7 @@ if (!isset($_SESSION['id_adm'])) {
 
 <div class="page">
 
-  <a href="#" class="back-btn" onclick="return false;">
+  <a href="principal_adm.php" class="back-btn">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
     </svg>

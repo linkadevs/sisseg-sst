@@ -3,8 +3,8 @@
 session_start();
 
 // Garante que só um administrador autenticado acesse esta página.
-if (empty($_SESSION['id_adm']) || ($_SESSION['tipo_usuario'] ?? '') !== 'administrador') {
-    header('Location: /../View/login.php');
+if (empty($_SESSION['id_adm']) || ($_SESSION['tipo'] ?? '') !== 'administrador') {
+    header('Location: login.php');
     exit;
 }
 
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
     }
 
-    header('Location: perfil-administrador.php');
+    header('Location: perfil-adm.php');
     exit;
 }
 
@@ -61,6 +61,12 @@ $nome  = htmlspecialchars($administrador['nome_adm'] ?? '', ENT_QUOTES, 'UTF-8')
 $cpf   = htmlspecialchars($administrador['cpf_adm'] ?? '', ENT_QUOTES, 'UTF-8');
 $cargo = htmlspecialchars($administrador['cargo_adm'] ?? '', ENT_QUOTES, 'UTF-8');
 $setor = htmlspecialchars($administrador['setor_adm'] ?? '', ENT_QUOTES, 'UTF-8');
+
+$cpf = preg_replace(
+    "/(\d{3})(\d{3})(\d{3})(\d{2})/",
+    "$1.$2.$3-$4",
+    $cpf
+);
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +85,7 @@ $setor = htmlspecialchars($administrador['setor_adm'] ?? '', ENT_QUOTES, 'UTF-8'
   <main class="page">
     <section class="card" aria-labelledby="card-title">
 
-      <a href="#" class="back-link" aria-label="Voltar para a página anterior">
+      <a href="principal_adm.php" class="back-link" aria-label="Voltar para a página anterior">
         <svg class="back-link__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M19 12H5"></path>
           <path d="M12 19l-7-7 7-7"></path>

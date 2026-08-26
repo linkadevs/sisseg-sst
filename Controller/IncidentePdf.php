@@ -5,8 +5,8 @@
  * Usa a biblioteca FPDF (vendor/fpdf/fpdf.php).
  */
 
-require_once __DIR__ . "/vendor/fpdf/fpdf.php";
-require_once __DIR__ . "/Controller/IncidenteController.php";
+require_once __DIR__ . "/../vendor/setasign/fpdf/fpdf.php";
+require_once __DIR__ . "/IncidenteController.php";
 
 use Controller\IncidenteController;
 

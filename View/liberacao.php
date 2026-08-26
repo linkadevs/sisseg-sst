@@ -253,7 +253,7 @@ if (!empty($incidentes)) {
 
         if (btninicio) {
             btninicio.addEventListener('click', function() {
-                window.location.href = 'principal_adm.php';
+                window.location.href = 'pagina_principal_funcionario.php';
             });
         }
 

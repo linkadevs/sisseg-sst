@@ -1,3 +1,31 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['id_funcionario']) || $_SESSION['id_funcionario'] <= 0) {
+    $_SESSION['id_funcionario'] = 1;
+}
+
+$id_funcionario = $_SESSION['id_funcionario'];
+
+require_once __DIR__ . '/../Controller/PrincipalFuncionarioController.php';
+
+$controller = new Controller\PrincipalFuncionarioController();
+
+$funcionario = $controller->buscarFuncionario($id_funcionario);
+
+// Progresso de treinamentos
+$progresso = $controller->progressoTreinamentos($id_funcionario);
+
+// Dias sem incidentes
+$dias_sem_incidentes = $controller->diasSemIncidentes();
+
+// Total de incidentes (todos)
+$total_incidentes = $controller->totalIncidentes();
+
+// Notificações (últimas 3)
+$notificacoes = $controller->notificacoes();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,13 +47,11 @@
                             <img src="../templates/assets/img/empresa.png" alt="empresa">
                         </figure>
                     </div>
-
                     <div class="bloco1-texto">
                         <p class="texto-titulo">SISSEG SST</p>
                         <p class="texto-subtitulo">Sistema de Segurança do Trabalho</p>
                     </div>
                 </div>
-
                 <div class="bloco2">
                     <p class="titulo">Certificado</p>
                     <p class="subtitulo">ISO 45001:2018</p>
@@ -35,10 +61,8 @@
             <div class="linha2">
                 <div class="bloco3">
                     <p class="titulo">Bem-vindo(a)</p>
-                    <p class="subtitulo">João Silva</p>
-                    <a href="#" class="perfil-link">
-                        Ver perfil
-                    </a>
+                    <p class="subtitulo"><?php echo htmlspecialchars($funcionario['nome_funcionario'] ?? 'Funcionário'); ?></p>
+                    <a href="perfil-funcionario.php" class="perfil-link">Ver perfil</a>
                 </div>
             </div>
 
@@ -47,12 +71,10 @@
                     <p class="titulo">Sistema de Gestão SST</p>
                     <p class="subtitulo">Conforme ISO 45001:2018</p>
                 </div>
-
                 <div class="bloco5">
                     <p class="titulo">Normas Regulamentadoras</p>
                     <p class="subtitulo">NR-01, 06, 10, 12, 18, 23, 33, 35</p>
                 </div>
-
                 <div class="bloco6">
                     <p class="titulo">Compromisso</p>
                     <p class="subtitulo">Zero Acidentes | Melhoria Contínua</p>
@@ -68,66 +90,49 @@
             <div class="card-superior">
                 <p class="card-titulo">Treinamento</p>
                 <div class="card-subtitulo">
-                    <p class="card-infor">4/18</p>
+                    <p class="card-infor"><?php echo $progresso['concluidos']; ?>/<?php echo $progresso['total']; ?></p>
                 </div>
             </div>
             <div class="card-inferior">
                 <div class="barra-progresso">
-                    <div class="barra-preenchida"></div>
+                    <div class="barra-preenchida" style="width: <?php echo $progresso['percentual']; ?>%;"></div>
                 </div>
                 <p class="card-treinamento-msg">
-                    22% concluídos
+                    <?php echo $progresso['percentual']; ?>% concluídos
                 </p>
             </div>
         </div>
 
         <div class="card-acidentes">
             <div class="card-superior">
-                <p class="card-titulo">Dias sem Acidentes</p>
+                <p class="card-titulo">Dias sem incidentes</p>
                 <div class="card-subtitulo">
                     <figure>
                         <img src="../templates/assets/img/relogio.png" alt="sem acidentes">
                     </figure>
-                    <p class="card-infor">45</p>
+                    <p class="card-infor"><?php echo $dias_sem_incidentes; ?></p>
                 </div>
             </div>
             <div class="card-inferior">
                 <p class="card-acidentes-msg">
-                    Excelente!
-                </p>
-            </div>
-        </div>
-
-        <div class="card-epis">
-            <div class="card-superior">
-                <p class="card-titulo">Conformidade EPIs</p>
-                <div class="card-subtitulo">
-                    <figure>
-                        <img src="../templates/assets/img/elevacao.png" alt="elevação">
-                    </figure>
-                    <p class="card-infor">96%</p>
-                </div>
-            </div>
-            <div class="card-inferior">
-                <p class="card-epis-msg">
-                    Meta: 95%
+                    <?php echo $dias_sem_incidentes > 10 ? 'Excelente!' : 'Acompanhe os incidentes'; ?>
                 </p>
             </div>
         </div>
 
         <div class="card-incidentes">
             <div class="card-superior">
-                <p class="card-titulo">Incidentes Abertos</p>
+                <p class="card-titulo">Total de Incidentes</p>
                 <div class="card-subtitulo">
                     <figure>
                         <img src="../templates/assets/img/risco-vermelho.png" alt="risco vermelho">
                     </figure>
-                    <p class="card-infor">2</p>
+                    <p class="card-infor"><?php echo $total_incidentes; ?></p>
                 </div>
             </div>
             <div class="card-inferior">
                 <p class="card-incidentes-msg">
-                    Requer atenção
+                    <?php echo $total_incidentes > 0 ? 'Registros no sistema' : 'Nenhum incidente registrado'; ?>
                 </p>
             </div>
         </div>
@@ -136,41 +141,40 @@
     <section class="alertas">
         <h2>Alertas e Notificações</h2>
 
-        <div class="notificacao">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-vermelho.png" alt="alerta">
-                </figure>
-                <p>Renovação de capacete vence em 15 dias</p>
+        <?php if (!empty($notificacoes)): ?>
+            <?php foreach ($notificacoes as $notificacao): ?>
+                <?php 
+                    $classe = $notificacao['tipo'] === 'incidente' ? 'notificacao' : 'notificacao-aviso';
+                    $icone = $notificacao['icone'] ?? 'risco-azul.png';
+                    $classe_label = $notificacao['classe'] ?? 'notificacao-informacao';
+                    $label = $notificacao['label'] ?? 'Info';
+                ?>
+                <div class="<?php echo $classe; ?>">
+                    <div class="notificacao-infor">
+                        <figure>
+                            <img src="../templates/assets/img/<?php echo $icone; ?>" alt="alerta">
+                        </figure>
+                        <p><?php echo htmlspecialchars($notificacao['mensagem']); ?></p>
+                    </div>
+                    <div class="<?php echo $classe_label; ?>">
+                        <p><?php echo $label; ?></p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="notificacao-aviso">
+                <div class="notificacao-infor">
+                    <figure>
+                        <img src="../templates/assets/img/risco-azul.png" alt="info">
+                    </figure>
+                    <p>Nenhuma notificação no momento.</p>
+                </div>
+                <div class="notificacao-informacao">
+                    <p>Info</p>
+                </div>
             </div>
-            <div class="notificacao-atencao">
-                <p>Atenção</p>
-            </div>
-        </div>
+        <?php endif; ?>
 
-        <div class="notificacao-aviso">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-azul.png" alt="alerta">
-                </figure>
-                <p>Novo treinamento NR-18 disponível</p>
-            </div>
-            <div class="notificacao-informacao">
-                <p>Info</p>
-            </div>
-        </div>
-
-        <div class="notificacao">
-            <div class="notificacao-infor">
-                <figure>
-                    <img src="../templates/assets/img/risco-vermelho.png" alt="alerta">
-                </figure>
-                <p>2 incidentes aguardando análise</p>
-            </div>
-            <div class="notificacao-atencao">
-                <p>Atenção</p>
-            </div>
-        </div>
     </section>
 
     <section class="modulos-do-sistema">
@@ -187,7 +191,7 @@
                     <p class="modulo-titulo">Verificação & EPIs</p>
                     <p class="modulo-descricao">Verificar aptidão e liberar trabalho</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+                <button class="modulo-botao" onclick="window.location.href='Selecao_da_atividade.php'">Acessar</button>
             </div>
 
             <div class="modulo">
@@ -200,7 +204,7 @@
                     <p class="modulo-titulo">Treinamentos</p>
                     <p class="modulo-descricao">Cursos e certificações</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+                <button class="modulo-botao" onclick="window.location.href='exibir_certificados.php'">Acessar</button>
             </div>
 
             <div class="modulo">
@@ -213,7 +217,7 @@
                     <p class="modulo-titulo">Inspeção de EPIs</p>
                     <p class="modulo-descricao">Inspeção diária por função</p>
                 </div>
-                <button class="modulo-botao">Acessar</button>
+                <button class="modulo-botao" onclick="window.location.href='modulo_funcoes.php'">Acessar</button>
             </div>
 
         </div>

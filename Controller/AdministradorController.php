@@ -38,13 +38,6 @@ class AdministradorController{
                     </script>';
                 exit;
             }
-
-            // FORMATA O CPF 000.000.000-00
-            $cpf_adm = preg_replace(
-                "/(\d{3})(\d{3})(\d{3})(\d{2})/",
-                "$1.$2.$3-$4",
-                $cpf_adm
-            );
         }
 
         // Busca os dados atuais para preencher qualquer campo que não tenha sido enviado

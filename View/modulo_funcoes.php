@@ -27,7 +27,7 @@ unset($_SESSION['mensagem'], $_SESSION['mensagem_tipo']);
 <body>
     <div class="container">
         <div class="nav-interna">
-            <a href="#" class="btn-voltar" onclick="window.history.back()">
+            <a href="principal_adm.php" class="btn-voltar">
                 <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar"> Voltar
             </a>
         </div>

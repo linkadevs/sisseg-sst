@@ -29,7 +29,6 @@ class ControllerLogin
 
         // Coleta os dados enviados pelo formulário
         $cpf = preg_replace('/[^0-9]/', '', ($_POST['cpf'] ?? ''));
-
         $senha = $_POST['senha'] ?? '';
 
         // Vetor para armazenar os erros encontrados
@@ -101,7 +100,7 @@ class ControllerLogin
             $_SESSION['setor'] = $usuario['setor_adm'];
             $_SESSION['tipo'] = 'administrador';
 
-            header('Location: ../View/pagina_principal_adm.php');
+            header('Location: ../View/principal_adm.php');
             exit;
 
         } catch (Exception $e) {

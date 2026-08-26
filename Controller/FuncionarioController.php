@@ -76,6 +76,7 @@ class FuncionarioController {
             } else {
                 $senha_funcionario = password_hash($senha_funcionario, PASSWORD_DEFAULT);
             }
+            $cpf_funcionario = preg_replace('/\D/', '', $cpf_funcionario);
             return $this->funcionarioModel->atualizarFuncionario(
                 $id_funcionario,
                 $nome_funcionario,
@@ -151,13 +152,6 @@ class FuncionarioController {
                     </script>';
                 exit;
             }
-    
-            // FORMATA O CPF 000.000.000-00
-            $cpf_funcionario = preg_replace(
-                "/(\d{3})(\d{3})(\d{3})(\d{2})/",
-                "$1.$2.$3-$4",
-                $cpf_funcionario
-            );
         }
 
         $user = $this->funcionarioModel->getFuncionarioByID($id_funcionario);

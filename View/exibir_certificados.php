@@ -4,7 +4,6 @@ session_start();
 // ============================================
 // ID DO FUNCIONÁRIO VIA SESSION
 // ============================================
-$_SESSION['id_funcionario'] = 6;
 $id_funcionario = $_SESSION['id_funcionario'];
 
 require_once __DIR__ . '/../Controller/ExibirCertificadosController.php';

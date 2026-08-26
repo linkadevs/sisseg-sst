@@ -6,7 +6,12 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Svg\\' => array($vendorDir . '/dompdf/php-svg-lib/src/Svg'),
+    'Sabberworm\\CSS\\' => array($vendorDir . '/sabberworm/php-css-parser/src'),
     'Model\\' => array($baseDir . '/Model'),
+    'Masterminds\\' => array($vendorDir . '/masterminds/html5/src'),
     'Linkadevs\\SissegSst\\' => array($baseDir . '/sisseg-sst'),
+    'FontLib\\' => array($vendorDir . '/dompdf/php-font-lib/src/FontLib'),
+    'Dompdf\\' => array($vendorDir . '/dompdf/dompdf/src'),
     'Controller\\' => array($baseDir . '/Controller'),
 );
