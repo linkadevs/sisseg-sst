@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_funcionario']) || $_SESSION['id_funcionario'] <= 0) {
-    $_SESSION['id_funcionario'] = 1;
+if (empty($_SESSION['id_funcionario'])) {
+    header('Location: login.php');
+    exit;
 }
 
 $id_funcionario = $_SESSION['id_funcionario'];

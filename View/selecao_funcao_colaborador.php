@@ -11,8 +11,6 @@ $funcaoController = new FuncaoController();
 
 $funcoes = $funcaoController->selecionarTodasFuncoes();
 
-$_SESSION['id_funcionario'] = 6;
-
 ?>
 
 <!DOCTYPE html>
