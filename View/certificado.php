@@ -1,3 +1,46 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+// require_once __DIR__ . '/../Controller/CertificadoController.php';
+require_once __DIR__ . '/../Controller/FuncionarioController.php';
+require_once __DIR__ . '/../Controller/TreinamentoController.php';
+require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
+
+if(empty($_GET['id_treinamento'])) {
+  header('Location: treinamento-funcionario.html');
+  exit;
+}
+
+$id_funcionario = $_SESSION['id_funcionario'];
+
+// use Controller\CertificadoController;
+use Controller\FuncionarioController;
+use Controller\TreinamentoController;
+use Controller\FuncionarioTreinamentoController;
+
+$funcionarioController = new FuncionarioController();
+$treinamentoController = new TreinamentoController();
+$funcionarioTreinamentoController = new FuncionarioTreinamentoController();
+
+$funcionario = $funcionarioController->selecionarFuncionarioPorId($id_funcionario);
+$treinamento = $treinamentoController->findById($_GET['id_treinamento']);
+$treinamentos_realizados = $funcionarioTreinamentoController->selecionarTreinamentosRealizadosPorId($_GET['id_treinamento'], $id_funcionario);
+
+$data_ultimo_treinamento = $treinamentos_realizados[0]['data_funcionario_treinamento'];
+
+$data = new DateTime($data_ultimo_treinamento);
+$formatter = new IntlDateFormatter(
+    'pt_BR', 
+    IntlDateFormatter::NONE, 
+    IntlDateFormatter::NONE, 
+    null, 
+    null, 
+    "dd 'de' MMMM 'de' yyyy"
+);
+
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -46,9 +89,9 @@
         </div>
 
         <p class="cert-lead">Certificamos que:</p>
-        <h2 class="student-name">João Silva Santos</h2>
+        <h2 class="student-name"><?= htmlspecialchars($funcionario['nome_funcionario'])?></h2>
         <p class="cert-lead">Concluiu com êxito o treinamento:</p>
-        <h3 class="course-name">NR-06 – EPIs</h3>
+        <h3 class="course-name"><?= htmlspecialchars($treinamento['nr_treinamento'])?> – <?= htmlspecialchars($treinamento['nome_treinamento'])?></h3>
 
         <!-- Grid de Informações Técnicas -->
         <div class="info-grid">
@@ -58,11 +101,11 @@
           </div>
           <div class="info-item">
             <span class="info-label">Carga Horária:</span>
-            <span class="info-value">2 horas</span>
+            <span class="info-value"><?= htmlspecialchars($treinamento['carga_horaria_treinamento'])?> horas</span>
           </div>
           <div class="info-item">
             <span class="info-label">Data de Conclusão:</span>
-            <span class="info-value">14 de junho de 2024</span>
+            <span class="info-value"><?= mb_strtolower($formatter->format($data), 'UTF-8')?></span>
           </div>
           <div class="info-item">
             <span class="info-label">Validade:</span>

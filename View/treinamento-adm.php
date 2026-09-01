@@ -60,6 +60,7 @@ if (!isset($_SESSION['id_adm'])) {
         <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
       </svg>
       <input type="text" class="search-input" id="searchInput" placeholder="Busque treinamentos, cursos ou conteúdos...">
+      <a class="limpar" href="treinamento-adm.php"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2563eb"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a>
     </div>
     <button class="btn-primary" id="btnCriarTreinamento">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>

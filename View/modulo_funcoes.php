@@ -11,7 +11,10 @@ $todos_epis = $controller->listarTodosEpis();
 
 $mensagem = $_SESSION['mensagem'] ?? '';
 $mensagem_tipo = $_SESSION['mensagem_tipo'] ?? '';
-unset($_SESSION['mensagem'], $_SESSION['mensagem_tipo']);
+if(!empty($mensagem)) {
+    echo '<script>alert("'. $mensagem .'")</script>';
+    unset($_SESSION['mensagem'], $_SESSION['mensagem_tipo']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,12 +34,6 @@ unset($_SESSION['mensagem'], $_SESSION['mensagem_tipo']);
                 <img src="../templates/assets/img/seta-cinza-esquerda.png" alt="Voltar"> Voltar
             </a>
         </div>
-
-        <?php if ($mensagem): ?>
-            <div class="mensagem <?php echo $mensagem_tipo; ?>">
-                <?php echo htmlspecialchars($mensagem); ?>
-            </div>
-        <?php endif; ?>
 
         <header class="header-dashboard">
             <div class="titulo-sessao">

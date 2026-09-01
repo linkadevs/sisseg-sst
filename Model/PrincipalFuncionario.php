@@ -81,7 +81,7 @@ class PrincipalFuncionario
     public function buscarUltimoIncidente()
     {
         try {
-            $sql = "SELECT data_incidente FROM incidente ORDER BY id_incidente DESC LIMIT 1";
+            $sql = "SELECT data_incidente FROM incidente ORDER BY data_incidente DESC LIMIT 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);

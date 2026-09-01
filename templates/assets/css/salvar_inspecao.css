@@ -339,7 +339,7 @@ form button{
 }
 
 .foto {
-    display: none;
+    display: flex;
     gap: 2rem;
 }
 
@@ -359,9 +359,7 @@ form button{
 }
 
 .foto_buttons {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    column-gap: 2rem;
+    display: flex;
 }
 
 .capturar {
@@ -371,6 +369,7 @@ form button{
     border-style: none;
     background-color: #3b82f6;
     color: #ffffff;
+    width: 100%;
 }
 
 .capturar:hover {
@@ -378,21 +377,7 @@ form button{
     background-color: #336dc9;
 }
 
-.cancel {
-    transition: 300ms;
-    background-color: #ffffff;
-    color: #000000;
-    border-style: solid;
-    border-width: .1rem;
-    border-color: #e5e5e5;
-}
-
-.cancel:hover {
-    transition: 300ms;
-    background-color:#e5e5e5;
-}
-
-.capturar, .cancel {
+.capturar {
     padding: .5rem 1rem !important;
     font-size: 1.1rem;
 }
@@ -405,6 +390,18 @@ form button{
     margin-bottom: 1rem;
 }
 
+.previa {
+    display: none;
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+}
+
+.fotos {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
 
 @media screen and (max-width: 860px) {
     .organizer {

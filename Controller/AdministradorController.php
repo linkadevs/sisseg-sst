@@ -32,11 +32,23 @@ class AdministradorController{
         if($cpf_adm !== '') {
             $cpf_adm = preg_replace('/\D/', '', $cpf_adm);
             if (strlen($cpf_adm) !== 11) {
-                echo '<script>
-                        alert("O CPF deve conter exatamente 11 dígitos. (Insira apenas números)");
-                        window.history.back();
-                    </script>';
+                $_SESSION['profile_message'] = 'O CPF deve conter exatamente 11 dígitos. (Insira apenas números)';
                 exit;
+            }
+            for ($t = 9; $t < 11; $t++) {
+
+                $d = 0;
+
+                for ($c = 0; $c < $t; $c++) {
+                    $d += $cpf_adm[$c] * (($t + 1) - $c);
+                }
+
+                $d = ((10 * $d) % 11) % 10;
+
+                if ($cpf_adm[$c] != $d) {
+                    $_SESSION['profile_message'] = 'CPF inválido';
+                    return false;
+                }
             }
         }
 
@@ -54,25 +66,25 @@ class AdministradorController{
             $_SESSION['cpf_adm'] = $cpf_adm;
             $_SESSION['setor_adm'] = $setor_adm;
             $_SESSION['cargo_adm'] = $cargo_adm;
-            $_SESSION['success_message'] = "Perfil atualizado com sucesso!";
+            $_SESSION['profile_message'] = "Perfil atualizado com sucesso!";
         } else {
-            $_SESSION['error_message'] = "Erro ao atualizar o perfil.";
+            $_SESSION['profile_message'] = "Erro ao atualizar o perfil.";
         }
     }
 
     public function updatePassword($id_adm, $senha_adm){
 
-        if (empty($id_adm) || empty($senha_adm)) {
-            $_SESSION['error_message'] = "Todos os campos de senha são obrigatórios.";
+        if (strlen($senha_adm) < 6) {
+            $_SESSION['profile_message'] = "A senha precisa conter no mínimo 6 caracteres";
             return false;
         }
 
         $success = $this->AdministradorModel->changePassword($id_adm, $senha_adm);
 
         if ($success) {
-            $_SESSION['success_message'] = "Senha alterada com sucesso!";
+            $_SESSION['profile_message'] = "Senha alterada com sucesso!";
         } else {
-            $_SESSION['error_message'] = "Ocorreu um erro ao alterar a senha.";
+            $_SESSION['profile_message'] = "Ocorreu um erro ao alterar a senha.";
         }
     }
 }

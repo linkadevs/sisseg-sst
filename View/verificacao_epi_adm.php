@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use Controller\AtividadeController;
 use Controller\AtividadeEpiController;
 use Controller\EpiController;
@@ -70,7 +72,12 @@ $icons = [
     'corda_no' => '🪢',
     'capacete_obras' => '👷‍♀️',
     'capacete_obras_sol' => '👷‍♂️'
-]
+];
+
+if(!empty($_SESSION['message'])) {
+    echo '<script>alert("'. $_SESSION['message'] .'")</script>';
+    unset($_SESSION['message']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -174,6 +181,7 @@ $icons = [
                 <div class="search_input">
                     <figure><img src="../templates/assets/img/lupa_azul.png" alt=""></figure>
                     <form class="search_form" method="GET"><input type="text" name="search" id="search" placeholder="Busque por atividades"></form>
+                    <a class="limpar" href="verificacao_epi_adm.php"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6d2dd4"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a>
                 </div>
                 <div class="buttons">
                     <button class="criar_atividade">
@@ -187,22 +195,26 @@ $icons = [
                 </div>
             </div>
             <div class="grid">
-                <?php foreach($atividades as $atividade):?>
-                    <div class="card">
-                        <span><?= htmlspecialchars($icons[$atividade['icone_atividade']])?></span>
-                        <div class="title">
-                            <h3 class="trabalho"><?= htmlspecialchars($atividade['nome_atividade'])?></h3>
-                            <p><?= htmlspecialchars($atividade['nome_nr'])?></p>
+                <?php if(empty($atividades)):?>
+                    <h2>Nenhuma atividade encontrada</h2>
+                <?php else:?>
+                    <?php foreach($atividades as $atividade):?>
+                        <div class="card">
+                            <span><?= htmlspecialchars($icons[$atividade['icone_atividade']])?></span>
+                            <div class="title">
+                                <h3 class="trabalho"><?= htmlspecialchars($atividade['nome_atividade'])?></h3>
+                                <p><?= htmlspecialchars($atividade['nome_nr'])?></p>
+                            </div>
+                            <?php if(empty($atividade['nome_epi'])):?>
+                                <?php $nomes_epi = [];?>
+                            <?php else:?>
+                                <?php $nomes_epi = explode(', ',$atividade['nome_epi']);?>
+                            <?php endif;?>
+                            <p class="nEPIs">Nº de EPIs: <?= htmlspecialchars(count($nomes_epi))?></p>
+                            <button class="edit" data-id="<?= htmlspecialchars($atividade['id_atividade'])?>" data-name="<?= htmlspecialchars($atividade['nome_atividade'])?>" data-nr="<?= htmlspecialchars($atividade['id_nr'])?>" data-icone="<?= htmlspecialchars($atividade['icone_atividade'])?>" data-epis="<?= htmlspecialchars($atividade['id_epi'])?>">Editar atividade</button>
                         </div>
-                        <?php if(empty($atividade['nome_epi'])):?>
-                            <?php $nomes_epi = [];?>
-                        <?php else:?>
-                            <?php $nomes_epi = explode(', ',$atividade['nome_epi']);?>
-                        <?php endif;?>
-                        <p class="nEPIs">Nº de EPIs: <?= htmlspecialchars(count($nomes_epi))?></p>
-                        <button class="edit" data-id="<?= htmlspecialchars($atividade['id_atividade'])?>" data-name="<?= htmlspecialchars($atividade['nome_atividade'])?>" data-nr="<?= htmlspecialchars($atividade['id_nr'])?>" data-icone="<?= htmlspecialchars($atividade['icone_atividade'])?>" data-epis="<?= htmlspecialchars($atividade['id_epi'])?>">Editar atividade</button>
-                    </div>
-                <?php endforeach;?>
+                    <?php endforeach;?>
+                <?php endif;?>
                 <!-- <div class="card">
                     <figure><img src="../templates/assets/img/trabalho.png" alt=""></figure>
                     <div class="title">

@@ -206,7 +206,7 @@ $notificacoes = $controller->notificacoes();
                     <p class="modulo-titulo">Treinamentos</p>
                     <p class="modulo-descricao">Cursos e certificações</p>
                 </div>
-                <button class="modulo-botao" onclick="window.location.href='exibir_certificados.php'">Acessar</button>
+                <button class="modulo-botao" onclick="window.location.href='treinamento-funcionario.html'">Acessar</button>
             </div>
 
             <div class="modulo">

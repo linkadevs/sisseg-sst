@@ -17,13 +17,13 @@ const iconeCanetaS = document.querySelector('#assinarSupervisor>#iconeCaneta')
 const iconeCheckS = document.querySelector('#assinarSupervisor>#iconeCheck')
 const submit = document.querySelector('.submit')
 const fotoDiv = document.querySelector('.foto')
-const cancel = document.querySelector('.cancel')
 const capturar = document.querySelector('.capturar')
 const form = document.querySelector('form')
 const checkboxes = document.querySelectorAll('.checkboxes')
 const bons_estados = document.querySelectorAll('.bom_estado')
 const foto_inspecao = document.querySelector('.foto_inspecao')
 const qtd_bons = document.getElementById('qtd_bons')
+const fotos = document.querySelector('.fotos')
 
 let assinatura = null
 
@@ -180,21 +180,8 @@ assinar.addEventListener('click', () => {
 })
 
 // Outros botões do fluxo
-submit.addEventListener('click', () => {
-    fotoDiv.style.display = 'flex'
-    submit.style.display = 'none'
-})
-
-cancel.addEventListener('click', () => {
-    submit.style.display = 'block'
-    fotoDiv.style.display = 'none'
-})
-
-capturar.addEventListener('click', () => {
-    foto_inspecao.click()
-})
-
-foto_inspecao.addEventListener('change', () => {
+submit.addEventListener('click', (e) => {
+    e.preventDefault()
     qtd_checked = 0
     bons_estados.forEach(estado => {
         if(estado.checked){
@@ -208,6 +195,54 @@ foto_inspecao.addEventListener('change', () => {
         alert('Por favor, assine antes de enviar.')
     }
 })
+
+
+capturar.addEventListener('click', () => {
+    foto_inspecao.click()
+})
+
+const acumuladorFotos = new DataTransfer();
+const MAX_FOTOS = 5;
+
+foto_inspecao.addEventListener('change', (event) => {
+    const novosArquivos = Array.from(event.target.files);
+
+    if (acumuladorFotos.files.length + novosArquivos.length > MAX_FOTOS) {
+        alert(`Você pode enviar no máximo ${MAX_FOTOS} fotos.`);
+        foto_inspecao.value = ''; 
+        return;
+    }
+
+    novosArquivos.forEach(file => {
+        acumuladorFotos.items.add(file);
+
+        const previa = document.createElement('img');
+        previa.classList.add('previa');
+        previa.src = URL.createObjectURL(file);
+        previa.style.display = 'block';
+        previa.style.cursor = 'pointer';
+        fotos.appendChild(previa);
+
+        previa.addEventListener('click', () => {
+            previa.remove();
+            
+            const novoDataTransfer = new DataTransfer();
+            Array.from(acumuladorFotos.files).forEach(arquivoAtual => {
+                if (arquivoAtual !== file) {
+                    novoDataTransfer.items.add(arquivoAtual);
+                }
+            });
+
+            acumuladorFotos.items.clear();
+            Array.from(novoDataTransfer.files).forEach(f => acumuladorFotos.items.add(f));
+
+            foto_inspecao.files = acumuladorFotos.files;
+        });
+    });
+
+    // Sincroniza o input com o acumulador (SEM limpar o value depois!)
+    foto_inspecao.files = acumuladorFotos.files;
+});
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()

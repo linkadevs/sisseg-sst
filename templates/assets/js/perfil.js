@@ -8,19 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const originalValues = new Map();
   allInputs.forEach((input) => originalValues.set(input.id, input.value));
 
-  // Helper para exibir mensagens de status (do 1º código)
-  let statusTimeout;
-  function showStatus(text) {
-    if (!statusMsg) return;
-    statusMsg.textContent = text;
-    statusMsg.classList.add('is-visible');
-
-    clearTimeout(statusTimeout);
-    statusTimeout = setTimeout(() => {
-      statusMsg.classList.remove('is-visible');
-    }, 2500);
-  }
-
   // ---------- Mascaramento do CPF (do 2º código) ----------
   const cpfInput = document.getElementById('cpf');
   const toggleCpfBtn = document.getElementById('toggleCpf');
@@ -125,16 +112,9 @@ document.addEventListener('DOMContentLoaded', function () {
         originalValues.set(input.id, input.value);
         input.setAttribute('readonly', 'true');
         input.classList.remove('is-editing', 'field__input--editing');
-        input.classList.add('is-saved');
       });
 
       editButtons.forEach((btn) => btn.classList.remove('is-active'));
-
-      setTimeout(() => {
-        allInputs.forEach((input) => input.classList.remove('is-saved'));
-      }, 1200);
-
-      showStatus('Alterações salvas com sucesso!');
     });
   }
 

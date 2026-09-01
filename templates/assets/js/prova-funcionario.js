@@ -86,7 +86,7 @@ function montarQuestoes() {
           ${index > 0 ? `<button type="button" class="btn-anterior" data-destino="questao-${index}">Anterior</button>` : '<span></span>'}
           ${index < questoes.length - 1
             ? `<button type="button" class="btn-proxima" data-destino="questao-${index + 2}">Próxima</button>`
-            : `<button type="button" class="btn-primary" id="btnFinalizar">Finalizar prova</button>`}
+            : `<button type="button" class="btn btn-azul" id="btnFinalizar">Finalizar prova</button>`}
         </div>
       </div>
     `;
@@ -211,7 +211,9 @@ async function enviarResultado(nota, aprovado, respostas) {
 document.getElementById('btnRefazer').addEventListener('click', reiniciarProva);
 document.getElementById('btnVoltarTopo').addEventListener('click', reiniciarProva);
 document.querySelectorAll('.btn-voltar-inicio').forEach(botao => {
-  botao.addEventListener('click', reiniciarProva);
+  botao.addEventListener('click', () => {
+    window.location.href = 'treinamento-funcionario.html'
+  });
 });
 
 function reiniciarProva() {

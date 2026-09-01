@@ -107,7 +107,7 @@
     ============================================================ */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       margin-bottom: 24px;
     }
@@ -116,7 +116,7 @@
       background: var(--color-white);
       border-radius: var(--radius-card);
       box-shadow: var(--shadow-card);
-      padding: 20px 20px 16px;
+      padding: 30px 20px;
       border-left: 4px solid transparent;
       transition: var(--transition);
       display: flex;

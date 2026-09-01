@@ -160,12 +160,7 @@
     border-color: var(--color-blue);
     box-shadow: 0 0 0 3px rgba(46, 95, 224, 0.12);
   }
-
-  .field__input.is-saved {
-    border-color: var(--color-green);
-    background-color: #F1FBF4;
-  }
-
+  
   #senha { padding-right: 78px; }
 
   .field__icon-btn {

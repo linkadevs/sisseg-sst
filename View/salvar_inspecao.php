@@ -18,6 +18,11 @@ $funcionario = $_SESSION['funcionario'];
 
 $estado_epis = [];
 
+if(!empty($_SESSION['error'])) {
+    echo '<script>alert("' . $_SESSION['error'] . '")</script>';
+    unset($_SESSION['error']);
+}
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach($epis as $epi) {
         if(!empty($_POST[str_replace(' ', '', htmlspecialchars($epi)).'estado'])){
@@ -28,11 +33,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $_SESSION['estados'] = $estado_epis;
     $foto = $_FILES['foto_inspecao'];
+    if(empty($foto['tmp_name'][0]) || $foto['error'][0] === UPLOAD_ERR_NO_FILE) {
+        $_SESSION['error'] = 'A foto da inspeção é obrigatória';
+        header('Location: salvar_inspecao.php');
+        exit;
+    }
     $_SESSION['inspecao_id'] = $inspecao_controller->criarInspecao(
         $_POST['qtd_bons'],
         $funcionario['id_funcionario'],
         $_SESSION['id_funcao'],
-        file_get_contents($foto['tmp_name'])
+        $foto['tmp_name']
     );
     foreach($epis as $index => $epi) {
         if($estado_epis[$epi] == 'reposicao') {
@@ -90,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php foreach($epis as $index => $epi):?>
                         <div class="input" onclick="event.stopPropagation()">
                             <input class="checkboxes" type="checkbox" data-check="<?= 'epi'.strval($index);?>" name="<?= htmlspecialchars($epi)?>" id="<?= htmlspecialchars($epi)?>">
-                            <label for="<?= htmlspecialchars($epi)?>"><?= htmlspecialchars($epi)?> <span>*</span></label>
+                            <label for="<?= htmlspecialchars($epi)?>"><?= htmlspecialchars($epi)?></label>
                             <figure><img src="../templates/assets/img/check_verde.png" alt="Green check mark icon beside required equipment item in a safety inspection form indicating the item is marked as completed"></figure>
                         </div>
                     <?php endforeach;?>
@@ -200,20 +210,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p>Supervisor - toque para assinar</p>
                     </button>
                 </div>
-                <button class="submit" type="button">Salvar inspeção</button>
                 <div class="container foto">
                     <figure>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera w-16 h-16 text-[#94A3B8]"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
                     </figure>
                     <div class="foto_buttons">
-                        <button type="submit" class="capturar">
+                        <button type="button" class="capturar">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera w-16 h-16 text-[#94A3B8]"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
                             Capturar foto
                         </button>
-                        <button type="button" class="cancel">Cancelar</button>
                     </div>
-                    <input type="file" class="foto_inspecao" name="foto_inspecao" accept="image/*" style="display: none;">
+                    <div class="fotos"></div>
+                    <input type="file" class="foto_inspecao" name="foto_inspecao[]" accept="image/*" style="display: none;" multiple>
                 </div>
+                <button class="submit" type="button">Salvar inspeção</button>
                 <input type="hidden" id="assinaturaColaborador" name="assinatura_colaborador">
                 <input type="hidden" id="assinaturaSupervisor" name="assinatura_supervisor">
                 <input type="hidden" id="qtd_bons" name="qtd_bons">

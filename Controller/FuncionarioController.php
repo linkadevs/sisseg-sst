@@ -146,14 +146,25 @@ class FuncionarioController {
         if($cpf_funcionario !== '') {
             $cpf_funcionario = preg_replace('/\D/', '', $cpf_funcionario);
             if (strlen($cpf_funcionario) !== 11) {
-                echo '<script>
-                        alert("O CPF deve conter exatamente 11 dígitos. (Insira apenas números)");
-                        window.history.back();
-                    </script>';
-                exit;
+                $_SESSION['profile_message'] = 'O CPF deve conter exatamente 11 dígitos. (Insira apenas números)';
+                return false;
+            }
+            for ($t = 9; $t < 11; $t++) {
+
+                $d = 0;
+
+                for ($c = 0; $c < $t; $c++) {
+                    $d += $cpf_funcionario[$c] * (($t + 1) - $c);
+                }
+
+                $d = ((10 * $d) % 11) % 10;
+
+                if ($cpf_funcionario[$c] != $d) {
+                    $_SESSION['profile_message'] = 'CPF inválido';
+                    return false;
+                }
             }
         }
-
         $user = $this->funcionarioModel->getFuncionarioByID($id_funcionario);
 
         if(empty($nome_funcionario)) $nome_funcionario = $user['nome'];
@@ -167,25 +178,25 @@ class FuncionarioController {
             $_SESSION['cpf_funcionario'] = $cpf_funcionario;
             $_SESSION['setor_funcionario'] = $setor_funcionario;
             $_SESSION['cargo_funcionario'] = $cargo_funcionario;
-            $_SESSION['success_message'] = "Perfil atualizado com sucesso!";
+            $_SESSION['profile_message'] = "Perfil atualizado com sucesso!";
         } else {
-            $_SESSION['error_message'] = "Erro ao atualizar o perfil.";
+            $_SESSION['profile_message'] = "Erro ao atualizar o perfil.";
         }
     }
 
     public function updatePassword($id_funcionario, $senha_funcionario){
 
-        if (empty($id_funcionario) || empty($senha_funcionario)) {
-            $_SESSION['error_message'] = "Todos os campos de senha são obrigatórios.";
+        if(strlen($senha_funcionario) < 6) {
+            $_SESSION['profile_message'] = "A senha precisa conter no mínimo 6 caracteres";
             return false;
         }
 
         $success = $this->funcionarioModel->changePassword($id_funcionario, $senha_funcionario);
 
         if ($success) {
-            $_SESSION['success_message'] = "Senha alterada com sucesso!";
+            $_SESSION['profile_message'] = "Senha alterada com sucesso!";
         } else {
-            $_SESSION['error_message'] = "Ocorreu um erro ao alterar a senha.";
+            $_SESSION['profile_message'] = "Ocorreu um erro ao alterar a senha.";
         }
     }
 }

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Prova — NR-06</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../templates/assets/css/prova.css">
+</head>
+<body>
+
+<div class="page">
+  <a href="../View/treinamento.html">
+    <button class="back-link" id="btnVoltarTopo" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      Voltar
+    </button>
+  </a>
+
+  <main id="app">
+
+    <!-- ======================================================
+         TELA 1 — Instruções
+         Visível por padrão. É escondida (classe "oculto") quando
+         o usuário clica em "Iniciar Prova".
+         ====================================================== -->
+    <section id="tela-instrucoes" class="tela-instrucoes">
+
+      <div class="cabecalho card">
+        <h1>Prova — NR-06</h1>
+        <p>EPIs</p>
+      </div>
+
+      <div class="box-instrucoes">
+        <h3>Instruções:</h3>
+
+        <div class="item-instrucao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>A prova contém <strong>5 questões</strong> de múltipla escolha</span>
+        </div>
+
+        <div class="item-instrucao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Nota mínima para aprovação: <strong>7.0</strong></span>
+        </div>
+
+        <div class="item-instrucao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Você pode navegar entre as questões antes de finalizar</span>
+        </div>
+
+        <div class="item-instrucao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Todas as questões devem ser respondidas</span>
+        </div>
+
+        <div class="item-instrucao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Ao aprovar, o certificado será liberado automaticamente</span>
+        </div>
+      </div>
+
+      <div class="box-conteudo card">
+        <h3>Conteúdo abordado:</h3>
+        <ul>
+          <li>Tipos de EPIs e suas aplicações</li>
+          <li>Responsabilidades do trabalhador e empregador</li>
+          <li>Conservação e higienização</li>
+          <li>Certificado de Aprovação (CA)</li>
+          <li>Substituição e descarte correto</li>
+        </ul>
+      </div>
+
+      <button class="btn btn-azul" id="btnIniciar" type="button">Iniciar Prova</button>
+    </section>
+
+
+    <!-- ======================================================
+         TELA 2 — Quiz
+         As 5 questões já existem todas no HTML. Só uma fica
+         visível de cada vez através da classe "ativa"
+         (controlada pelo script.js ao clicar em Anterior/Próxima).
+         ====================================================== -->
+    <form id="form-quiz" class="oculto">
+
+      <!-- Questão 1 -->
+      <section class="questao ativa" id="questao-1" data-numero="1">
+        <div class="card cabecalho-questao">
+          <div class="cabecalho-questao-topo">
+            <h2>Questão 1 de 5</h2>
+            <span class="tag-nr">NR-06</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso-fill" style="width:20%"></div></div>
+        </div>
+
+        <fieldset class="card card-pergunta">
+          <legend class="texto-pergunta">Qual é a nota mínima para aprovação no treinamento?</legend>
+
+          <label class="opcao">
+            <input type="radio" name="resposta-q1" value="0" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>5.0</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q1" value="1" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>6.0</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q1" value="2" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>7.0</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q1" value="3" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>8.0</span>
+          </label>
+        </fieldset>
+
+        <div class="rodape-nav">
+          <button class="btn btn-outline btn-anterior" type="button" disabled>Anterior</button>
+          <button class="btn btn-azul btn-proxima" type="button" data-destino="questao-2">Próxima</button>
+        </div>
+      </section>
+
+      <!-- Questão 2 -->
+      <section class="questao" id="questao-2" data-numero="2">
+        <div class="card cabecalho-questao">
+          <div class="cabecalho-questao-topo">
+            <h2>Questão 2 de 5</h2>
+            <span class="tag-nr">NR-06</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso-fill" style="width:40%"></div></div>
+        </div>
+
+        <fieldset class="card card-pergunta">
+          <legend class="texto-pergunta">Quem é responsável pelo fornecimento e higienização dos EPIs?</legend>
+
+          <label class="opcao">
+            <input type="radio" name="resposta-q2" value="0" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Trabalhador</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q2" value="1" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Empregador</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q2" value="2" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>SESMT</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q2" value="3" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>CIPA</span>
+          </label>
+        </fieldset>
+
+        <div class="rodape-nav">
+          <button class="btn btn-outline btn-anterior" type="button" data-destino="questao-1">Anterior</button>
+          <button class="btn btn-azul btn-proxima" type="button" data-destino="questao-3">Próxima</button>
+        </div>
+      </section>
+
+      <!-- Questão 3 -->
+      <section class="questao" id="questao-3" data-numero="3">
+        <div class="card cabecalho-questao">
+          <div class="cabecalho-questao-topo">
+            <h2>Questão 3 de 5</h2>
+            <span class="tag-nr">NR-06</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso-fill" style="width:60%"></div></div>
+        </div>
+
+        <fieldset class="card card-pergunta">
+          <legend class="texto-pergunta">O que representa o CA (Certificado de Aprovação) de um EPI?</legend>
+
+          <label class="opcao">
+            <input type="radio" name="resposta-q3" value="0" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>O prazo de garantia do fabricante</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q3" value="1" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>A autorização do Ministério do Trabalho atestando que o equipamento oferece a proteção declarada</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q3" value="2" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>O comprovante fiscal de compra do equipamento</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q3" value="3" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>O registro interno da empresa sobre o uso do EPI</span>
+          </label>
+        </fieldset>
+
+        <div class="rodape-nav">
+          <button class="btn btn-outline btn-anterior" type="button" data-destino="questao-2">Anterior</button>
+          <button class="btn btn-azul btn-proxima" type="button" data-destino="questao-4">Próxima</button>
+        </div>
+      </section>
+
+      <!-- Questão 4 -->
+      <section class="questao" id="questao-4" data-numero="4">
+        <div class="card cabecalho-questao">
+          <div class="cabecalho-questao-topo">
+            <h2>Questão 4 de 5</h2>
+            <span class="tag-nr">NR-06</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso-fill" style="width:80%"></div></div>
+        </div>
+
+        <fieldset class="card card-pergunta">
+          <legend class="texto-pergunta">Quando um EPI deve ser substituído?</legend>
+
+          <label class="opcao">
+            <input type="radio" name="resposta-q4" value="0" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Somente ao final do contrato de trabalho</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q4" value="1" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Apenas quando o trabalhador solicitar formalmente</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q4" value="2" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Quando estiver danificado, extraviado ou com o prazo de validade vencido</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q4" value="3" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Uma vez por ano, independentemente do estado de conservação</span>
+          </label>
+        </fieldset>
+
+        <div class="rodape-nav">
+          <button class="btn btn-outline btn-anterior" type="button" data-destino="questao-3">Anterior</button>
+          <button class="btn btn-azul btn-proxima" type="button" data-destino="questao-5">Próxima</button>
+        </div>
+      </section>
+
+      <!-- Questão 5 -->
+      <section class="questao" id="questao-5" data-numero="5">
+        <div class="card cabecalho-questao">
+          <div class="cabecalho-questao-topo">
+            <h2>Questão 5 de 5</h2>
+            <span class="tag-nr">NR-06</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso-fill" style="width:100%"></div></div>
+        </div>
+
+        <fieldset class="card card-pergunta">
+          <legend class="texto-pergunta">Com que frequência os EPIs devem ser inspecionados?</legend>
+
+          <label class="opcao">
+            <input type="radio" name="resposta-q5" value="0" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Semanalmente</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q5" value="1" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Mensalmente</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q5" value="2" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Diariamente antes do uso</span>
+          </label>
+          <label class="opcao">
+            <input type="radio" name="resposta-q5" value="3" class="opcao-input">
+            <span class="opcao-radio"></span>
+            <span>Anualmente</span>
+          </label>
+        </fieldset>
+
+        <div class="rodape-nav">
+          <button class="btn btn-outline btn-anterior" type="button" data-destino="questao-4">Anterior</button>
+          <button class="btn btn-verde" id="btnFinalizar" type="button">Finalizar Prova</button>
+        </div>
+      </section>
+
+    </form>
+
+
+    <!-- ======================================================
+         TELA 3 — Resultado
+         Os dois desfechos (aprovado / reprovado) já existem prontos
+         no HTML. O script.js só troca os números (nota, acertos,
+         erros, aproveitamento) e mostra o bloco correto.
+         ====================================================== -->
+    <section id="tela-resultado" class="oculto">
+
+      <!-- Resultado: aprovado -->
+      <div id="resultado-aprovado" class="card card-resultado aprovado oculto">
+        <div class="icone-resultado">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+
+        <h2 class="titulo-resultado">Aprovado</h2>
+        <div class="badge-nota">Nota: <span id="nota-aprovado">0.0</span>/10</div>
+
+        <div class="grid-metricas">
+          <div class="metrica">
+            <div class="metrica-label">Acertos</div>
+            <div class="metrica-valor verde" id="acertos-aprovado">0</div>
+          </div>
+          <div class="metrica">
+            <div class="metrica-label">Erros</div>
+            <div class="metrica-valor vermelho" id="erros-aprovado">0</div>
+          </div>
+          <div class="metrica">
+            <div class="metrica-label">Aproveitamento</div>
+            <div class="metrica-valor azul" id="aproveitamento-aprovado">0%</div>
+          </div>
+        </div>
+
+        <div class="aviso-final">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <div>
+            <strong>Aprovado</strong>
+            Parabéns! Você atingiu a nota mínima e seu certificado já está disponível.
+          </div>
+        </div>
+
+        <div class="rodape-nav">
+          <button class="btn btn-verde btn-voltar-inicio" type="button">Voltar</button>
+        </div>
+      </div>
+
+      <!-- Resultado: não aprovado -->
+      <div id="resultado-reprovado" class="card card-resultado reprovado oculto">
+        <div class="icone-resultado">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </div>
+
+        <h2 class="titulo-resultado">Não aprovado</h2>
+        <div class="badge-nota">Nota: <span id="nota-reprovado">0.0</span>/10</div>
+
+        <div class="grid-metricas">
+          <div class="metrica">
+            <div class="metrica-label">Acertos</div>
+            <div class="metrica-valor verde" id="acertos-reprovado">0</div>
+          </div>
+          <div class="metrica">
+            <div class="metrica-label">Erros</div>
+            <div class="metrica-valor vermelho" id="erros-reprovado">0</div>
+          </div>
+          <div class="metrica">
+            <div class="metrica-label">Aproveitamento</div>
+            <div class="metrica-valor azul" id="aproveitamento-reprovado">0%</div>
+          </div>
+        </div>
+
+        <div class="aviso-final">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div>
+            <strong>Não aprovado</strong>
+            Você não atingiu a nota mínima de 7.0. Revise o conteúdo e tente novamente.
+          </div>
+        </div>
+
+        <div class="rodape-nav">
+          <button class="btn btn-azul" id="btnRefazer" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+            Refazer Prova
+          </button>
+          <button class="btn btn-outline btn-voltar-inicio" type="button">Voltar</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<!-- Toasts fixos (aviso de campo vazio / reprovação) -->
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="../templates/assets/js/prova.js"></script>
+</body>
+</html>

@@ -135,7 +135,7 @@ class FichaRisco {
                 $stmt = $this->db->prepare("INSERT INTO atividade (nome_atividade, icone_atividade, id_nr_fk) VALUES (:nome, :icone, :nr)");
                 $stmt->execute([
                     ':nome'  => $nomeAtividade,
-                    ':icone' => '',
+                    ':icone' => 'ferramentas',
                     ':nr'    => $idNr
                 ]);
                 $idAtividade = $this->db->lastInsertId();
@@ -393,7 +393,7 @@ class FichaRisco {
             // Excluir a atividade cascateia para "ficha" e "ficha_risco"
             // (ON DELETE CASCADE já definido no schema), mas os
             // registros de "risco" precisam ser removidos manualmente.
-            $stmt = $this->db->prepare("DELETE FROM atividade WHERE id_atividade = :id");
+            $stmt = $this->db->prepare("DELETE FROM ficha WHERE id_atividade_fk = :id");
             $stmt->execute([':id' => $idAtividade]);
 
             foreach ($idsRiscos as $idRisco) {

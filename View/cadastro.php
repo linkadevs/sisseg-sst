@@ -28,7 +28,7 @@ unset($_SESSION['erro_cadastro'], $_SESSION['dados_form']);
             </figure>
         </div>
 
-        <button class="setavoltarbranca" type="button" onclick="window.location.href='paginainicial.php'">
+        <button class="setavoltarbranca" type="button" onclick="window.location.href='../index.html'">
             <figure>
                 <img src="../templates/assets/img/setabranca_voltar.png" alt="Seta Voltar">
             </figure>

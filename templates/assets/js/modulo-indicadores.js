@@ -1,5 +1,5 @@
 /* ── Shared axis labels ── */
-  const months = ['Jun/2025','Jul/2025','Ago/2025','Set/2025','Out/2025','Nov/2025','Dez/2025'];
+  
 
   /* ── Shared grid/tick style ── */
   const gridStyle = {
@@ -31,7 +31,7 @@
       labels: months,
       datasets: [{
         label: 'Taxa de Frequência',
-        data: [17, 7, 23, 7, 1, 6, 12],
+        data: dadosLinha,
         borderColor: '#7c3aed',
         backgroundColor: 'transparent',
         borderWidth: 2.5,
@@ -74,7 +74,7 @@
         },
         y: {
           min: 0,
-          max: 27,
+          max: max_qtd_linha + 1,
           ticks: { ...tickStyle, stepSize: 6 },
           grid: { ...gridStyle, borderDash: [4, 4] },
           border: { display: false },
@@ -87,14 +87,13 @@
      CHART 2 — Barras: Treinamentos
   ──────────────────────────────────── */
   const ctxBar = document.getElementById('chartTreinamentos').getContext('2d');
-
   new Chart(ctxBar, {
     type: 'bar',
     data: {
       labels: months,
       datasets: [{
         label: 'Treinamentos',
-        data: [45, 52, 47, 58, 65, 72, 38],
+        data: dadosBarra,
         backgroundColor: '#10b981',
         borderRadius: 4,
         borderSkipped: false,
@@ -131,7 +130,7 @@
         },
         y: {
           min: 0,
-          max: 85,
+          max: max_qtd,
           ticks: { ...tickStyle, stepSize: 20 },
           grid: { ...gridStyle, borderDash: [4, 4] },
           border: { display: false },

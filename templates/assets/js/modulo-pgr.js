@@ -308,7 +308,10 @@ document.addEventListener('DOMContentLoaded', () => {
     editModalBody.innerHTML = `
       <div class="field">
         <label for="editActivityName">Nome da Atividade</label>
-        <input type="text" id="editActivityName" value="${escapeHTML(editState.name)}">
+        <select id="editActivityName">
+          <option value="placeholder" selected disabled>Selecione uma atividade</option>
+          ${atividades}
+        </select>
       </div>
       <div class="field">
         <label for="editActivityNr">Norma Regulamentadora (NR)</label>

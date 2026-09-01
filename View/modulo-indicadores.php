@@ -2,13 +2,27 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/IndicadoresController.php';
+require_once __DIR__ . '/../Controller/IncidenteController.php';
+require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
+require_once __DIR__ . '/../Controller/InspecaoController.php';
 
 use Controller\IndicadoresController;
+use Controller\IncidenteController;
+use Controller\FuncionarioTreinamentoController;
+use Controller\InspecaoController;
 
 $indicadoresController = new IndicadoresController();
+$incidenteController = new IncidenteController();
+$funcionarioTreinamentoController = new FuncionarioTreinamentoController();
+$inspecaoController = new InspecaoController();
 
 $indicadores = $indicadoresController->selecionarTodosIndicadores();
+$incidentes = $incidenteController->selecionarTodosOsIncidentes();
+$treinamentos = $funcionarioTreinamentoController->selecionarTreinamentosRealizados();
+$conformidade = $inspecaoController->selecionarDadosConformidade();
 
+$treinamentos_realizados = count($treinamentos);
+$total_incidentes = count($incidentes);
 ?>
 
 <!DOCTYPE html>
@@ -59,47 +73,20 @@ $indicadores = $indicadoresController->selecionarTodosIndicadores();
   <section aria-label="Indicadores principais">
     <div class="kpi-grid">
 
-      <!-- 1. Taxa de Frequência Média -->
-      <article class="kpi-card kpi-card--blue">
-        <p class="kpi-label">Taxa de Frequência Média</p>
-        <div class="kpi-value-row">
-          <span class="kpi-value">10.1</span>
-          <span class="kpi-arrow" aria-label="Acima da meta">📈</span>
-        </div>
-        <p class="kpi-meta">Meta: 10</p>
-        <div class="progress-wrap" role="progressbar" aria-valuenow="101" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 101%; background: var(--color-blue);"></div>
-          </div>
-        </div>
-      </article>
-
       <!-- 2. Treinamentos Concluídos -->
       <article class="kpi-card kpi-card--green">
         <p class="kpi-label">Treinamentos Concluídos</p>
         <div class="kpi-value-row">
-          <span class="kpi-value">378</span>
-        </div>
-        <p class="kpi-meta">Meta anual: 600</p>
-        <div class="progress-wrap" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 63%; background: var(--color-green);"></div>
-          </div>
+          <span class="kpi-value"><?= htmlspecialchars($treinamentos_realizados)?></span>
         </div>
       </article>
 
       <!-- 3. Total de Acidentes -->
       <article class="kpi-card kpi-card--orange">
-        <p class="kpi-label">Total de Acidentes</p>
+        <p class="kpi-label">Total de Incidentes</p>
         <div class="kpi-value-row">
-          <span class="kpi-value">9</span>
+          <span class="kpi-value"><?= htmlspecialchars($total_incidentes)?></span>
           <span class="kpi-badge">Acima da Meta</span>
-        </div>
-        <p class="kpi-meta">Meta: Reduzir 20% ao ano</p>
-        <div class="progress-wrap" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 90%; background: var(--color-orange);"></div>
-          </div>
         </div>
       </article>
 
@@ -107,13 +94,7 @@ $indicadores = $indicadoresController->selecionarTodosIndicadores();
       <article class="kpi-card kpi-card--purple">
         <p class="kpi-label">Conformidade EPIs</p>
         <div class="kpi-value-row">
-          <span class="kpi-value">96%</span>
-        </div>
-        <p class="kpi-meta">Meta: 95%</p>
-        <div class="progress-wrap" role="progressbar" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 96%; background: var(--color-purple);"></div>
-          </div>
+          <span class="kpi-value"><?= htmlspecialchars($conformidade[0]['porcentagem_conclusao'])?>%</span>
         </div>
       </article>
 
@@ -217,7 +198,121 @@ $indicadores = $indicadoresController->selecionarTodosIndicadores();
   </section>
 
 </main>
+<?php
+$sixMonthsAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-6 months');
+$fiveMonthsAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-5 months');
+$fourMonthsAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-4 months');
+$threeMonthsAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-3 months');
+$twoMonthsAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-2 months');
+$oneMonthAgo = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')))->modify('-1 months');
+$today = (new DateTime('today', new DateTimeZone('America/Sao_Paulo')));
+// $meses = [
+//   $sixMonthsAgo->format('m'),
+//   $fiveMonthsAgo->format('m'),
+//   $fourMonthsAgo->format('m'),
+//   $threeMonthsAgo->format('m'),
+//   $twoMonthsAgo->format('m'),
+//   $oneMonthAgo->format('m'),
+//   $today->format('m')
+// ];
 
+$seisTreinamentos = 0;
+$cincoTreinamentos = 0;
+$quatroTreinamentos = 0;
+$tresTreinamentos = 0;
+$doisTreinamentos = 0;
+$umTreinamento = 0;
+$hojeTreinamento = 0;
+
+$seisIncidentes = 0;
+$cincoIncidentes = 0;
+$quatroIncidentes = 0;
+$tresIncidentes = 0;
+$doisIncidentes = 0;
+$umIncidente = 0;
+$hojeIncidente = 0;
+
+foreach($treinamentos as $treinamento) {
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $sixMonthsAgo->format('m')) {
+      $seisTreinamentos++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $fiveMonthsAgo->format('m')) {
+      $cincoTreinamentos++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $fourMonthsAgo->format('m')) {
+      $quatroTreinamentos++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $threeMonthsAgo->format('m')) {
+      $tresTreinamentos++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $twoMonthsAgo->format('m')) {
+      $doisTreinamentos++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $oneMonthAgo->format('m')) {
+      $umTreinamento++;
+    }
+    if((new DateTime($treinamento['data_funcionario_treinamento'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $today->format('m')) {
+      $hojeTreinamento++;
+    }
+}
+
+foreach($incidentes as $incidente) {
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $sixMonthsAgo->format('m')) {
+      $seisIncidentes++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $fiveMonthsAgo->format('m')) {
+      $cincoIncidentes++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $fourMonthsAgo->format('m')) {
+      $quatroIncidentes++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $threeMonthsAgo->format('m')) {
+      $tresIncidentes++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $twoMonthsAgo->format('m')) {
+      $doisIncidentes++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $oneMonthAgo->format('m')) {
+      $umIncidente++;
+    }
+    if((new DateTime($incidente['data_incidente'], new DateTimeZone('America/Sao_Paulo')))->format('m') == $today->format('m')) {
+      $hojeIncidente++;
+    }
+}
+
+$array = [$seisTreinamentos, $cincoTreinamentos, $quatroTreinamentos, $tresTreinamentos, $doisTreinamentos, $umTreinamento, $hojeTreinamento];
+$array2 = [$seisIncidentes, $cincoIncidentes, $quatroIncidentes, $tresIncidentes, $doisIncidentes, $umIncidente, $hojeIncidente];
+
+$max_qtd = 0;
+foreach($array as $qtd) {
+  if($max_qtd<$qtd) {
+    $max_qtd = $qtd;
+  }
+}
+
+$max_qtd2 = 0;
+foreach($array2 as $qtd) {
+  if($max_qtd2<$qtd) {
+    $max_qtd2 = $qtd;
+  }
+}
+
+$formatter = new IntlDateFormatter(
+    'pt_BR', 
+    IntlDateFormatter::NONE, 
+    IntlDateFormatter::NONE, 
+    null, 
+    null, 
+    "MMM/yyyy"
+);
+?>
+<script>
+  const months = ['<?= ucwords(str_replace('.','',$formatter->format($sixMonthsAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($fiveMonthsAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($fourMonthsAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($threeMonthsAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($twoMonthsAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($oneMonthAgo)))?>','<?= ucwords(str_replace('.','',$formatter->format($today)))?>'];
+  let dadosBarra = [<?= $seisTreinamentos?>, <?= $cincoTreinamentos?>, <?= $quatroTreinamentos?>, <?= $tresTreinamentos?>, <?= $doisTreinamentos?>, <?= $umTreinamento?>, <?= $hojeTreinamento?>];
+  let dadosLinha = [<?= $seisIncidentes?>, <?= $cincoIncidentes?>, <?= $quatroIncidentes?>, <?= $tresIncidentes?>, <?= $doisIncidentes?>, <?= $umIncidente?>, <?= $hojeIncidente?>];
+  let max_qtd = <?= $max_qtd?>;
+  let max_qtd_linha = <?= $max_qtd2?>;
+</script>
 <script src="../templates/assets/js/modulo-indicadores.js"></script>
 
 </body>

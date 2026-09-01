@@ -8,6 +8,11 @@ if (empty($_SESSION['id_adm']) || ($_SESSION['tipo'] ?? '') !== 'administrador')
     exit;
 }
 
+if(!empty($_SESSION['profile_message'])) {
+  echo '<script>alert("'. $_SESSION['profile_message'] .'")</script>';
+  unset($_SESSION['profile_message']);
+}
+
 require_once __DIR__ . '/../Controller/AdministradorController.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 

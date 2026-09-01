@@ -314,6 +314,17 @@ form h2 {
     color: #ffffff;
 }
 
+.limpar {
+    position: absolute;
+    right: .5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.limpar svg {
+    color: #000000;
+}
+
 @media (max-width: 1040px) {
 
     .search_div {

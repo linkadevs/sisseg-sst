@@ -78,14 +78,28 @@ function renderCursos() {
       ? (t.data_limite_treinamento ? 'VÁLIDO' : 'VÁLIDO*')
       : 'INVÁLIDO';
 
+    // Regras de negócio para botões:
+    const dataAtual = new Date().toISOString().split('T')[0];
+    const estaExpirado = t.data_limite_treinamento && t.data_limite_treinamento < dataAtual;
+    const jaConcluiu = !!t.data_conclusao;
+
+    // 1. Botão de Prova: Desativado apenas se estiver expirado
+    const provaHabilitada = !estaExpirado;
+
+    // 2. Botão de Certificado: Habilitado apenas se NÃO estiver expirado E o funcionário JÁ tiver concluído
+    const certificadoHabilitado = !estaExpirado && jaConcluiu;
+
     const acoesExtras = t.informativo ? '' : `
       <div class="action-row">
-        <button class="btn-outline-sm" onclick="fazerProva(${t.id_treinamento})">
+        <button class="btn-outline-sm ${!provaHabilitada ? 'disabled' : ''}" 
+          ${!provaHabilitada ? 'disabled' : ''} 
+          onclick="${!provaHabilitada ? '' : `fazerProva(${t.id_treinamento})`}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           Fazer Prova
         </button>
-        <button class="btn-outline-sm ${t.status === 'invalido' ? 'disabled' : ''}"
-          onclick="${t.status === 'invalido' ? '' : `verCertificado(${t.id_treinamento})`}">
+        <button class="btn-outline-sm ${!certificadoHabilitado ? 'disabled' : ''}"
+          ${!certificadoHabilitado ? 'disabled' : ''} 
+          onclick="${!certificadoHabilitado ? '' : `verCertificado(${t.id_treinamento})`}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>
           Certificado
         </button>
@@ -158,11 +172,11 @@ function assistir(link) {
 }
 
 function fazerProva(idTreinamento) {
-  window.location.href = `../View/prova.html?id_treinamento=${idTreinamento}`;
+  window.location.href = `../View/prova.php?id_treinamento=${idTreinamento}`;
 }
 
 function verCertificado(idTreinamento) {
-  window.location.href = `../View/certificado.html?id_treinamento=${idTreinamento}`;
+  window.location.href = `../View/certificado.php?id_treinamento=${idTreinamento}`;
 }
 
 /* ---------- Inicialização ---------- */

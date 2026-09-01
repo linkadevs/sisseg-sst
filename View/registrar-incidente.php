@@ -1,3 +1,16 @@
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/AtividadeController.php';
+
+use Controller\AtividadeController;
+
+$atividadeController = new AtividadeController();
+
+$atividades = $atividadeController->getAllAtvs();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -99,8 +112,12 @@
           <label class="field-label" for="fieldAtividade">
             Atividade <span class="required">*</span>
           </label>
-          <input id="fieldAtividade" name="atividade" type="text" class="field-input"
-                 placeholder="Ex: Trabalho em Altura" required />
+          <select class="field-select" name="atividade" id="fieldAtividade" required>
+            <option value="placeholder" selected disabled>Selecione uma atividade</option>
+            <?php foreach($atividades as $atividade):?>
+              <option value="<?= htmlspecialchars($atividade['nome_atividade'])?>"><?= htmlspecialchars($atividade['nome_atividade'])?></option>
+            <?php endforeach;?>
+          </select>
           <span class="field-error-msg" id="errAtividade">Campo obrigatório</span>
         </div>
 

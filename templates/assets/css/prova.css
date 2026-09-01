@@ -368,6 +368,170 @@ html, body {
 .toast-aviso { background: var(--amarelo-bg); color: var(--amarelo-texto); border: 1px solid var(--amarelo-borda); }
 .toast-erro { background: #16181d; color: #fff; align-self: flex-end; margin-right: 4px; }
 
+/* ==========================================================================
+   Novos Elementos Gerados Via JS (Quiz Dinâmico)
+   ========================================================================== */
+
+/* Card da Questão Ativa */
+.questao {
+  display: none;
+  background: var(--p-card-bg, #ffffff);
+  border: 0.1rem solid var(--p-border, #e2e8f0);
+  border-radius: var(--p-radius-lg, 1.6rem);
+  padding: 3.6rem;
+  box-shadow: var(--p-shadow-sm, 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05));
+}
+
+.questao.ativa {
+  display: block;
+}
+
+/* Badge de Numeração da Questão */
+.questao-numero {
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--p-primary, #2563eb);
+  background: var(--p-primary-subtle, #eff6ff);
+  padding: 0.4rem 1.2rem;
+  border-radius: var(--p-radius-sm, 0.6rem);
+  margin-bottom: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Enunciado da Pergunta */
+.questao-enunciado {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--p-text-main, #0f172a);
+  line-height: 1.5;
+  margin-bottom: 2.4rem;
+}
+
+/* Container da Lista de Opções */
+.alternativas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 3.2rem;
+}
+
+/* Card Individual de Opção */
+.alternativa-opcao {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.4rem 1.8rem;
+  background: #ffffff;
+  border: 0.1rem solid var(--p-border, #e2e8f0);
+  border-radius: var(--p-radius-md, 1rem);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+}
+
+.alternativa-opcao:hover {
+  border-color: var(--p-border-hover, #cbd5e1);
+  background-color: var(--p-bg, #f8fafc);
+}
+
+/* Radio Button Customizado dentro da Opção */
+.alternativa-opcao input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border: 0.15rem solid var(--p-border-hover, #cbd5e1);
+  border-radius: 50%;
+  outline: none;
+  margin: 0;
+  display: grid;
+  place-content: center;
+  transition: all 0.15s ease-in-out;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.alternativa-opcao input[type="radio"]::before {
+  content: "";
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 0.15s transform ease-in-out;
+  background-color: #ffffff;
+}
+
+.alternativa-opcao input[type="radio"]:checked {
+  background-color: var(--p-primary, #2563eb);
+  border-color: var(--p-primary, #2563eb);
+}
+
+.alternativa-opcao input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+.alternativa-opcao span {
+  font-size: 1.5rem;
+  color: var(--p-text-main, #0f172a);
+  line-height: 1.4;
+}
+
+/* Destaque Visual quando a Opção está Selecionada */
+.alternativa-opcao:has(input[type="radio"]:checked) {
+  border-color: var(--p-primary-border, #bfdbfe);
+  background-color: var(--p-primary-subtle, #eff6ff);
+}
+
+.alternativa-opcao:has(input[type="radio"]:checked) span {
+  font-weight: 500;
+  color: var(--p-primary, #2563eb);
+}
+
+/* Barra Inferior de Navegação (Anterior / Próxima) */
+.questao-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 0.1rem solid var(--p-border, #e2e8f0);
+}
+
+.btn-anterior {
+  background-color: #ffffff;
+  color: var(--p-text-main, #0f172a);
+  border: 0.1rem solid var(--p-border, #e2e8f0);
+  padding: 1.2rem 2.4rem;
+  border-radius: var(--p-radius-md, 1rem);
+  font-weight: 600;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-anterior:hover {
+  background-color: var(--p-bg, #f8fafc);
+  border-color: var(--p-border-hover, #cbd5e1);
+}
+
+.btn-proxima {
+  background-color: var(--p-primary, #2563eb);
+  color: #ffffff;
+  border: 0.1rem solid transparent;
+  padding: 1.2rem 2.4rem;
+  border-radius: var(--p-radius-md, 1rem);
+  font-weight: 600;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-proxima:hover {
+  background-color: var(--p-primary-hover, #1d4ed8);
+}
+
+
 @keyframes toast-in {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

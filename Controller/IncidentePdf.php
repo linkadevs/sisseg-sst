@@ -106,7 +106,7 @@ $pdf->Cell(3, 6, '', 0, 0);
 $pdf->badge(mb_strtoupper($inc['status_incidente'] ?? '-', 'UTF-8'), ...$corStatus);
 $pdf->Ln(12);
 
-// Grid de campos simples (2 colunas)
+// Grid de campos simples
 $colWidth = 90;
 $pdf->campoLabel('Data');
 $pdf->campoValor(date('d/m/Y', strtotime($inc['data_incidente'])));
@@ -134,25 +134,45 @@ $pdf->campoValor($inc['treinamento_reciclagem_incidente'] ?: 'Nao informado');
 
 // Foto do local, se houver
 if (!empty($inc['fotos_incidente'])) {
-    $tmpImg = sys_get_temp_dir() . '/inc_' . $inc['id_incidente'] . '_' . uniqid() . '.jpg';
-    file_put_contents($tmpImg, $inc['fotos_incidente']);
+    // Detecta o tipo MIME real da imagem gravada em memória (blob/string)
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimeType = $finfo->buffer($inc['fotos_incidente']);
 
-    $pdf->campoLabel('Foto do Local');
-    $tamanho = @getimagesize($tmpImg);
-    if ($tamanho) {
-        $larguraMax = 120; // mm
-        $wPx = $tamanho[0];
-        $hPx = $tamanho[1];
-        $larguraFinal = $larguraMax;
-        $alturaFinal = ($hPx / $wPx) * $larguraFinal;
+    // Mapeia tipos suportados pelo FPDF
+    $extensoes = [
+        'image/jpeg' => 'jpg',
+        'image/pjpeg'=> 'jpg',
+        'image/png'  => 'png',
+    ];
 
-        if ($pdf->GetY() + $alturaFinal > 270) {
-            $pdf->AddPage();
+    if (isset($extensoes[$mimeType])) {
+        $ext = $extensoes[$mimeType];
+        $tipoFpdf = strtoupper($ext); // 'JPG' ou 'PNG'
+
+        // Salva temporariamente com a extensão real detectada (.jpg ou .png)
+        $tmpImg = sys_get_temp_dir() . '/inc_' . $inc['id_incidente'] . '_' . uniqid() . '.' . $ext;
+        file_put_contents($tmpImg, $inc['fotos_incidente']);
+
+        $tamanho = @getimagesize($tmpImg);
+        if ($tamanho) {
+            $pdf->campoLabel('Foto do Local');
+            $larguraMax = 120; // mm
+            $wPx = $tamanho[0];
+            $hPx = $tamanho[1];
+            $larguraFinal = $larguraMax;
+            $alturaFinal = ($hPx / $wPx) * $larguraFinal;
+
+            if ($pdf->GetY() + $alturaFinal > 270) {
+                $pdf->AddPage();
+            }
+
+            // Passa o parâmetro do formato real ($tipoFpdf) explicitamente para o FPDF
+            $pdf->Image($tmpImg, $pdf->GetX(), $pdf->GetY(), $larguraFinal, $alturaFinal, $tipoFpdf);
+            $pdf->Ln($alturaFinal + 4);
         }
-        $pdf->Image($tmpImg, $pdf->GetX(), $pdf->GetY(), $larguraFinal);
-        $pdf->Ln($alturaFinal + 4);
+
+        @unlink($tmpImg);
     }
-    @unlink($tmpImg);
 }
 
 $nomeArquivo = 'Relatorio_' . $inc['codigo_incidente'] . '.pdf';

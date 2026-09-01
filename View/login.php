@@ -26,7 +26,7 @@ unset($_SESSION['erro_login'], $_SESSION['dados_login']);
         </figure>
     </div>
 
-    <button class="setavoltarbranca" type="button" onclick="window.location.href='paginainicial.php'">
+    <button class="setavoltarbranca" type="button" onclick="window.location.href='../index.html'">
         <figure>
             <img src="../templates/assets/img/setabranca_voltar.png" alt="Seta Voltar">
         </figure>

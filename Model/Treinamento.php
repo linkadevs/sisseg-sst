@@ -178,19 +178,21 @@ class Treinamento{
      */
     public function getAllTreinamentoComStatusFuncionario($idFuncionario){
         try {
-            $sql = "SELECT t.*, ft.data_funcionario_treinamento AS data_conclusao
-                FROM treinamento t
-                LEFT JOIN funcionario_treinamento ft
-                       ON ft.id_treinamento_fk = t.id_treinamento
-                      AND ft.id_funcionario_fk = :id_funcionario
-                ORDER BY t.nome_treinamento ASC";
+            $sql = "SELECT 
+                t.*,
+                MAX(ft.data_funcionario_treinamento) AS data_conclusao
+            FROM treinamento t
+            LEFT JOIN funcionario_treinamento ft 
+                ON ft.id_treinamento_fk = t.id_treinamento 
+                AND ft.id_funcionario_fk = :id_funcionario
+            GROUP BY t.id_treinamento
+            ORDER BY t.nome_treinamento ASC";
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // NRs puramente informativas: sem prova, sem certificado.
             $informativos = ['NR-01', 'PGR', 'PCMSO'];
 
             return array_map(function($row) use ($informativos) {
@@ -201,6 +203,8 @@ class Treinamento{
                 $dentroDoPrazo = $semValidade || $row['data_limite_treinamento'] >= date('Y-m-d');
 
                 $row['informativo'] = in_array($row['nr_treinamento'], $informativos, true);
+                
+                // Para o filtro das abas e KPI: Válido se concluído E dentro do prazo
                 $row['status'] = ($concluido && $dentroDoPrazo) ? 'valido' : 'invalido';
 
                 return $row;

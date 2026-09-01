@@ -60,7 +60,7 @@ class PrincipalFuncionarioController
             }
             
             $data_ultimo = new \DateTime($ultimo['data_incidente']);
-            $hoje = new \DateTime();
+            $hoje = new \DateTime('today', new \DateTimeZone('America/Sao_Paulo'));
             $dias = $hoje->diff($data_ultimo)->days;
             
             return $dias;

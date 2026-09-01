@@ -1,3 +1,16 @@
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Controller/AtividadeController.php';
+
+use Controller\AtividadeController;
+
+$atividadeController = new AtividadeController();
+
+$atividades = $atividadeController->getAllAtvs();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,8 +40,12 @@
           <div class="form-section">
             <h2 class="form-section-title">Dados da Atividade</h2>
             <div class="field">
-              <label for="activityName">Nome da Atividade</label>
-              <input type="text" id="activityName" name="activityName" placeholder="Ex: Trabalho em Altura" required>
+              <select name="activityName" id="activityName" required>
+                <option value="placeholder" selected disabled>Selecione uma atividade</option>
+                <?php foreach($atividades as $atividade):?>
+                  <option value="<?= htmlspecialchars($atividade['nome_atividade'])?>"><?= htmlspecialchars($atividade['nome_atividade'])?></option>
+                <?php endforeach;?>
+              </select>
             </div>
             <div class="field">
               <label for="activityNr">Norma Regulamentadora (NR)</label>
@@ -225,6 +242,13 @@
 
     </main>
   </div>
+
+<script>
+  let atividades = ''
+  <?php foreach($atividades as $atividade):?>
+    atividades += '<option value="<?= htmlspecialchars($atividade['nome_atividade'])?>"><?= htmlspecialchars($atividade['nome_atividade'])?></option>'
+  <?php endforeach;?>
+</script>
 
 <script src="../templates/assets/js/modulo-pgr.js"></script>
 </body>

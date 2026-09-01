@@ -163,7 +163,7 @@ class ModuloInspecao
     public function listarTodosEpis()
     {
         try {
-            $sql = "SELECT id_epi, nome_epi, descricao_epi FROM epi WHERE status_epi = 'Ativo' ORDER BY nome_epi";
+            $sql = "SELECT id_epi, nome_epi, descricao_epi FROM epi ORDER BY nome_epi";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

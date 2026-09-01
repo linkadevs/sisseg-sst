@@ -54,7 +54,7 @@ class PrincipalAdminController
             }
 
             $dataUltimo = new \DateTime($ultimo['data_incidente']);
-            $hoje = new \DateTime();
+            $hoje = new \DateTime('today', new \DateTimeZone('America/Sao_Paulo'));
 
             return $hoje->diff($dataUltimo)->days;
 
