@@ -149,4 +149,16 @@ class DocumentoController {
             );
         }
     }
+
+    public function selecionarDocumentoPorId(int $id_documento) :array {
+        try {
+            return $this->documento_model->selecionarDocumentoPorId($id_documento);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar documento por ID',
+                0,
+                $e
+            );
+        }
+    }
 }

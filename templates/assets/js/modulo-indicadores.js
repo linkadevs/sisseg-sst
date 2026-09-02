@@ -138,3 +138,108 @@
       }
     }
   });
+  // Elementos da modal e formulário
+  const modalContainer = document.getElementById('modalCriarEquipe');
+  const modalTitulo = document.getElementById('modalTitulo');
+  const formCriarEquipe = document.getElementById('formCriarEquipe');
+  const inputIdIndicador = document.getElementById('id_indicador');
+  const inputNomeEquipe = document.getElementById('nome_equipe');
+  const btnDeletarEquipe = document.getElementById('btnDeletarEquipe');
+
+  const selectFuncionario = document.getElementById('select_funcionario');
+  const btnAdicionar = document.getElementById('btnAdicionarFuncionario');
+  const listaFuncionarios = document.getElementById('listaFuncionarios');
+
+  // Botão para criar nova equipe
+  const botaoAbrirModal = document.querySelector('.criar_equipe');
+
+  // Funções de controle da modal
+  function abrirModal() {
+    modalContainer.classList.add('active');
+    modalContainer.setAttribute('aria-hidden', 'false');
+  }
+
+  function fecharModal() {
+    modalContainer.classList.remove('active');
+    modalContainer.setAttribute('aria-hidden', 'true');
+  }
+
+  // Prepara a modal no MODO DE CRIAÇÃO
+  botaoAbrirModal.addEventListener('click', () => {
+    modalTitulo.textContent = 'Criar equipe';
+    inputIdIndicador.value = '';
+    formCriarEquipe.reset();
+    listaFuncionarios.innerHTML = '';
+    btnDeletarEquipe.style.display = 'none';
+    abrirModal();
+  });
+
+  // Prepara a modal no MODO DE EDIÇÃO ao clicar num Card de Equipe
+  document.querySelectorAll('.rank-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const nome = card.dataset.nome;
+      const funcionariosString = card.dataset.funcionarios; // Retorna ex: "Ana Souza, Carlos Eduardo"
+
+      // Configura o cabeçalho e campos
+      modalTitulo.textContent = 'Editar equipe';
+      inputIdIndicador.value = id;
+      inputNomeEquipe.value = nome;
+      btnDeletarEquipe.style.display = 'inline-block';
+      listaFuncionarios.innerHTML = '';
+
+      // Mapeia e preenche a lista de funcionários vinculados
+      if (funcionariosString && funcionariosString.trim() !== '') {
+        const nomes = funcionariosString.split(',').map(n => n.trim());
+
+        nomes.forEach(nomeFunc => {
+          // Busca a opção correspondente dentro do <select> pelo nome do funcionário
+          const option = Array.from(selectFuncionario.options).find(opt => opt.text.trim() === nomeFunc);
+          if (option) {
+            adicionarTagFuncionario(option.value, option.text);
+          }
+        });
+      }
+
+      abrirModal();
+    });
+  });
+
+  // Função utilitária para adicionar tags na lista de integrantes
+  function adicionarTagFuncionario(id, nome) {
+    if (document.querySelector(`li[data-id="${id}"]`)) {
+      return; // Evita duplicados
+    }
+
+    const li = document.createElement('li');
+    li.className = 'employee-tag';
+    li.dataset.id = id;
+    li.innerHTML = `
+      <span>${nome}</span>
+      <input type="hidden" name="funcionarios[]" value="${id}">
+      <button type="button" class="btn-remove-tag" aria-label="Remover">&times;</button>
+    `;
+
+    li.querySelector('.btn-remove-tag').addEventListener('click', (e) => {
+      e.stopPropagation(); // Evita disparar eventos de clique pai
+      li.remove();
+    });
+
+    listaFuncionarios.appendChild(li);
+  }
+
+  // Ação do botão "+" no select de funcionários
+  btnAdicionar.addEventListener('click', () => {
+    const valor = selectFuncionario.value;
+    const texto = selectFuncionario.options[selectFuncionario.selectedIndex]?.text;
+
+    if (!valor) return;
+
+    if (document.querySelector(`li[data-id="${valor}"]`)) {
+      alert('Este funcionário já foi adicionado.');
+      return;
+    }
+
+    adicionarTagFuncionario(valor, texto);
+    selectFuncionario.value = '';
+  });

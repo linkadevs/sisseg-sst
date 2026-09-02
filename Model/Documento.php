@@ -166,4 +166,21 @@ class Documento {
             );
         }
     }
+
+    public function selecionarDocumentoPorId(int $id_documento) :array {
+        try {
+            $sql = 'SELECT * FROM documento WHERE id_documento = :id_documento';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':id_documento' => $id_documento
+            ]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar documento por ID',
+                0,
+                $e
+            );
+        }
+    }
 }

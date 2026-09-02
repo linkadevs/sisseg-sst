@@ -255,6 +255,39 @@ class Funcionario {
             return false;
         }
     }
+
+    public function atribuirIndicador($id_funcionario, $id_indicador) :bool {
+        try {
+            $sql = 'UPDATE funcionario SET id_indicador_fk = :id_indicador_fk WHERE id_funcionario = :id_funcionario';
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':id_funcionario' => $id_funcionario,
+                ':id_indicador_fk' => $id_indicador
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao atribuir indicador ao funcionário',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function desatribuirIndicador($id_indicador) :bool {
+        try {
+            $sql = 'UPDATE funcionario SET id_indicador_fk = null WHERE id_indicador_fk = :id_indicador_fk';
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':id_indicador_fk' => $id_indicador
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao desatribuir indicador ao funcionário',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

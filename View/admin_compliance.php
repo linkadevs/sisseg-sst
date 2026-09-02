@@ -62,14 +62,20 @@ $qtd_funcionarios = count($funcionarios);
 if(!empty($_GET['download_id'])) {
     foreach($documentos as $documento) {
         if($documento['id_documento'] == $_GET['download_id']) {
+            // Limpa o buffer de saída para evitar corrupção do arquivo por espaçamentos HTML/PHP
+            if (ob_get_length()) ob_clean();
+
+            $nomeArquivo = basename($documento['nome_documento']);
+
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . rawurlencode($documento['nome_documento']) . '"');
+            header('Content-Disposition: attachment; filename="' . addslashes($nomeArquivo) . '"; filename*=UTF-8\'\'' . rawurlencode($nomeArquivo));
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
             header('Content-Length: ' . strlen($documento['arquivo_documento']));
+            
             echo $documento['arquivo_documento'];
             exit;
         }
@@ -86,9 +92,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         );
     }
     if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['data_atualizacao2']) && !empty($_POST['status_doc']) && !empty($_FILES['arquivo']['tmp_name']) && empty($_POST['id_documento'])) {
+        
         $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
+        
+        // Extrai a extensão original (ex: .pdf, .docx, .png)
+        $extensao = pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION);
+        
+        // Garante que o nome final salve com a extensão
+        $nomeComExtensao = $_POST['nome'];
+        if (!empty($extensao) && pathinfo($_POST['nome'], PATHINFO_EXTENSION) !== $extensao) {
+            $nomeComExtensao .= '.' . $extensao;
+        }
+
         $documento_controller->criarNovoDocumento(
-            $_POST['nome'],
+            $nomeComExtensao,
             $_POST['data_atualizacao'],
             $_POST['data_atualizacao2'],
             $_POST['status_doc'],
@@ -107,18 +124,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['data_atualizacao2']) && !empty($_POST['status_doc']) && !empty($_POST['id_documento'])) {
         if(!empty($_FILES['arquivo']['tmp_name'])) {
             $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
+            
+            $extensao = pathinfo($_FILES['arquivo']['name'], PATHINFO_EXTENSION);
+            $nomeComExtensao = $_POST['nome'];
+            if (!empty($extensao) && pathinfo($_POST['nome'], PATHINFO_EXTENSION) !== $extensao) {
+                $nomeComExtensao .= '.' . $extensao;
+            }
+
             $documento_controller->atualizarDocumento(
                 $_POST['id_documento'],
-                $_POST['nome'],
+                $nomeComExtensao,
                 $_POST['data_atualizacao'],
                 $_POST['data_atualizacao2'],
                 $_POST['status_doc'],
                 $doc
             );
         } else {
+            // Busca a extensão que o documento já tinha antes da edição
+            $docAtual = $documento_controller->selecionarDocumentoPorId($_POST['id_documento']);
+            $extensaoAtual = pathinfo($docAtual['nome_documento'], PATHINFO_EXTENSION);
+
+            $nomeComExtensao = $_POST['nome'];
+            if (!empty($extensaoAtual) && pathinfo($_POST['nome'], PATHINFO_EXTENSION) !== $extensaoAtual) {
+                $nomeComExtensao .= '.' . $extensaoAtual;
+            }
+
             $documento_controller->atualizarDocumentoSemArquivo(
                 $_POST['id_documento'],
-                $_POST['nome'],
+                $nomeComExtensao,
                 $_POST['data_atualizacao'],
                 $_POST['data_atualizacao2'],
                 $_POST['status_doc']
@@ -479,7 +512,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <select id="doc_status" name="status_doc">
                             <option value="" selected disabled>Selecione o status do documento</option>
                             <option class="doc_options" value="Atualizado">Atualizado</option>
-                            <option class="doc_options" value="Vencendo">Vencendo</option>
                             <option class="doc_options" value="Vencido">Vencido</option>
                         </select>
                     </div>

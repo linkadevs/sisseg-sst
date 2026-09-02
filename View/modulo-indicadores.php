@@ -5,24 +5,56 @@ require_once __DIR__ . '/../Controller/IndicadoresController.php';
 require_once __DIR__ . '/../Controller/IncidenteController.php';
 require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
 require_once __DIR__ . '/../Controller/InspecaoController.php';
+require_once __DIR__ . '/../Controller/FuncionarioController.php';
 
 use Controller\IndicadoresController;
 use Controller\IncidenteController;
 use Controller\FuncionarioTreinamentoController;
 use Controller\InspecaoController;
+use Controller\FuncionarioController;
 
 $indicadoresController = new IndicadoresController();
 $incidenteController = new IncidenteController();
 $funcionarioTreinamentoController = new FuncionarioTreinamentoController();
 $inspecaoController = new InspecaoController();
+$funcionarioController = new FuncionarioController();
 
 $indicadores = $indicadoresController->selecionarTodosIndicadores();
 $incidentes = $incidenteController->selecionarTodosOsIncidentes();
 $treinamentos = $funcionarioTreinamentoController->selecionarTreinamentosRealizados();
 $conformidade = $inspecaoController->selecionarDadosConformidade();
+$funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
 
 $treinamentos_realizados = count($treinamentos);
 $total_incidentes = count($incidentes);
+
+if(!empty($_SESSION['message'])) {
+  echo '<script>alert("'. $_SESSION['message'] .'")</script>';
+  unset($_SESSION['message']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (!empty($_POST['nome_equipe_indicadores']) && isset($_POST['funcionarios'])) {
+    
+    // Se existir id_indicador preenchido, trata como edição
+    if (!empty($_POST['id_indicador'])) {
+      $indicadoresController->editarIndicador(
+        $_POST['id_indicador'], 
+        $_POST['nome_equipe_indicadores'], 
+        $_POST['funcionarios']
+      );
+    } else {
+      // Caso contrário, cria um novo indicador
+      $indicadoresController->criarIndicador(
+        $_POST['nome_equipe_indicadores'], 
+        $_POST['funcionarios']
+      );
+    }
+    
+    header('Location: modulo-indicadores.php');
+    exit;
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +100,71 @@ $total_incidentes = count($incidentes);
     </div>
     <p class="page-subtitle">Métricas, análises e ranking de equipes</p>
   </header>
+
+  <!-- Modal Criar Equipe -->
+  <div id="modalCriarEquipe" class="modal-overlay" aria-hidden="true">
+    <div class="modal-container" role="dialog" aria-labelledby="modalTitulo">
+      <div class="modal-header">
+        <h2 id="modalTitulo" class="modal-title">Criar equipe</h2>
+        
+        <div class="modal-actions">
+          <!-- Input hidden para saber qual equipe editar/excluir via formulário -->
+          <input type="hidden" id="id_indicador" name="id_indicador" form="formCriarEquipe" value="">
+
+          <!-- Botão de Excluir (Submit direcionado ao script de exclusão ou via JS) -->
+          <button 
+            type="submit" 
+            form="formCriarEquipe" 
+            formaction="deletar_indicador.php" 
+            class="btn-delete" 
+            id="btnDeletarEquipe" 
+            title="Excluir equipe" 
+            onclick="return confirm('Tem certeza que deseja excluir esta equipe?');"
+            style="display: none;"
+          >
+            🗑️
+          </button>
+
+          <button type="button" class="modal-close" onclick="fecharModal()" aria-label="Fechar modal">&times;</button>
+        </div>
+      </div>
+
+      <form method="POST" class="modal-form" id="formCriarEquipe">
+        <!-- Nome da Equipe -->
+        <div class="form-group">
+          <label for="nome_equipe" class="form-label">Nome da Equipe</label>
+          <input type="text" id="nome_equipe" name="nome_equipe_indicadores" class="form-input" placeholder="Ex: Manutenção Alfa" required>
+        </div>
+
+        <!-- Seleção de Funcionários -->
+        <div class="form-group">
+          <label for="select_funcionario" class="form-label">Funcionários</label>
+          <div class="input-with-button">
+            <select id="select_funcionario" class="form-select">
+              <option value="" disabled selected>Selecione um funcionário...</option>
+              <?php foreach($funcionarios as $funcionario):?>
+                <option value="<?= htmlspecialchars($funcionario['id_funcionario'])?>"><?= htmlspecialchars($funcionario['nome_funcionario'])?></option>
+              <?php endforeach;?>
+            </select>
+            <button type="button" class="btn-add" id="btnAdicionarFuncionario" aria-label="Adicionar funcionário">+</button>
+          </div>
+        </div>
+
+        <!-- Lista de Funcionários Selecionados -->
+        <div class="selected-container">
+          <span class="selected-title">Integrantes selecionados:</span>
+          <ul id="listaFuncionarios" class="employee-list">
+            <!-- Itens adicionados via JS aparecerão aqui -->
+          </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn--secondary" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="btn btn--primary">Salvar Equipe</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ── KPI Cards ── -->
   <section aria-label="Indicadores principais">
@@ -132,6 +229,7 @@ $total_incidentes = count($incidentes);
         <h2>Ranking de Equipes - Gamificação</h2>
         <p>Pontuação baseada em treinamentos, conformidade e dias sem acidentes</p>
       </div>
+      <button class="criar_equipe">Criar equipe</button>
     </div>
 
     <ol class="ranking-list" style="list-style:none;">
@@ -145,7 +243,11 @@ $total_incidentes = count($incidentes);
       }?>
       <?php foreach($indicadores as $index => $indicador):?>
         <li>
-          <article class="rank-card">
+          <article class="rank-card" 
+            data-id="<?= htmlspecialchars($indicador['id_indicadores'])?>" 
+            data-nome="<?= htmlspecialchars($indicador['nome_equipe_indicadores'])?>"
+            data-funcionarios="<?php if(!empty($indicador['funcionarios'])){ echo htmlspecialchars($indicador['funcionarios']); }?>"
+            data-id_funcionarios="<?php if(!empty($indicador['id_funcionarios'])){ echo htmlspecialchars($indicador['id_funcionarios']); }?>">
             <div class="rank-card-top">
               <?php if($index+1 == 1):?>
                 <div class="pos-badge pos-badge--gold" aria-label="1º lugar">🏆</div>

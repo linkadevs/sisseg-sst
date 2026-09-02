@@ -73,7 +73,7 @@ $notificacoes = $controller->notificacoes();
 
                 <div class="bloco7">
                     <p class="titulo">
-                        Visualize e Gerencie os <br> funcionários desse setor
+                        Visualize e Gerencie os <br> funcionários da sua empresa
                     </p>
 
                     <a href="gerenciamento_funcionarios.php" class="funcionarios-link">
