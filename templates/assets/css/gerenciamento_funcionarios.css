@@ -25,6 +25,7 @@ body {
     font-size: 1.2rem;
     font-weight: 500;
     transition: opacity 0.2s ease;
+    width: fit-content;
 }
 
 .sinal-mais img {
