@@ -4,13 +4,17 @@ session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/ChecklistController.php';
+require_once __DIR__ . '/../Controller/AdministradorController.php';
 
 use Controller\ChecklistController;
+use Controller\AdministradorController;
 
 $checklistController = new ChecklistController();
+$AdministradorController = new AdministradorController();
 
 $checklistController->carregarChecklist();
 
+$administrador = $AdministradorController->selecionarAdministradorByID($_SESSION['id_adm'])
 ?>
 
 <!DOCTYPE html>
@@ -69,23 +73,15 @@ $checklistController->carregarChecklist();
 
                     <select name="id_adm" id="nome" required>
 
-                        <option value="">
-                            Selecione o responsável
-                        </option>
-
-                        <?php foreach ($_SESSION['administradores'] as $adm): ?>
-
-                            <option value="<?= $adm["id_adm"] ?>">
+                            <option value="<?= $_SESSION["id_adm"] ?>">
 
                                 <?= htmlspecialchars(
-                                    $adm["nome_adm"],
+                                    $administrador["nome_adm"],
                                     ENT_QUOTES,
                                     "UTF-8"
                                 ) ?>
 
                             </option>
-
-                        <?php endforeach; ?>
 
                     </select>
 

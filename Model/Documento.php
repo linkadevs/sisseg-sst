@@ -34,15 +34,17 @@ class Documento {
     public function criarNovoDocumento(
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento,
         string $arquivo_documento
     ) :bool {
         try {
-            $sql = 'INSERT INTO documento (nome_documento, data_documento, status_documento, arquivo_documento) VALUES (:nome_documento, :data_documento, :status_documento, :arquivo_documento)';
+            $sql = 'INSERT INTO documento (nome_documento, data_documento, atualizacao_documento, status_documento, arquivo_documento) VALUES (:nome_documento, :data_documento, :atualizacao_documento, :status_documento, :arquivo_documento)';
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':nome_documento' => $nome_documento,
                 ':data_documento' => $data_documento,
+                ':atualizacao_documento' => $atualizacao_documento,
                 ':status_documento' => $status_documento,
                 ':arquivo_documento' => $arquivo_documento
             ]);
@@ -59,6 +61,7 @@ class Documento {
         int $id_documento,
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento,
         string $arquivo_documento
     ) :bool {
@@ -66,6 +69,7 @@ class Documento {
             $sql = 'UPDATE documento SET
                 nome_documento = :nome_documento,
                 data_documento = :data_documento,
+                atualizacao_documento = :atualizacao_documento,
                 status_documento = :status_documento,
                 arquivo_documento = :arquivo_documento
             WHERE
@@ -77,6 +81,7 @@ class Documento {
                 ':id_documento' => $id_documento,
                 ':nome_documento' => $nome_documento,
                 ':data_documento' => $data_documento,
+                ':atualizacao_documento' => $atualizacao_documento,
                 ':status_documento' => $status_documento,
                 ':arquivo_documento' => $arquivo_documento
             ]);
@@ -93,12 +98,14 @@ class Documento {
         int $id_documento,
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento
     ) :bool {
         try {
             $sql = 'UPDATE documento SET
                 nome_documento = :nome_documento,
                 data_documento = :data_documento,
+                atualizacao_documento = :atualizacao_documento,
                 status_documento = :status_documento
             WHERE
                 id_documento = :id_documento
@@ -109,6 +116,7 @@ class Documento {
                 ':id_documento' => $id_documento,
                 ':nome_documento' => $nome_documento,
                 ':data_documento' => $data_documento,
+                ':atualizacao_documento' => $atualizacao_documento,
                 ':status_documento' => $status_documento
             ]);
         } catch (PDOException $e) {
@@ -132,6 +140,27 @@ class Documento {
         } catch (PDOException $e) {
             throw new Exception(
                 'Erro ao deletar documento',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function atualizarStatusDocumentosAutomatico(string $data_hoje): bool {
+        try {
+            $sql = "UPDATE documento 
+                    SET status_documento = CASE 
+                        WHEN atualizacao_documento < :data_hoje THEN 'Vencido'
+                        ELSE 'Atualizado'
+                    END";
+
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':data_hoje' => $data_hoje
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao atualizar status dos documentos automaticamente',
                 0,
                 $e
             );

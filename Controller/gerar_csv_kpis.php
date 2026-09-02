@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
-$pdo = new PDO("mysql:host=localhost;dbname=sisseg_sst;charset=utf8", "maia", "280805");
+$pdo = new PDO("mysql:host=localhost;dbname=sisseg-sst;charset=utf8", "root", "");
 
 $sql = "SELECT 
             nome_equipe_indicadores,

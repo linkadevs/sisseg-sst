@@ -25,7 +25,7 @@ class Funcao {
             GROUP_CONCAT(e.nome_epi SEPARATOR ', ') AS nome_epi
             FROM funcao f
             LEFT JOIN epi_funcao ef ON ef.id_funcao_fk = f.id_funcao
-            LEFT JOIN epi e ON e.id_epi = ef.id_epi_fk
+            INNER JOIN epi e ON e.id_epi = ef.id_epi_fk
             GROUP BY f.id_funcao, f.nome_funcao;
             ";
             $stmt = $this->db->query($sql);

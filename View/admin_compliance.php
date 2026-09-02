@@ -31,6 +31,7 @@ $epi_controller = new EpiController();
 $documento_controller = new DocumentoController();
 $auditoria_controller = new AuditoriaController();
 
+$documento_controller->atualizarStatusDocumentosAutomatico();
 $funcionarios = $funcionario_controller->selecionarTodosOsFuncionarios();
 $incidentes = $incidente_controller->selecionarTodosOsIncidentes();
 $funcionarios_treinados = $funcionario_treinamento_controller->selecionarFuncionariosTreinados();
@@ -84,11 +85,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['status']
         );
     }
-    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_FILES['arquivo']['tmp_name']) && empty($_POST['id_documento'])) {
+    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['data_atualizacao2']) && !empty($_POST['status_doc']) && !empty($_FILES['arquivo']['tmp_name']) && empty($_POST['id_documento'])) {
         $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
         $documento_controller->criarNovoDocumento(
             $_POST['nome'],
             $_POST['data_atualizacao'],
+            $_POST['data_atualizacao2'],
             $_POST['status_doc'],
             $doc
         );
@@ -102,13 +104,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['status']
         );
     }
-    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['status_doc']) && !empty($_POST['id_documento'])) {
+    if(!empty($_POST['nome']) && !empty($_POST['data_atualizacao']) && !empty($_POST['data_atualizacao2']) && !empty($_POST['status_doc']) && !empty($_POST['id_documento'])) {
         if(!empty($_FILES['arquivo']['tmp_name'])) {
             $doc = file_get_contents($_FILES['arquivo']['tmp_name']);
             $documento_controller->atualizarDocumento(
                 $_POST['id_documento'],
                 $_POST['nome'],
                 $_POST['data_atualizacao'],
+                $_POST['data_atualizacao2'],
                 $_POST['status_doc'],
                 $doc
             );
@@ -117,6 +120,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['id_documento'],
                 $_POST['nome'],
                 $_POST['data_atualizacao'],
+                $_POST['data_atualizacao2'],
                 $_POST['status_doc']
             );
         }
@@ -292,13 +296,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <button class="btn-action" onclick="criarModalAuditoria()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-                    Criar Auditoria
+                    Agendar auditoria
                 </button>
             </div>
             <p class="auditorias_p">Agenda de auditorias internas e externas</p>
             <?php foreach($auditorias as $auditoria):?>
                 <?php if($auditoria['status_auditoria'] == 'Agendada'):?>
-                    <div class="auditoria svg-verde auditoria_verde">
+                    <div class="auditoria svg-azul auditoria_azul">
                         <div class="left">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                             <div class="text">
@@ -331,7 +335,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 <?php elseif($auditoria['status_auditoria'] == 'Aguardando'):?>
-                    <div class="auditoria svg-azul auditoria_azul">
+                    <div class="auditoria svg-verde auditoria_verde">
                         <div class="left">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-blue-600" data-fg-bzec86="13.43:13.11473:/src/app/components/screens/AdminScreen.tsx:210:15:7460:46:e:Calendar::::::Bbz4" data-fgid-bzec86=":rs4:"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
                             <div class="text">
@@ -438,7 +442,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="form-group">
                         <label for="auditoria_status">Status</label>
-                        <select id="auditoria_status" name="status">
+                        <select id="auditoria_status" name="status" required>
                             <option class="auditoria_placeholder" value="" selected disabled>Selecione o status da auditoria</option>
                             <option class="auditoria_options" value="Agendada">Agendada</option>
                             <option class="auditoria_options" value="Aguardando">Aguardando</option>
@@ -465,6 +469,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="form-group">
                         <label for="doc_data">Data de Atualização</label>
                         <input type="date" id="doc_data" name="data_atualizacao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doc_data">Previsão de próxima atualização</label>
+                        <input type="date" id="doc_atualizacao" name="data_atualizacao2" required>
                     </div>
                     <div class="form-group">
                         <label for="doc_status">Status</label>

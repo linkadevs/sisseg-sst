@@ -449,17 +449,38 @@ if(!empty($mensagem)) {
         const buscaInput = document.getElementById('busca-funcao');
         if (buscaInput) {
             buscaInput.addEventListener('keyup', function() {
-                const termo = this.value.toLowerCase();
+                const termo = this.value.toLowerCase().trim();
                 const cards = document.querySelectorAll('.card-funcao');
+                const containerCards = document.querySelector('.container-cards') || cards[0]?.parentElement;
+                
+                let visiveis = 0;
 
                 cards.forEach(function(card) {
                     const nome = card.querySelector('h3').textContent.toLowerCase();
                     if (nome.includes(termo)) {
                         card.style.display = 'block';
+                        visiveis++;
                     } else {
                         card.style.display = 'none';
                     }
                 });
+
+                // Gerencia a mensagem de "Nenhuma função encontrada"
+                let mensagemVazia = document.getElementById('mensagem-busca-vazia');
+
+                if (visiveis === 0) {
+                    if (!mensagemVazia && containerCards) {
+                        mensagemVazia = document.createElement('h3');
+                        mensagemVazia.id = 'mensagem-busca-vazia';
+                        mensagemVazia.className = 'mensagem-vazia';
+                        mensagemVazia.textContent = 'Nenhuma função encontrada.';
+                        containerCards.appendChild(mensagemVazia);
+                    } else if (mensagemVazia) {
+                        mensagemVazia.style.display = 'block';
+                    }
+                } else if (mensagemVazia) {
+                    mensagemVazia.style.display = 'none';
+                }
             });
         }
     });

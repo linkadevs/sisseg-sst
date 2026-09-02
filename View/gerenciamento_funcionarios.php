@@ -164,59 +164,63 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </form>
 
-            <div class="card-tabela-container">
-                <table class="tabela-funcionarios">
-                    <thead>
-                        <tr>
-                            <th>Nome do Colaborador</th>
-                            <th>CPF</th>
-                            <th>Cargo / Função</th>
-                            <th>Setor</th>
-                            <th>Senha do App</th>
-                            <th class="coluna-acoes">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($funcionarios as $funcionario):?>
+            <?php if(!empty($funcionarios)):?>                    
+                <div class="card-tabela-container">
+                    <table class="tabela-funcionarios">
+                        <thead>
                             <tr>
-                                <td>
-                                    <div class="funcionario-perfil">
-                                        <span class="indicador-status ativo"></span>
-                                        <p class="nome"><?= htmlspecialchars($funcionario['nome_funcionario'])?></p>
-                                    </div>
-                                </td>
-                                <td class="texto-mutado font-mono"><?= htmlspecialchars($funcionario['cpf_funcionario'])?></td>
-                                <td><span class="tag-cargo"><?= htmlspecialchars($funcionario['cargo_funcionario'])?></span></td>
-                                <td><span class="badge-setor"><?= htmlspecialchars($funcionario['setor_funcionario'])?></span></td>
-                                <td>
-                                    <div class="wrapper-senha">
-                                        <span class="senha-mascarada">••••••••</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="wrapper-acoes">
-                                        <button type="button" class="btn-icone-acao editar" title="Editar dados"
-                                        data-id="<?= htmlspecialchars($funcionario['id_funcionario'])?>"
-                                        data-nome="<?= htmlspecialchars($funcionario['nome_funcionario'])?>"
-                                        data-cpf="<?= htmlspecialchars($funcionario['cpf_funcionario'])?>"
-                                        data-cargo="<?= htmlspecialchars($funcionario['cargo_funcionario'])?>"
-                                        data-setor="<?= htmlspecialchars($funcionario['setor_funcionario'])?>"
-                                        data-turno="<?= htmlspecialchars($funcionario['turno_funcionario'])?>">
-                                            Editar
-                                        </button>
-                                        <form method="POST">
-                                            <button type="button" class="btn-icone-acao deletar" title="Excluir funcionário">
-                                                Excluir
-                                            </button>
-                                            <input type="hidden" id="deletar_input" name="deletar" value="<?= htmlspecialchars($funcionario['id_funcionario'])?>">
-                                        </form>
-                                    </div>
-                                </td>
+                                <th>Nome do Colaborador</th>
+                                <th>CPF</th>
+                                <th>Cargo / Função</th>
+                                <th>Setor</th>
+                                <th>Senha do App</th>
+                                <th class="coluna-acoes">Ações</th>
                             </tr>
-                        <?php endforeach;?>
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            <?php foreach($funcionarios as $funcionario):?>
+                                <tr>
+                                    <td>
+                                        <div class="funcionario-perfil">
+                                            <span class="indicador-status ativo"></span>
+                                            <p class="nome"><?= htmlspecialchars($funcionario['nome_funcionario'])?></p>
+                                        </div>
+                                    </td>
+                                    <td class="texto-mutado font-mono"><?= htmlspecialchars($funcionario['cpf_funcionario'])?></td>
+                                    <td><span class="tag-cargo"><?= htmlspecialchars($funcionario['cargo_funcionario'])?></span></td>
+                                    <td><span class="badge-setor"><?= htmlspecialchars($funcionario['setor_funcionario'])?></span></td>
+                                    <td>
+                                        <div class="wrapper-senha">
+                                            <span class="senha-mascarada">••••••••</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="wrapper-acoes">
+                                            <button type="button" class="btn-icone-acao editar" title="Editar dados"
+                                            data-id="<?= htmlspecialchars($funcionario['id_funcionario'])?>"
+                                            data-nome="<?= htmlspecialchars($funcionario['nome_funcionario'])?>"
+                                            data-cpf="<?= htmlspecialchars($funcionario['cpf_funcionario'])?>"
+                                            data-cargo="<?= htmlspecialchars($funcionario['cargo_funcionario'])?>"
+                                            data-setor="<?= htmlspecialchars($funcionario['setor_funcionario'])?>"
+                                            data-turno="<?= htmlspecialchars($funcionario['turno_funcionario'])?>">
+                                                Editar
+                                            </button>
+                                            <form method="POST">
+                                                <button type="button" class="btn-icone-acao deletar" title="Excluir funcionário">
+                                                    Excluir
+                                                </button>
+                                                <input type="hidden" id="deletar_input" name="deletar" value="<?= htmlspecialchars($funcionario['id_funcionario'])?>">
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else:?>
+                <h1>Nenhum funcionário encontrado</h1>
+            <?php endif;?>
         </main>
     </div>
     <script src="../templates/assets/js/gerenciamento_funcionarios.js"></script>

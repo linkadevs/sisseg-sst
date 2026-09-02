@@ -210,7 +210,7 @@ class Checklist
         }
         $userTz = $_COOKIE['user_tz'] ?? 'UTC';
 
-        $data_checklist = (new DateTime('now', new DateTimeZone($userTz)))->format('d/m/y H:i:s');
+        $data_checklist = (new DateTime('now', new DateTimeZone($userTz)))->format('Y-m-d H:i:s');
         $turno_checklist = $dados["turno"];
         $observacao_checklist = $postData["observacoes"] ?? "";
         $id_adm_fk = $dados["id_adm"];
@@ -230,7 +230,7 @@ class Checklist
             "id_checklist" => $id_checklist,
             "responsavel" => $administrador ? $administrador["nome_adm"] : "Desconhecido",
             "turno" => $turno_checklist,
-            "data" => (new DateTime('now', new DateTimeZone($userTz)))->format('d/m/y H:i:s'),
+            "data" => (new DateTime('now', new DateTimeZone($userTz)))->format('d/m/Y H:i:s'),
             "status" => $status,
             "classe_status" => $classe_status,
             "progresso" => $progresso,

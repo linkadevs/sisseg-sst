@@ -211,7 +211,7 @@ class Prova
      * mesmo em refações — cada certificado é um registro histórico daquela
      * tentativa, diferente da conclusão do treinamento em si).
      */
-    public function registrarCertificado(int $idProva, int $idFuncionario, float $pontos): bool
+    public function registrarCertificado(int $idProva, int $idFuncionario, float $pontos): int
     {
         $sql = "INSERT INTO certificado
                     (data_certificado, pontos_certificado, id_prova_fk, id_funcionario_fk)
@@ -222,6 +222,7 @@ class Prova
         $stmt->bindParam(":id_prova", $idProva, PDO::PARAM_INT);
         $stmt->bindParam(":id_funcionario", $idFuncionario, PDO::PARAM_INT);
 
-        return $stmt->execute();
+        $stmt->execute();
+        return $this->db->lastInsertId();
     }
 }

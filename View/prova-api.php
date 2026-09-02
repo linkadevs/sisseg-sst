@@ -4,7 +4,9 @@ require_once(__DIR__ . '/../Controller/ProvaController.php');
 
 use Controller\ProvaController;
 
-session_start();
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // TODO: substituir por sessão real quando o login de funcionário for implementado.
 if (!isset($_SESSION['id_funcionario'])) {

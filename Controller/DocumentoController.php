@@ -34,6 +34,7 @@ class DocumentoController {
     public function criarNovoDocumento(
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento,
         string $arquivo_documento
     ) :bool {
@@ -41,6 +42,7 @@ class DocumentoController {
             $result = $this->documento_model->criarNovoDocumento(
                 $nome_documento,
                 $data_documento,
+                $atualizacao_documento,
                 $status_documento,
                 $arquivo_documento
             );
@@ -61,6 +63,7 @@ class DocumentoController {
         int $id_documento,
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento,
         string $arquivo_documento
     ) :bool {
@@ -69,6 +72,7 @@ class DocumentoController {
                 $id_documento,
                 $nome_documento,
                 $data_documento,
+                $atualizacao_documento,
                 $status_documento,
                 $arquivo_documento
             );
@@ -89,6 +93,7 @@ class DocumentoController {
         int $id_documento,
         string $nome_documento,
         string $data_documento,
+        string $atualizacao_documento,
         string $status_documento
     ) :bool {
         try {
@@ -96,6 +101,7 @@ class DocumentoController {
                 $id_documento,
                 $nome_documento,
                 $data_documento,
+                $atualizacao_documento,
                 $status_documento
             );
             if($result == true){
@@ -125,6 +131,19 @@ class DocumentoController {
         } catch (Exception $e) {
             throw new Exception(
                 'Erro ao deletar documento',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function atualizarStatusDocumentosAutomatico(): bool {
+        try {
+            $data_hoje = new \DateTime('today', new \DateTimeZone('America/Sao_Paulo'));
+            return $this->documento_model->atualizarStatusDocumentosAutomatico($data_hoje->format('Y-m-d')); 
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao atualizar status dos documentos automaticamente',
                 0,
                 $e
             );

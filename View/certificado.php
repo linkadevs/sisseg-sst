@@ -3,10 +3,10 @@
 session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
-// require_once __DIR__ . '/../Controller/CertificadoController.php';
 require_once __DIR__ . '/../Controller/FuncionarioController.php';
 require_once __DIR__ . '/../Controller/TreinamentoController.php';
 require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
+require_once __DIR__ . '/../Controller/CertificadoController.php';
 
 if(empty($_GET['id_treinamento'])) {
   header('Location: treinamento-funcionario.html');
@@ -15,15 +15,17 @@ if(empty($_GET['id_treinamento'])) {
 
 $id_funcionario = $_SESSION['id_funcionario'];
 
-// use Controller\CertificadoController;
 use Controller\FuncionarioController;
 use Controller\TreinamentoController;
 use Controller\FuncionarioTreinamentoController;
+use Controller\CertificadoController;
 
 $funcionarioController = new FuncionarioController();
 $treinamentoController = new TreinamentoController();
 $funcionarioTreinamentoController = new FuncionarioTreinamentoController();
+$certificadoController = new CertificadoController;
 
+$certificado = $certificadoController->selecionarUltimoCertificado($_GET['id_treinamento'], $_SESSION['id_funcionario']);
 $funcionario = $funcionarioController->selecionarFuncionarioPorId($id_funcionario);
 $treinamento = $treinamentoController->findById($_GET['id_treinamento']);
 $treinamentos_realizados = $funcionarioTreinamentoController->selecionarTreinamentosRealizadosPorId($_GET['id_treinamento'], $id_funcionario);
@@ -97,7 +99,7 @@ $formatter = new IntlDateFormatter(
         <div class="info-grid">
           <div class="info-item">
             <span class="info-label">Nota Final:</span>
-            <span class="info-value info-success">9.0/10 – APROVADO</span>
+            <span class="info-value info-success"><?= htmlspecialchars($certificado['pontos_certificado'])?>/10 – APROVADO</span>
           </div>
           <div class="info-item">
             <span class="info-label">Carga Horária:</span>

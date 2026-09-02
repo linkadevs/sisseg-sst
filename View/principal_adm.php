@@ -111,7 +111,7 @@ $notificacoes = $controller->notificacoes();
 
             <div class="card-superior">
 
-                <p class="card-titulo">Total de Treinamento</p>
+                <p class="card-titulo">Total de Treinamentos</p>
 
                 <div class="card-subtitulo">
                     <p class="card-infor">

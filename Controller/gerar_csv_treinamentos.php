@@ -2,7 +2,7 @@
 // Opcional: Oculta avisos de Deprecated para não sujar o download do CSV
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
-$pdo = new PDO("mysql:host=localhost;dbname=sisseg_sst;charset=utf8", "maia", "280805");
+$pdo = new PDO("mysql:host=localhost;dbname=sisseg-sst;charset=utf8", "root", "");
 
 $sql = "SELECT 
             t.id_treinamento,

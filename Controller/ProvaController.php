@@ -8,6 +8,10 @@ use Model\Prova;
 use InvalidArgumentException;
 use PDOException;
 
+if(session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 /**
  * Orquestra as ações de prova/questão vindas da API.
  * Toda validação de entrada mora aqui; o Model só fala com o banco.
@@ -208,7 +212,7 @@ class ProvaController
         $primeiraAprovacao = !$this->provaModel->funcionarioJaConcluiuTreinamento($idFuncionario, $idTreinamento);
 
         if ($primeiraAprovacao) {
-            $this->provaModel->registrarConclusaoTreinamento($idFuncionario, $idTreinamento);
+            $_SESSION['certificado_id'] = $this->provaModel->registrarConclusaoTreinamento($idFuncionario, $idTreinamento);
         }
 
         $this->provaModel->registrarCertificado($idProva, $idFuncionario, $nota);
