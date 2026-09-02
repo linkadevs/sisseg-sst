@@ -184,13 +184,13 @@ if(!empty($_SESSION['message'])) {
                     <a class="limpar" href="verificacao_epi_adm.php"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6d2dd4"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a>
                 </div>
                 <div class="buttons">
+                    <button class="send_search">
+                        <figure><img src="../templates/assets/img/lupa.png" alt=""></figure>
+                        Buscar
+                    </button>
                     <button class="criar_atividade">
                         <figure><img src="../templates/assets/img/mais_branco.png" alt=""></figure>
                         Criar atividade
-                    </button>
-                    <button class="send_search">
-                        <figure><img src="../templates/assets/img/filtro.png" alt=""></figure>
-                        Filtrar
                     </button>
                 </div>
             </div>

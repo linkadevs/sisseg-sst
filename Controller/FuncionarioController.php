@@ -165,6 +165,10 @@ class FuncionarioController {
                 }
             }
         }
+        if(empty($nome_funcionario) || empty($cpf_funcionario) || empty($setor_funcionario) || empty($cargo_funcionario)) {
+            $_SESSION['profile_message'] = 'Por favor, preencha todos os campos';
+            return false;
+        }
         $user = $this->funcionarioModel->getFuncionarioByID($id_funcionario);
 
         if(empty($nome_funcionario)) $nome_funcionario = $user['nome'];

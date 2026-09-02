@@ -23,6 +23,7 @@ $id_funcao = intval($_GET['id_funcao']);
 
 $funcao = $funcaoController->selecionarFuncaoPorId($id_funcao);
 $funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
+$funcionario = $funcionarioController->selecionarFuncionarioPorId($id_funcionario);
 
 $epis = explode(', ', $funcao['nome_epi']);
 $id_epis = explode(', ', $funcao['id_epi']);
@@ -34,15 +35,13 @@ foreach($epis as $index => $epi) {
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if(!empty($_POST['nome']) && !empty($_POST['setor'])) {
-        $_SESSION['funcionario'] = $funcionarioController->selecionarFuncionarioPorId($_POST['nome']);
-        $_SESSION['setor'] = $_POST['setor'];
-        $_SESSION['epis'] = $epis_array;
-        $_SESSION['funcao'] = $funcao['nome_funcao'];
-        $_SESSION['id_funcao'] = $id_funcao;
-        header('Location: salvar_inspecao.php');
-        exit;
-    }
+    $_SESSION['funcionario'] = $funcionarioController->selecionarFuncionarioPorId($id_funcionario);
+    $_SESSION['setor'] = $funcionario['setor_funcionario'];
+    $_SESSION['epis'] = $epis_array;
+    $_SESSION['funcao'] = $funcao['nome_funcao'];
+    $_SESSION['id_funcao'] = $id_funcao;
+    header('Location: salvar_inspecao.php');
+    exit;
 }
 
 ?>
@@ -70,21 +69,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="titles">
                     <h2>Dados do colaborador</h2>
                     <h4>Função: <strong><?= htmlspecialchars($funcao['nome_funcao'])?></strong></h4>
+                    <h4>Nome completo do colaborador: <strong><?= htmlspecialchars($funcionario['nome_funcionario'])?></strong></h4>
+                    <h4>Setor / Frente de serviço: <strong><?= htmlspecialchars($funcionario['setor_funcionario'])?></strong></h4>
                 </div>
                 <div class="content">
-                    <div class="input">
-                        <label for="nome">Nome completo do colaborador</label>
-                        <select name="nome" id="nome">
-                            <option value="" disabled selected hidden>Selecione o funcionário</option>
-                            <?php foreach($funcionarios as $funcionario):?>
-                                <option value="<?= htmlspecialchars($funcionario['id_funcionario'])?>"><?= htmlspecialchars($funcionario['nome_funcionario'])?></option>
-                            <?php endforeach;?>
-                        </select>
-                    </div>
-                    <div class="input">
-                        <label for="setor">Setor / Frente de serviço</label>
-                        <input name="setor" id="setor" type="text" placeholder="Ex: Pavimento 5, subsolo, fachada">
-                    </div>
                     <div class="epis">
                         <h5>EPIs a serem inspecionados:</h5>
                         <ul>

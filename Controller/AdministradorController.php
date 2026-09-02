@@ -52,6 +52,11 @@ class AdministradorController{
             }
         }
 
+        if(empty($nome_adm) || empty($cpf_adm) || empty($setor_adm) || empty($cargo_adm)) {
+            $_SESSION['profile_message'] = 'Por favor, preencha todos os campos';
+            return false;
+        }
+
         // Busca os dados atuais para preencher qualquer campo que não tenha sido enviado
         $user = $this->AdministradorModel->getAdministradorByID($id_adm);
 

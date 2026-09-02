@@ -25,8 +25,8 @@ class AtividadeEpiController {
         array $epis
     ) :bool {
         try {
-            if($epis[0] == 'placeholder') {
-                $_SESSION['message'] = 'Por favor, selecione ao menos um epi';
+            if($epis[0] == 'placeholder' || empty($id_nr_fk) || empty($nome_atividade)) {
+                $_SESSION['message'] = 'Por favor, preencha todos os campos.';
                 return false;
             }
             $id_atividade = $this->atividade_controller->createAtv(
