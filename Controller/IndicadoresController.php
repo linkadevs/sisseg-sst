@@ -70,7 +70,7 @@ class IndicadoresController {
                     $success2 = false;
                 }
             }
-            $this->atualizarDadosIndicador($id_indicador);
+            $this->atualizarDadosIndicador();
             if($success1 == true && $success2 == true) {
                 $_SESSION['message'] = 'Equipe criada com sucesso';
                 return true;
@@ -105,7 +105,7 @@ class IndicadoresController {
                     $success3 = false;
                 }
             }
-            $this->atualizarDadosIndicador($id_indicador);
+            $this->atualizarDadosIndicador();
             if($success1 == true && $success2 == true && $success3 == true) {
                 $_SESSION['message'] = 'Equipe editada com sucesso';
                 return true;
@@ -127,6 +127,7 @@ class IndicadoresController {
     ) :bool {
         try {
             $success = $this->indicadores_model->deletarIndicador($id_indicador);
+            $this->atualizarDadosIndicador();
             if($success == true) {
                 $_SESSION['message'] = 'Equipe apagada com sucesso';
                 return true;
@@ -143,7 +144,7 @@ class IndicadoresController {
         }
     }
 
-    public function atualizarDadosIndicador(int $id_indicador) :bool {
+    public function atualizarDadosIndicador() :bool {
         $indicadores = $this->selecionarTodosIndicadores();
 
         // Define o fuso horário padrão para São Paulo
@@ -170,7 +171,7 @@ class IndicadoresController {
         }
 
         foreach($indicadores as $indicador){
-            if(!empty($indicador['funcionarios'])){
+            if(!empty($indicador['id_funcionarios'])){
                 $funcionariosIndicador = explode(', ',$indicador['id_funcionarios']);
             } else {
                 $funcionariosIndicador = [];
@@ -195,6 +196,9 @@ class IndicadoresController {
             $somaInspecoes = 0;
             $multiplicacao = 0;
             foreach($funcionariosIndicador as $f) {
+                if(empty($percentuais[$f]['porcentagem_conclusao'])){
+                    $percentuais[$f]['porcentagem_conclusao'] = 0;
+                }
                 $multiplicacao += $qtdInspecoes[$f]*$percentuais[$f]['porcentagem_conclusao'];
                 $somaInspecoes += $qtdInspecoes[$f];
             }
@@ -225,8 +229,7 @@ class IndicadoresController {
             } else {
                 $diasDecorridos = 0; // Garantia caso o array de datas esteja vazio
             }
-
-            $this->indicadores_model->atualizarDadosIndicador(round($percentualTreinamento), $diasDecorridos, round($percentualEpi), $id_indicador);
+            $this->indicadores_model->atualizarDadosIndicador(round($percentualTreinamento), $diasDecorridos, round($percentualEpi), $indicador['id_indicadores']);
 
             $minTreinamento = PHP_INT_MAX;
             $maxTreinamento = PHP_INT_MIN;
@@ -238,51 +241,60 @@ class IndicadoresController {
             $maxDias = PHP_INT_MIN;
 
             // 3. Descobre o menor e o maior valor de cada atributo entre TODAS as equipes
-            foreach ($indicadores as $indicador) {
-                $treinamento = (int) $indicador['treinamento_percentual_indicadores'];
-                $epi         = (int) $indicador['epi_percentual_indicadores'];
-                $dias        = (int) $indicador['dias_sem_acidentes_indicadores'];
+            if(count($indicadores) > 1) {
+                foreach ($indicadores as $indicador2) {
+                    $treinamento = (int) $indicador2['treinamento_percentual_indicadores'];
+                    $epi         = (int) $indicador2['epi_percentual_indicadores'];
+                    $dias        = (int) $indicador2['dias_sem_acidentes_indicadores'];
+    
+                    if ($treinamento < $minTreinamento) $minTreinamento = $treinamento;
+                    if ($treinamento > $maxTreinamento) $maxTreinamento = $treinamento;
+    
+                    if ($epi < $minEpi) $minEpi = $epi;
+                    if ($epi > $maxEpi) $maxEpi = $epi;
+    
+                    if ($dias < $minDias) $minDias = $dias;
+                    if ($dias > $maxDias) $maxDias = $dias;
+                }
 
-                if ($treinamento < $minTreinamento) $minTreinamento = $treinamento;
-                if ($treinamento > $maxTreinamento) $maxTreinamento = $treinamento;
-
-                if ($epi < $minEpi) $minEpi = $epi;
-                if ($epi > $maxEpi) $maxEpi = $epi;
-
-                if ($dias < $minDias) $minDias = $dias;
-                if ($dias > $maxDias) $maxDias = $dias;
-            }
-
-            // 4. Função interna para calcular a pontuação proporcional (Regra de Três)
-            $calcularPontos = function ($valor, $min, $max, $pontosMaximos) {
-                // Evita divisão por zero se todas as equipes tiverem a mesma nota
-                $normalizar = function($valor, $min, $max, $pontosMaximos) {
-                    // 1. Força a conversão de todos os valores para float
-                    $valor = (float) $valor;
-                    $min   = (float) $min;
-                    $max   = (float) $max;
+                // 4. Função interna para calcular a pontuação proporcional (Regra de Três)
+                $calcularPontos = function ($valor, $min, $max, $pontosMaximos) {
+                    // 1. Converte todos os valores para float
+                    $valor         = (float) $valor;
+                    $min           = (float) $min;
+                    $max           = (float) $max;
                     $pontosMaximos = (float) $pontosMaximos;
 
-                    // 2. Proteção contra divisão por zero ($max igual a $min)
+                    // 2. Trata o cenário onde todas as equipes empatam ($max == $min)
                     if ($max - $min <= 0) {
-                        return 0;
+                        // Se todas as equipes tiverem atingido a meta/nota (ex: todo mundo com 100%), 
+                        // atribui a pontuação máxima. Caso contrário (todos 0%), atribui 0.
+                        return ($valor > 0) ? $pontosMaximos : 0.0;
                     }
 
-                    // 3. Retorna o cálculo seguro
-                    return (($valor - $min) / ($max - $min)) * $pontosMaximos;
+                    // 3. Aplica a min-max normalization relativa
+                    $pontos = (($valor - $min) / ($max - $min)) * $pontosMaximos;
+
+                    // 4. Garante que a pontuação fique estritamente entre 0 e o teto $pontosMaximos
+                    return min(max($pontos, 0.0), $pontosMaximos);
                 };
-            };
+    
+                // 5. Calcula os pontos da equipe atual usando a fórmula proporcional
+                $pontosTreinamento = $calcularPontos($percentualTreinamento, $minTreinamento, $maxTreinamento, 300);
+                $pontosEpi         = $calcularPontos($percentualEpi, $minEpi, $maxEpi, 300);
+                $pontosDias        = $calcularPontos($dataRecente, $minDias, $maxDias, 400);
+                // die(var_dump($maxDias));
+    
+                // Pontuação Total da equipe (arredondada para número inteiro)
+                $pontosFinaisEquipe = (int) round($pontosTreinamento + $pontosEpi + $pontosDias);
+    
+                // 6. Atualiza o campo 'pontos_indicadores' da equipe no banco
+                $this->indicadores_model->atualizarPontosIndicador($pontosFinaisEquipe, $indicador['id_indicadores']);
+            } else {
+                $pontosFinaisEquipe = 1000;
+                $this->indicadores_model->atualizarPontosIndicador($pontosFinaisEquipe, $indicador['id_indicadores']);
+            }
 
-            // 5. Calcula os pontos da equipe atual usando a fórmula proporcional
-            $pontosTreinamento = $calcularPontos($percentualTreinamento, $minTreinamento, $maxTreinamento, 300);
-            $pontosEpi         = $calcularPontos($percentualEpi, $minEpi, $maxEpi, 300);
-            $pontosDias        = $calcularPontos($dataRecente, $minDias, $maxDias, 400);
-
-            // Pontuação Total da equipe (arredondada para número inteiro)
-            $pontosFinaisEquipe = (int) round($pontosTreinamento + $pontosEpi + $pontosDias);
-
-            // 6. Atualiza o campo 'pontos_indicadores' da equipe no banco
-            $this->indicadores_model->atualizarPontosIndicador($pontosFinaisEquipe, $id_indicador);
             
         }
         return true;

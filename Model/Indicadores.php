@@ -115,6 +115,7 @@ class Indicadores {
         int $id_indicador
     ) :bool {
         try {
+            // die(var_dump($epi));
             $sql = 'UPDATE indicadores SET
                 treinamento_percentual_indicadores = :treinamento_percentual_indicadores,
                 dias_sem_acidentes_indicadores = :dias_sem_acidentes_indicadores,

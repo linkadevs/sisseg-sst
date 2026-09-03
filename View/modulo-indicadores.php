@@ -321,7 +321,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li>Treinamentos concluídos: até 300 pontos</li>
         <li>Conformidade de EPIs: até 300 pontos</li>
         <li>Dias consecutivos sem acidentes: até 400 pontos</li>
-        <li>Bônus por metas alcançadas: até 100 pontos</li>
       </ul>
     </aside>
 
