@@ -53,7 +53,7 @@ header {
     background-color: #6D2DD4;
     color: #FFFFFF;
     font-weight: 600;
-    transform: scale(.95);
+    transform: scale(.99);
 }
 
 /* Botão "Cadastrar-se" (sólido) */
@@ -74,7 +74,7 @@ header {
 
 .cadastro:hover {
     background-color: #2e7da8;
-    transform: scale(.95);
+    transform: scale(.99);
 }
 
 /* ===== ÁREA PRINCIPAL ===== */
