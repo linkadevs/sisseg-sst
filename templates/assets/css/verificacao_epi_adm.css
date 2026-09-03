@@ -128,6 +128,11 @@ h1 {
     align-items: center;
     font-size: 1.35rem;
     width: fit-content;
+    transition: .3s all ease;
+}
+
+.search_div button:hover{
+    background-color: #421290;
 }
 
 .search_div button figure img {
@@ -198,7 +203,12 @@ h1 {
     font-size: 1.3rem;
     width: 100%;
     height: 2.8rem;
+    transition: .3s ease all;
 }
+
+    .card button:hover {
+        background-color: #421290;
+    }
 
 .sombra {
     display: none;
@@ -256,7 +266,8 @@ form h2 {
     color: #5d359c;
 }
 
-.input input, .input select {
+.input input,
+.input select {
     border-style: none;
     border-radius: 1rem;
     padding: .8rem 0 .8rem 2rem;
@@ -312,6 +323,11 @@ form h2 {
 .salvar {
     background-color: #6d2dd4;
     color: #ffffff;
+    transition: .3s all ease;
+}
+
+.salvar:hover {
+    background-color: #421290;
 }
 
 .limpar {
@@ -353,7 +369,12 @@ form h2 {
         align-items: center;
         font-size: 1.25rem;
         width: fit-content;
+        transition:.3s all ease;
     }
+
+     .search_div button:hover{
+        background-color: #421290;
+     }
 
     .gerencie {
         font-size: 1.3rem;
@@ -384,6 +405,7 @@ form h2 {
         font-size: 1.3rem;
         width: 100%;
         height: 2.6rem;
+        transition: .3s ease all;
     }
 }
 
@@ -683,7 +705,7 @@ form h2 {
         width: 80%;
     }
 
-   
+
     .card button {
         display: flex;
         gap: 1rem;
