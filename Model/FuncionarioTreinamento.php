@@ -65,6 +65,39 @@ class FuncionarioTreinamento {
             );
         }
     }
+
+    public function selecionarTreinamentosRealizadosFuncionario(
+        int $id_funcionario_fk
+    ) :array {
+        try {
+            $sql = 'SELECT 
+                id_funcionario_treinamento,
+                data_funcionario_treinamento,
+                id_funcionario_fk,
+                id_treinamento_fk
+            FROM (
+                SELECT *,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY id_treinamento_fk 
+                        ORDER BY data_funcionario_treinamento DESC
+                    ) AS rn
+                FROM funcionario_treinamento
+                WHERE id_funcionario_fk = :id_funcionario_fk
+            ) t
+            WHERE rn = 1';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':id_funcionario_fk' => $id_funcionario_fk
+            ]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar treinamentos realizados por funcionario',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

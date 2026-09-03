@@ -56,6 +56,20 @@ class FuncionarioTreinamentoController {
             );
         }
     }
+
+    public function selecionarTreinamentosRealizadosFuncionario(
+        int $id_funcionario_fk
+    ) :array {
+        try {
+            return $this->funcionario_treinamento_model->selecionarTreinamentosRealizadosFuncionario($id_funcionario_fk);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar treinamentos realizados por funcionario',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

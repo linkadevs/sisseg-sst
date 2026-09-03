@@ -120,3 +120,60 @@ form.addEventListener('submit', async function (e) {
     btnSubmit.textContent = 'Registrar Incidente';
   }
 });
+
+/* ------------------------------------------------------------------
+   GERENCIAMENTO DE VÍTIMAS (ARRAY DINÂMICO)
+------------------------------------------------------------------ */
+let vitimasSelecionadas = []; // Armazena { id, nome }
+
+const selectVitima = document.getElementById('selectVitima');
+const btnAddVitima = document.getElementById('btnAddVitima');
+const vitimasContainer = document.getElementById('vitimasContainer');
+const vitimasInputsHidden = document.getElementById('vitimasInputsHidden');
+
+if (btnAddVitima) {
+  btnAddVitima.addEventListener('click', () => {
+    const id = selectVitima.value;
+    const nome = selectVitima.options[selectVitima.selectedIndex]?.text;
+
+    if (!id) return;
+
+    // Evita selecionar a mesma vítima duas vezes
+    if (vitimasSelecionadas.some(v => v.id === id)) {
+      showToast('Esta vítima já foi adicionada.', false);
+      return;
+    }
+
+    vitimasSelecionadas.push({ id, nome });
+    renderVitimas();
+    selectVitima.value = ''; // Reseta o select
+  });
+}
+
+function removerVitima(id) {
+  vitimasSelecionadas = vitimasSelecionadas.filter(v => v.id !== String(id));
+  renderVitimas();
+}
+
+function renderVitimas() {
+  vitimasContainer.innerHTML = '';
+  vitimasInputsHidden.innerHTML = '';
+
+  vitimasSelecionadas.forEach(v => {
+    // 1. Cria a tag visual na tela
+    const tag = document.createElement('span');
+    tag.className = 'vitima-tag';
+    tag.innerHTML = `
+      ${v.nome}
+      <button type="button" class="vitima-tag__remove" onclick="removerVitima('${v.id}')">&times;</button>
+    `;
+    vitimasContainer.appendChild(tag);
+
+    // 2. Cria o input hidden para ser capturado AUTOMATICAMENTE pelo new FormData(form)
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'vitimas[]'; // Sintaxe de Array em FormData/PHP
+    hiddenInput.value = v.id;
+    vitimasInputsHidden.appendChild(hiddenInput);
+  });
+}

@@ -79,12 +79,36 @@ class InspecaoController {
         }
     }
 
+    public function selecionarQtdInspecaoPorFuncionario(int $id_funcionario_fk) :int {
+        try {
+            return $this->inspecao_model->selecionarQtdInspecaoPorFuncionario($id_funcionario_fk);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar quantidade de inspeções por funcionario',
+                0,
+                $e
+            );
+        }
+    }
+
     public function selecionarDadosConformidade() :array {
         try {
             return $this->inspecao_model->selecionarDadosConformidade();
         } catch (Exception $e) {
             throw new Exception(
                 'Erro ao selecionar dados para conformidade',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function selecionarDadosConformidadePorFuncionario(int $id_funcionario_fk) :array {
+        try {
+            return $this->inspecao_model->selecionarDadosConformidadePorFuncionario($id_funcionario_fk);
+        } catch (Exception $e) {
+            throw new Exception(
+                'Erro ao selecionar dados para conformidade por funcionário',
                 0,
                 $e
             );

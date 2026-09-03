@@ -2,12 +2,18 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Controller/AtividadeController.php';
+// 1. Inclua o FuncionarioController (ou o nome equivalente da sua classe de controller)
+require_once __DIR__ . '/../Controller/FuncionarioController.php';
 
 use Controller\AtividadeController;
+use Controller\FuncionarioController;
 
 $atividadeController = new AtividadeController();
-
 $atividades = $atividadeController->getAllAtvs();
+
+// 2. Instancie e busque os funcionários
+$funcionarioController = new FuncionarioController();
+$funcionarios = $funcionarioController->selecionarTodosOsFuncionarios(); // Ajuste o nome do método se necessário
 
 ?>
 
@@ -136,6 +142,36 @@ $atividades = $atividadeController->getAllAtvs();
           <label class="field-label" for="fieldTestemunhas">Testemunhas</label>
           <input id="fieldTestemunhas" name="testemunhas" type="text" class="field-input"
                  placeholder="Nomes das testemunhas" />
+        </div>
+
+        <!-- Vítimas / Funcionários Envolvidos -->
+        <div class="field-group">
+          <label class="field-label">Vítimas / Funcionários Envolvidos</label>
+          
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <div class="select-wrapper" style="flex: 1;">
+              <select id="selectVitima" class="field-select">
+                <option value="">Selecione um funcionário...</option>
+                <?php foreach($funcionarios as $func): ?>
+                  <option value="<?= htmlspecialchars($func['id_funcionario']) ?>">
+                    <?= htmlspecialchars($func['nome_funcionario']) ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+              <svg class="select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </div>
+            
+            <button type="button" id="btnAddVitima" style="padding: 0 18px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer;">+</button>
+          </div>
+
+          <!-- Container onde as tags com 'x' serão adicionadas dinamicamente -->
+          <div id="vitimasContainer" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;"></div>
+          
+          <!-- Container invisível onde os <input type="hidden" name="vitimas[]"> serão injetados para enviar via FormData -->
+          <div id="vitimasInputsHidden"></div>
         </div>
 
         <!-- Ação Imediata -->

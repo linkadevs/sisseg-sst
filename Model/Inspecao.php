@@ -75,6 +75,23 @@ class Inspecao {
         }
     }
 
+    public function selecionarQtdInspecaoPorFuncionario(int $id_funcionario_fk) :int {
+        try {
+            $sql = 'SELECT COUNT(id_inspecao) FROM inspecao WHERE id_funcionario_fk = :id_funcionario_fk';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':id_funcionario_fk' => $id_funcionario_fk
+            ]);
+            return $stmt->fetch(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar quantidade de inspeções por funcionario',
+                0,
+                $e
+            );
+        }
+    }
+
     public function selecionarDadosConformidade() :array {
         try {
             $sql = 'SELECT 
@@ -103,6 +120,37 @@ class Inspecao {
         } catch (PDOException $e) {
             throw new Exception(
                 'Erro ao selecionar dados para conformidade',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function selecionarDadosConformidadePorFuncionario(int $id_funcionario_fk) :array {
+        try {
+            $sql = 'SELECT 
+                ROUND(
+                    (SUM(i.epis_verificados_inspecao) / NULLIF(SUM(COALESCE(total_epis_funcao.qtd_epis, 0)), 0)) * 100, 
+                    2
+                ) AS porcentagem_conclusao
+
+            FROM inspecao i
+
+            -- Subconsulta que conta previamente quantos EPIs cada função tem (sem duplicar as inspeções)
+            LEFT JOIN (
+                SELECT id_funcao_fk, COUNT(id_epi_fk) AS qtd_epis
+                FROM epi_funcao
+                GROUP BY id_funcao_fk
+            ) AS total_epis_funcao ON i.id_funcao_fk = total_epis_funcao.id_funcao_fk
+            WHERE i.id_funcionario_fk = :id_funcionario_fk';
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':id_funcionario_fk' => $id_funcionario_fk
+            ]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao selecionar dados para conformidade por funcionario',
                 0,
                 $e
             );

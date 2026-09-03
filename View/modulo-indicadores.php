@@ -6,18 +6,21 @@ require_once __DIR__ . '/../Controller/IncidenteController.php';
 require_once __DIR__ . '/../Controller/FuncionarioTreinamentoController.php';
 require_once __DIR__ . '/../Controller/InspecaoController.php';
 require_once __DIR__ . '/../Controller/FuncionarioController.php';
+require_once __DIR__ . '/../Controller/TreinamentoController.php';
 
 use Controller\IndicadoresController;
 use Controller\IncidenteController;
 use Controller\FuncionarioTreinamentoController;
 use Controller\InspecaoController;
 use Controller\FuncionarioController;
+use Controller\TreinamentoController;
 
 $indicadoresController = new IndicadoresController();
 $incidenteController = new IncidenteController();
 $funcionarioTreinamentoController = new FuncionarioTreinamentoController();
 $inspecaoController = new InspecaoController();
 $funcionarioController = new FuncionarioController();
+$treinamentoController = new TreinamentoController();
 
 $indicadores = $indicadoresController->selecionarTodosIndicadores();
 $incidentes = $incidenteController->selecionarTodosOsIncidentes();
@@ -27,6 +30,31 @@ $funcionarios = $funcionarioController->selecionarTodosOsFuncionarios();
 
 $treinamentos_realizados = count($treinamentos);
 $total_incidentes = count($incidentes);
+
+
+// Define o fuso horário padrão para São Paulo
+$fusoSaoPaulo = new DateTimeZone('America/Sao_Paulo');
+
+// Captura a data de hoje zerando as horas (00:00:00) para fazer a comparação correta
+$hoje = new DateTime('now', $fusoSaoPaulo);
+$hoje->setTime(0, 0, 0);
+
+$treinamentos2 = $treinamentoController->listAll();
+$treinamentosFuturosOuHoje = [];
+
+foreach ($treinamentos2 as $treinamento) {
+    if (!empty($treinamento['data_limite_treinamento'])) {
+        // Converte a data do treinamento para DateTime no fuso de SP
+        $dataTreinamento = new DateTime($treinamento['data_limite_treinamento'], $fusoSaoPaulo);
+        $dataTreinamento->setTime(0, 0, 0);
+
+        // Se a data do treinamento for maior ou igual a hoje
+        if ($dataTreinamento >= $hoje) {
+            $treinamentosFuturosOuHoje[] = $treinamento;
+        }
+    }
+}
+
 
 if(!empty($_SESSION['message'])) {
   echo '<script>alert("'. $_SESSION['message'] .'")</script>';
@@ -235,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <ol class="ranking-list" style="list-style:none;">
       
       <?php 
-      $maior_pontuacao = 0;
+      $maior_pontuacao = 1;
       foreach($indicadores as $indicador){
         if($indicador['pontos_indicadores'] > $maior_pontuacao) {
           $maior_pontuacao = $indicador['pontos_indicadores'];

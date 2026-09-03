@@ -6,6 +6,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Model/Indicadores.php';
 require_once __DIR__ . '/../Model/Funcionario.php';
 
+require_once __DIR__ . '/TreinamentoController.php';
+require_once __DIR__ . '/FuncionarioTreinamentoController.php';
+require_once __DIR__ . '/InspecaoController.php';
+require_once __DIR__ . '/../Model/IncidenteFuncionario.php';
+
 if(session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -14,13 +19,27 @@ use Exception;
 use Model\Indicadores;
 use Model\Funcionario;
 
+use Controller\TreinamentoController;
+use Controller\FuncionarioTreinamentoController;
+use Controller\InspecaoController;
+use Model\IncidenteFuncionario;
+
 class IndicadoresController {
     private $indicadores_model;
     private $funcionario_model;
+    
+    private $treinamento_controller;
+    private $funcionario_treinamento_controller;
+    private $inspecao_controller;
+    private $incidente_funcionario;
 
     public function __construct() {
         $this->indicadores_model = new Indicadores();
         $this->funcionario_model = new Funcionario();
+        $this->treinamento_controller = new TreinamentoController();
+        $this->funcionario_treinamento_controller = new FuncionarioTreinamentoController();
+        $this->inspecao_controller = new InspecaoController();
+        $this->incidente_funcionario = new IncidenteFuncionario();
     }
 
     public function selecionarTodosIndicadores() {
@@ -51,6 +70,7 @@ class IndicadoresController {
                     $success2 = false;
                 }
             }
+            $this->atualizarDadosIndicador($id_indicador);
             if($success1 == true && $success2 == true) {
                 $_SESSION['message'] = 'Equipe criada com sucesso';
                 return true;
@@ -85,6 +105,7 @@ class IndicadoresController {
                     $success3 = false;
                 }
             }
+            $this->atualizarDadosIndicador($id_indicador);
             if($success1 == true && $success2 == true && $success3 == true) {
                 $_SESSION['message'] = 'Equipe editada com sucesso';
                 return true;
@@ -120,6 +141,151 @@ class IndicadoresController {
                 $e
             );
         }
+    }
+
+    public function atualizarDadosIndicador(int $id_indicador) :bool {
+        $indicadores = $this->selecionarTodosIndicadores();
+
+        // Define o fuso horário padrão para São Paulo
+        $fusoSaoPaulo = new \DateTimeZone('America/Sao_Paulo');
+
+        // Captura a data de hoje zerando as horas (00:00:00) para fazer a comparação correta
+        $hoje = new \DateTime('now', $fusoSaoPaulo);
+        $hoje->setTime(0, 0, 0);
+
+        $treinamentos2 = $this->treinamento_controller->listAll();
+        $treinamentosFuturosOuHoje = [];
+
+        foreach ($treinamentos2 as $treinamento) {
+            if (!empty($treinamento['data_limite_treinamento'])) {
+                // Converte a data do treinamento para DateTime no fuso de SP
+                $dataTreinamento = new \DateTime($treinamento['data_limite_treinamento'], $fusoSaoPaulo);
+                $dataTreinamento->setTime(0, 0, 0);
+
+                // Se a data do treinamento for maior ou igual a hoje
+                if ($dataTreinamento >= $hoje) {
+                    $treinamentosFuturosOuHoje[] = $treinamento;
+                }
+            }
+        }
+
+        foreach($indicadores as $indicador){
+            if(!empty($indicador['funcionarios'])){
+                $funcionariosIndicador = explode(', ',$indicador['id_funcionarios']);
+            } else {
+                $funcionariosIndicador = [];
+            }
+            $total_equipe = 0;
+            $percentuais = [];
+            $qtdInspecoes = [];
+            $datas = [];
+            foreach($funcionariosIndicador as $f) {
+                $ts = $this->funcionario_treinamento_controller->selecionarTreinamentosRealizadosFuncionario($f);
+                $total_equipe += count($ts);
+                $percentuais[$f] = $this->inspecao_controller->selecionarDadosConformidadePorFuncionario($f);
+                $qtdInspecoes[$f] = $this->inspecao_controller->selecionarQtdInspecaoPorFuncionario($f);
+                $datas[$f] = $this->incidente_funcionario->selecionarUltimoIncidenteFuncionario($f);
+            }
+            $qtdMaximaTreinamentos = count($funcionariosIndicador)*count($treinamentosFuturosOuHoje);
+            if($qtdMaximaTreinamentos === 0) {
+                $percentualTreinamento = 0;
+            } else {
+                $percentualTreinamento = ($total_equipe/$qtdMaximaTreinamentos)*100;
+            }
+            $somaInspecoes = 0;
+            $multiplicacao = 0;
+            foreach($funcionariosIndicador as $f) {
+                $multiplicacao += $qtdInspecoes[$f]*$percentuais[$f]['porcentagem_conclusao'];
+                $somaInspecoes += $qtdInspecoes[$f];
+            }
+            if($somaInspecoes === 0) {
+                $percentualEpi = 0;
+            } else {
+                $percentualEpi = $multiplicacao/$somaInspecoes;
+            }
+            
+            if (!empty($datas)) {
+                $dataRecente = max($datas);
+
+                // 1. Cria o objeto da data recente
+                $dataInicio = new \DateTime($dataRecente);
+
+                // 2. Cria o objeto da data atual
+                $hoje = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
+
+                // 3. Zera o horário de ambas para comparar apenas os DIAS inteiros (sem interferência de horas)
+                $dataInicio->setTime(0, 0, 0);
+                $hoje->setTime(0, 0, 0);
+
+                // 4. Calcula a diferença entre as duas datas
+                $diferenca = $dataInicio->diff($hoje);
+
+                // 5. Quantidade total de dias decorridos
+                $diasDecorridos = $diferenca->days;
+            } else {
+                $diasDecorridos = 0; // Garantia caso o array de datas esteja vazio
+            }
+
+            $this->indicadores_model->atualizarDadosIndicador(round($percentualTreinamento), $diasDecorridos, round($percentualEpi), $id_indicador);
+
+            $minTreinamento = PHP_INT_MAX;
+            $maxTreinamento = PHP_INT_MIN;
+
+            $minEpi = PHP_INT_MAX;
+            $maxEpi = PHP_INT_MIN;
+
+            $minDias = PHP_INT_MAX;
+            $maxDias = PHP_INT_MIN;
+
+            // 3. Descobre o menor e o maior valor de cada atributo entre TODAS as equipes
+            foreach ($indicadores as $indicador) {
+                $treinamento = (int) $indicador['treinamento_percentual_indicadores'];
+                $epi         = (int) $indicador['epi_percentual_indicadores'];
+                $dias        = (int) $indicador['dias_sem_acidentes_indicadores'];
+
+                if ($treinamento < $minTreinamento) $minTreinamento = $treinamento;
+                if ($treinamento > $maxTreinamento) $maxTreinamento = $treinamento;
+
+                if ($epi < $minEpi) $minEpi = $epi;
+                if ($epi > $maxEpi) $maxEpi = $epi;
+
+                if ($dias < $minDias) $minDias = $dias;
+                if ($dias > $maxDias) $maxDias = $dias;
+            }
+
+            // 4. Função interna para calcular a pontuação proporcional (Regra de Três)
+            $calcularPontos = function ($valor, $min, $max, $pontosMaximos) {
+                // Evita divisão por zero se todas as equipes tiverem a mesma nota
+                $normalizar = function($valor, $min, $max, $pontosMaximos) {
+                    // 1. Força a conversão de todos os valores para float
+                    $valor = (float) $valor;
+                    $min   = (float) $min;
+                    $max   = (float) $max;
+                    $pontosMaximos = (float) $pontosMaximos;
+
+                    // 2. Proteção contra divisão por zero ($max igual a $min)
+                    if ($max - $min <= 0) {
+                        return 0;
+                    }
+
+                    // 3. Retorna o cálculo seguro
+                    return (($valor - $min) / ($max - $min)) * $pontosMaximos;
+                };
+            };
+
+            // 5. Calcula os pontos da equipe atual usando a fórmula proporcional
+            $pontosTreinamento = $calcularPontos($percentualTreinamento, $minTreinamento, $maxTreinamento, 300);
+            $pontosEpi         = $calcularPontos($percentualEpi, $minEpi, $maxEpi, 300);
+            $pontosDias        = $calcularPontos($dataRecente, $minDias, $maxDias, 400);
+
+            // Pontuação Total da equipe (arredondada para número inteiro)
+            $pontosFinaisEquipe = (int) round($pontosTreinamento + $pontosEpi + $pontosDias);
+
+            // 6. Atualiza o campo 'pontos_indicadores' da equipe no banco
+            $this->indicadores_model->atualizarPontosIndicador($pontosFinaisEquipe, $id_indicador);
+            
+        }
+        return true;
     }
 }
 

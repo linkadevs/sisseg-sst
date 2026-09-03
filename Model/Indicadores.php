@@ -107,6 +107,56 @@ class Indicadores {
             );
         }
     }
+
+    public function atualizarDadosIndicador(
+        int $treinamentoP,
+        int $dias,
+        int $epi,
+        int $id_indicador
+    ) :bool {
+        try {
+            $sql = 'UPDATE indicadores SET
+                treinamento_percentual_indicadores = :treinamento_percentual_indicadores,
+                dias_sem_acidentes_indicadores = :dias_sem_acidentes_indicadores,
+                epi_percentual_indicadores = :epi_percentual_indicadores
+                WHERE id_indicadores = :id_indicadores';
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':treinamento_percentual_indicadores' => $treinamentoP,
+                ':dias_sem_acidentes_indicadores' => $dias,
+                ':epi_percentual_indicadores' => $epi,
+                ':id_indicadores' => $id_indicador
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao atualizar dados indicador',
+                0,
+                $e
+            );
+        }
+    }
+
+    public function atualizarPontosIndicador(
+        int $pontos,
+        int $id_indicador
+    ) :bool {
+        try {
+            $sql = 'UPDATE indicadores SET
+                pontos_indicadores = :pontos_indicadores
+                WHERE id_indicadores = :id_indicadores';
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':pontos_indicadores' => $pontos,
+                ':id_indicadores' => $id_indicador
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception(
+                'Erro ao atualizar pontos indicador',
+                0,
+                $e
+            );
+        }
+    }
 }
 
 ?>

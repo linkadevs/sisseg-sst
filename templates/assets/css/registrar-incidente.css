@@ -354,6 +354,35 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .vitima-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .vitima-tag__remove {
+      background: none;
+      border: none;
+      color: #1D4ED8;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
+      padding: 0 2px;
+      margin-left: 4px;
+    }
+
+    .vitima-tag__remove:hover {
+      color: #B91C1C;
+    }
+
     /* ============================================================
        RESPONSIVIDADE
     ============================================================ */

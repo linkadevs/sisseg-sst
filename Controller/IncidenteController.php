@@ -1,16 +1,21 @@
 <?php
 namespace Controller;
 
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . "/../Model/Incidente.php";
+require_once __DIR__ . '/../Model/IncidenteFuncionario.php';
 
 use Model\Incidente;
+use Model\IncidenteFuncionario;
 use Exception;
 
 class IncidenteController{
     private $incidenteModel;
+    private $incidenteFuncionarioModel;
 
     public function __construct(){
         $this->incidenteModel = new Incidente();
+        $this->incidenteFuncionarioModel = new IncidenteFuncionario();
     }
 
     public function create(){
@@ -30,8 +35,16 @@ class IncidenteController{
             $dados['descricao'], $dados['testemunhas'], $dados['acao'], $dados['treinamento'],
             $fotoValidada['conteudo'] ?? ''
         );
+        $incidente = $this->incidenteModel->getById($resultado['id']);
+        $resultado2 = true;
+        foreach($dados['vitimas'] as $f) {
+            $temp = $this->incidenteFuncionarioModel->criarIncidenteFuncionario($incidente['data_incidente'], $resultado['id'], $f);
+            if($temp === false) {
+                $resultado2 = false;
+            }
+        }
 
-        if (!$resultado['success']) {
+        if (!$resultado['success'] || $resultado2 == false) {
             return ['success' => false, 'message' => 'Falha ao salvar o incidente no banco de dados.'];
         }
 
@@ -137,13 +150,13 @@ class IncidenteController{
         $atividade   = trim(filter_input(INPUT_POST, 'atividade', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $descricao   = trim(filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $testemunhas = trim(filter_input(INPUT_POST, 'testemunhas', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+        $vitimas     = $_POST['vitimas'];
         $acao        = trim(filter_input(INPUT_POST, 'acaoImediata', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $treinamento = trim(filter_input(INPUT_POST, 'treinamento', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-
         $valido = $data !== '' && $tipo !== '' && $gravidade !== '' && $local !== ''
-                  && $atividade !== '' && $descricao !== '' && $acao !== '';
+                  && $atividade !== '' && $descricao !== '' && $vitimas !== '' && $acao !== '';
 
-        return compact('data', 'tipo', 'gravidade', 'local', 'atividade', 'descricao', 'testemunhas', 'acao', 'treinamento', 'valido');
+        return compact('data', 'tipo', 'gravidade', 'local', 'atividade', 'descricao', 'testemunhas', 'vitimas', 'acao', 'treinamento', 'valido');
     }
 
     /**
